@@ -10,5 +10,3 @@ it would be better if you clone the site on the htdoc folder. You can find the a
 /Applications/MAMP/htdocs
 
 Use the localhost to access the site
-
-i am winston, I am Swiss
