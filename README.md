@@ -12,3 +12,4 @@ it would be better if you clone the site on the htdoc folder. You can find the a
 Use the localhost to access the site
 
 i am winston
+i am cool
