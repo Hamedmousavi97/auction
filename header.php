@@ -22,7 +22,7 @@
   <!-- Custom CSS file -->
   <link rel="stylesheet" href="css/custom.css">
 
-  <title>[My Auction Site] <!--CHANGEME!--></title>
+  <title>Group 2 Auction Website </title>
 </head>
 
 
