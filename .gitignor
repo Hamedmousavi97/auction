@@ -1,0 +1,2 @@
+#saving the config file in the .gitignore to increase the security. 
+config.php

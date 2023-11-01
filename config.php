@@ -16,7 +16,7 @@ $conn->set_charset("utf8");
 
 //check connection
 if (mysqli_connect_errno()) {
-    echo 'Failed to connect to the MySQLserver: '. mysqli_connect_error();
+    echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
 }
 
 ?>
