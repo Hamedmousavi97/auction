@@ -141,7 +141,7 @@
   $title = "Air Force 1 Shoes all-White";
   $description = "All-White Air Force 1 shoes";
   $current_price = 53;
-  $num_bids = 3;
+  $num_bids = 344434;
   $end_date = new DateTime('2020-11-02T00:00:00');
 
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
