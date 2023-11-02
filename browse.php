@@ -138,7 +138,7 @@
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
 
   $item_id = "3";
-  $title = "Air Force 1 Shoes all-White";
+  $title = "Air Force 1 Shoes allWhite";
   $description = "All-White AF1 shoes";
   $current_price = 53;
   $num_bids = 3;
