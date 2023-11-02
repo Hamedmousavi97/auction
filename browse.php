@@ -150,7 +150,7 @@
   $title = "British Flag";
   $description = "10 by 10 inch Flag";
   $current_price = 5;
-  $num_bids = 3;
+  $num_bids = 3444;
   $end_date = new DateTime('2020-11-02T00:00:00');
 ?>
 
