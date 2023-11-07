@@ -123,7 +123,7 @@
   $title = "UCL Hoodie";
   $description = "Black UCL Hoodie";
   $current_price = 25;
-  $num_bids = 3;
+  $num_bids = 30;
   $end_date = new DateTime('2020-11-02T00:00:00');
 
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
@@ -141,8 +141,15 @@
   $title = "Air Force 1 Shoes all-White";
   $description = "All-White Air Force 1 shoes";
   $current_price = 53;
-  $num_bids = 344434;
+  $num_bids = 123123;
   $end_date = new DateTime('2020-11-02T00:00:00');
+
+  $item_id = "5";
+  $title = "Winston Nagelmakers";
+  $description = "Swiss man - 23, Healthy, High IQ, 6'2, Brown Hair, Blue Eyes, 8/10";
+  $current_price = 125000;
+  $num_bids = 0;
+  $end_date = new DateTime('2020-11-11T00:00:00');
 
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
 
@@ -150,8 +157,10 @@
   $title = "British Flag";
   $description = "10 by 10 inch Flag";
   $current_price = 5;
-  $num_bids = 3444;
+  $num_bids = 345345;
   $end_date = new DateTime('2020-11-02T00:00:00');
+
+  
 ?>
 
 </ul>
