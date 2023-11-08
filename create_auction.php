@@ -17,9 +17,9 @@
   <h2 class="my-3">Create new auction</h2>
   <div class="card">
     <div class="card-body">
-      <!-- Note: This form does not do any dynamic / client-side / 
-      JavaScript-based validation of data. It only performs checking after 
-      the form has been submitted, and only allows users to try once. You 
+      <!-- Note: This form does not do any dynamic / client-side /
+      JavaScript-based validation of data. It only performs checking after
+      the form has been submitted, and only allows users to try once. You
       can make this fancier using JavaScript to alert users of invalid data
       before they try to send it, but that kind of functionality should be
       extremely low-priority / only done after all database functions are

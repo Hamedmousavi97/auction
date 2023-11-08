@@ -8,7 +8,7 @@ session_start();
 $db_server = "localhost";
 $db_username = "root";
 $db_password = "root";
-$db_name = "Auction"; 
+$db_name = "Auction";
 
 //create connection to database
 $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
