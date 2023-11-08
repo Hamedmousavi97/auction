@@ -19,4 +19,10 @@ if (mysqli_connect_errno()) {
     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
 }
 
+// Read and execute the SQL script
+// Using the multi_query() function allows us to execute multiple SQL statements at once
+// $sqlScript = file_get_contents('Auction.sql');
+// if (!$conn->multi_query($sqlScript)) {
+//     echo "Error executing SQL script: " . $conn->error;
+// }
 ?>
