@@ -16,7 +16,7 @@ function validateEmail($input) {
         return false;
     }
 
-    return true; // Return true if the email is valid
+    return true; // Return true if email is valid
 }
 
 function sanitizeEmail($email) {
