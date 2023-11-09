@@ -1,49 +1,63 @@
 <?php
 
-// TODO: Extract $_POST variables, check they're OK, and attempt to create
-// an account. Notify user of success/failure and redirect/give navigation
-// options.
-
 
 require_once("config.php");
 include_once("browse.php");
 
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $email = $_POST['email'];
-  $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+function validateEmail($input) {
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
 
-// email registration - checking the email format 
+    // Regular expression pattern for matching email addresses
+    $pattern = "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/";
+
+    if (!preg_match($pattern, $input)) {
+        return false;
+    }
+
+    return true; // Return true if the email is valid
+}
+
 function sanitizeEmail($email) {
-  // remove the space in front or behind the email
-  $email = trim($email);
+    $email = trim($email);
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-  // remove illegal characters
-  $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-
-  // verify email format
-  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    return $email;
-  } else {
-    return false; // verify fails, return false
-  }
+    return filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : false;
 }
 
+$username = $_POST['username'];
+$password = $_POST['password'];
+$email = $_POST['email'];
+$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 $sanitizedEmail = sanitizeEmail($email);
+if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
+    $query = "INSERT INTO users (UserName, UserPassword, UserEmail) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($query);
 
-if ($sanitizedEmail) {
-  // Verify success, do something
-  $query = "INSERT INTO users (UserName, UserPassword, UserEmail) VALUES ('$username', '$hashedPassword', '$email')";
-  if (!$conn->multi_query($query)) {
-    echo 'Failed to connect to the MySQLserver: '. mysqli_connect_error();
-  } else {
-    header("Location: browse.php");
+    // Bind parameters
+    $stmt->bind_param("sss", $username, $hashedPassword, $sanitizedEmail);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        header("Location: browse.php");
+        exit(); // Ensure no further execution after redirection
+    } else {
+        // Registration failed, show error message
+        echo '<script>
+                alert("Failed to create account. Please try again.");
+                window.history.back();
+             </script>';
+    }
+
+    // Close the statement
+    $stmt->close();
     mysqli_close($conn);
-
-  }
 } else {
-  // Verify fails, do something
-  echo "Invalid email. Please enter a valid email address.";
+    // Invalid email format during registration, show error message
+    echo '<script>
+            alert("Invalid email format. Please enter a valid email address.");
+            window.history.back();
+         </script>';
 }
-
 ?>
