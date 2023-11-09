@@ -16,7 +16,7 @@ function validateEmail($input) {
         return false;
     }
 
-    return true; // Return true if email is valid
+    return true; // Return true if the email is valid
 }
 
 function sanitizeEmail($email) {
@@ -30,9 +30,11 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 $email = $_POST['email'];
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
 $sanitizedEmail = sanitizeEmail($email);
+
 if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
-    $query = "INSERT INTO users (UserName, UserPassword, UserEmail) VALUES (?, ?, ?)";
+    $query = "INSERT INTO users (UserName, UserPassword, UserEmail) VALUES ('$username', '$hashedPassword', '$email')";
     $stmt = $conn->prepare($query);
 
     // Bind parameters
@@ -45,7 +47,7 @@ if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
     } else {
         // Registration failed, show error message
         echo '<script>
-                alert("Failed to create account. Please try again.");
+                alert("Failed to create an account. Please try again.");
                 window.history.back();
              </script>';
     }
