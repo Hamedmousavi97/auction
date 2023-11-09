@@ -29,14 +29,20 @@ function sanitizeEmail($email) {
 $username = $_POST['username'];
 $password = $_POST['password'];
 $email = $_POST['email'];
+$confirmPassword = $_POST['confirmPassword'];
+if ($password != $confirmPassword){
+        echo '<script>
+                    alert("Passwords do not match. Please try again.");
+                    window.history.back();
+                </script>';
+        exit();
+}
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
 $sanitizedEmail = sanitizeEmail($email);
 
 if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
     $query = "INSERT INTO users (UserName, UserPassword, UserEmail) VALUES ('$username', '$hashedPassword', '$email')";
     $stmt = $conn->prepare($query);
-
     // Bind parameters
     $stmt->bind_param("sss", $username, $hashedPassword, $sanitizedEmail);
 
@@ -51,7 +57,6 @@ if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
                 window.history.back();
              </script>';
     }
-
     // Close the statement
     $stmt->close();
     mysqli_close($conn);
