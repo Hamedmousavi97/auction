@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `UserID` varchar(255) DEFAULT NULL,
+  `UserID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `UserName` varchar(255) DEFAULT NULL,
   `UserEmail` varchar(255) DEFAULT NULL,
   `UserRole` varchar(255) DEFAULT NULL,
