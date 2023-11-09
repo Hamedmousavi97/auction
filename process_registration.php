@@ -26,6 +26,8 @@ function sanitizeEmail($email) {
     return filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : false;
 }
 
+// Check if the form is submitted
+$accountType = $_POST['accountType'];
 $username = $_POST['username'];
 $password = $_POST['password'];
 $email = $_POST['email'];
@@ -41,7 +43,7 @@ $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 $sanitizedEmail = sanitizeEmail($email);
 
 if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
-    $query = "INSERT INTO users (UserName, UserPassword, UserEmail) VALUES ('$username', '$hashedPassword', '$email')";
+    $query = "INSERT INTO users (UserName, UserPassword, UserEmail, UserRole) VALUES ('$username', '$hashedPassword', '$email', '$accountType')";
     $stmt = $conn->prepare($query);
     // Bind parameters
     $stmt->bind_param("sss", $username, $hashedPassword, $sanitizedEmail);
