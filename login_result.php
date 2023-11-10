@@ -2,7 +2,7 @@
 // session_start();
 
 require_once("config.php");
-include_once("header.php");
+require_once("browse.php");
 
 // TODO: Extract $_POST variables, check they're OK, and attempt to login.
 // Notify user of success/failure and redirect/give navigation options.
@@ -14,23 +14,27 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 // Hash the password
-//$hashedPassword = hash('sha256', $password);
+$hashedPassword = hash('sha256', $password);
 
-$query = "SELECT * FROM users WHERE UserEmail = '$email'";
+$query = "SELECT * FROM users WHERE UserEmail = '$email' AND UserPassword = '$hashedPassword'";
 $data = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($data) == 1) {
     $row = mysqli_fetch_array($data);
-    if (hash('sha256', $password) === $row['UserPassword']) {
+    // if ($hashedPassword == $row['UserPassword']) {
         setcookie("account_type", $row['UserRole']);
         setcookie("username", $row['UserName']);
-        header("Location: header.php");
+        header("Location: browse.php");
         exit();
-    } else {
-        echo 'invalid password';
-    }
+    // } else {
+        // echo 'invalid password';
+    // }
  } else {
-    echo 'invalid Email and data is' . $data;
+    echo '<script>
+        alert("invalid email or password please try again.");
+        window.history.back();
+    </script>';
+    exit();
 }
 
 
