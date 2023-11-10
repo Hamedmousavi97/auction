@@ -1,4 +1,8 @@
 <?php
+// session_start();
+
+require_once("config.php");
+include_once("header.php");
 
 // TODO: Extract $_POST variables, check they're OK, and attempt to login.
 // Notify user of success/failure and redirect/give navigation options.
@@ -10,26 +14,31 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 // Hash the password
-$hashedPassword = hash('sha256', $password);
+//$hashedPassword = hash('sha256', $password);
 
-$query = "SELECT * FROM users WHERE UserEmail = '$email' AND UserPassword = '$hashedPassword'";
+$query = "SELECT * FROM users WHERE UserEmail = '$email'";
 $data = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($data) == 1) {
     $row = mysqli_fetch_array($data);
-    setcookie("account_type", $row['UserRole']);
-    setcookie("username", $row['UserName']);
-    header("Location: header.php");
-  exit();
-} else {
-    echo 'invalid email or password';
+    if (hash('sha256', $password) === $row['UserPassword']) {
+        setcookie("account_type", $row['UserRole']);
+        setcookie("username", $row['UserName']);
+        header("Location: header.php");
+        exit();
+    } else {
+        echo 'invalid password';
+    }
+ } else {
+    echo 'invalid Email and data is' . $data;
 }
 
 
-session_start();
-$_SESSION['logged_in'] = true;
-$_SESSION['username'] = "test";
-$_SESSION['account_type'] = "buyer";
+
+
+// $_SESSION['logged_in'] = true;
+// $_SESSION['username'] = "test";
+// $_SESSION['account_type'] = "buyer";
 
 //echo('<div class="text-center">You are now logged in! You will be redirected shortly.</div>');
 
