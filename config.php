@@ -22,7 +22,19 @@ if (mysqli_connect_errno()) {
 // Read and execute the SQL script
 // Using the multi_query() function allows us to execute multiple SQL statements at once
 // $sqlScript = file_get_contents('Auction.sql');
-// if (!$conn->multi_query($sqlScript)) {
-//     echo "Error executing SQL script: " . $conn->error;
-// }
+$sqlScript = file_get_contents('Auction.sql');
+if ($conn->multi_query($sqlScript)) {
+    do {
+       
+        if ($result = $conn->store_result()) {
+            while ($row = $result->fetch_row()) {
+          
+            }
+            $result->free();
+        }
+     
+    } while ($conn->more_results() && $conn->next_result());
+} else {
+    echo "Error executing SQL script: " . $conn->error;
+}
 ?>
