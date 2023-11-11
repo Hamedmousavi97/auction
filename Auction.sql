@@ -27,9 +27,9 @@ SET time_zone = "+00:00";
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
+-- DROP TABLE IF EXISTS `users`;
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `UserID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `UserName` varchar(255) DEFAULT NULL,
   `UserEmail` varchar(255) DEFAULT NULL,

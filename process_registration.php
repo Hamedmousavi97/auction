@@ -64,7 +64,31 @@ $sanitizedEmail = sanitizeEmail($email);
 
 // Check if the email is valid
 if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
+  $stmtUsername = $conn->prepare("SELECT UserName FROM users WHERE UserName = '$username'");
+  $stmtUsername->bind_param("s", $username);
+  $stmtUsername->execute();
+  $stmtUsername->store_result();
 
+  $stmtEmail = $conn->prepare("SELECT UserEmail FROM users WHERE UserEmail = '$email'");
+  $stmtEmail->bind_param("s", $sanitizedEmail);
+  $stmtEmail->execute();
+  $stmtEmail->store_result();
+
+  // Check for existing username
+  if ($stmtUsername->num_rows > 0) {
+      echo '<script>
+          alert("Username is already taken. Please choose another username.");
+          window.history.back();
+      </script>';
+
+  // Check for existing email
+  } elseif ($stmtEmail->num_rows > 0) {
+    echo '<script>
+        alert("Email is already taken. Please choose another email.");
+        window.history.back();
+    </script>';
+  } else {
+      // Proceed with user registration
     // Prepare the SQL statement
     $query = "INSERT INTO users (UserName, UserPassword, UserEmail, UserRole) VALUES ('$username', '$hashedPassword', '$email', '$accountType')";
     $stmt = $conn->prepare($query);
@@ -84,8 +108,11 @@ if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
              </script>';
     }
 
+}
     // Close the statement
     $stmt->close();
+    $stmtUsername->close();
+    $stmtEmail->close();
     mysqli_close($conn);
 } else {
 

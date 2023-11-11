@@ -29,6 +29,11 @@
         <label for="cat" class="sr-only">Search within:</label>
         <select class="form-control" id="cat">
           <option selected value="all">All categories</option>
+          // <?php
+          //foreach($allcategories as $categories) {
+            //echo "option value='" . $option['value']"'> . $option['label']";
+          //}
+          //?>
           <option value="fill">Fill me in</option>
           <option value="with">with options</option>
           <option value="populated">populated from a database?</option>
@@ -160,7 +165,7 @@
   $num_bids = 345345;
   $end_date = new DateTime('2020-11-02T00:00:00');
 
-  
+
 ?>
 
 </ul>
