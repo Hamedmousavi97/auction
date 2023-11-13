@@ -24,28 +24,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $auctionReservePrice = mysqli_real_escape_string($conn, $_POST['auctionReservePrice']);
     $auctionEndDate = mysqli_real_escape_string($conn, $_POST['auctionEndDate']);
 
-// Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page. 
-//if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
-    //echo "<div class='alert alert-danger'>All fields are required. Please try again.</div>";
-    //header("refresh:2; url=create_auction.php");
-    //exit();
-//}
+//Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page. 
+if (empty($auctionTitle) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
+    echo "<div class='alert alert-danger'>All fields are required. Please try again.</div>";
+    header("refresh:2; url=create_auction.php");
+    exit();
+}
 
 //Check if the reserve price is less than the start price. If it is, display a message and redirect to the add auction page. */
-
 if ($auctionReservePrice < $auctionStartPrice) {
     echo "<div class='alert alert-danger'>The reserve price cannot be less than the start price. Please try again.</div>";
     header("refresh:2; url=create_auction.php");
     exit();
 }
-// Check if the auction start price is an integer.
-//if (!filter_var($auctionStartPrice, FILTER_VALIDATE_INT)) {
-    //echo "<div class='alert alert-danger'>The auction start price must be an integer. Please try again.</div>";
-    //header("refresh:2; url=create_auction.php");
-    //exit();
-//}
 }
-
 /* TODO #3: If everything looks good, make the appropriate call to insert
             data into the database. */
 
@@ -64,7 +56,7 @@ $stmt->close();
 $conn->close();           
 
 // If all is successful, let user know.
-echo('<div class="text-center">Auction successfully created! <a href="FIXME">View your new listing.</a></div>');
+echo('<div class="text-center">Auction successfully created! <a href="mylistings.php">View your new listing.</a></div>');
 
 
 ?>
