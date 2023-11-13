@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $auctionStartPrice = mysqli_real_escape_string($conn, $_POST['auctionStartPrice']);
     $auctionReservePrice = mysqli_real_escape_string($conn, $_POST['auctionReservePrice']);
     $auctionEndDate = mysqli_real_escape_string($conn, $_POST['auctionEndDate']);
+    $username = $_COOKIE['username'];
 
 // Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page. 
 //if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
