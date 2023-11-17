@@ -17,15 +17,13 @@
   // TODO: Note: Auctions that have ended may pull a different set of data,
   //       like whether the auction ended in a sale or was cancelled due
   //       to lack of high-enough bids. Or maybe not.
-  
+
   // Calculate time to auction end:
   $now = new DateTime();
-  
   if ($now < $end_time) {
     $time_to_end = date_diff($now, $end_time);
     $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
   }
-  
   // TODO: If the user has a session, use it to make a query to the database
   //       to determine if the user is already watching this item.
   //       For now, this is hardcoded.
@@ -73,7 +71,7 @@
      This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
      <!-- TODO: Print the result of the auction here? -->
 <?php else: ?>
-     Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>  
+     Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>
     <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
 
     <!-- Bidding form -->
@@ -88,7 +86,7 @@
     </form>
 <?php endif ?>
 
-  
+
   </div> <!-- End of right col with bidding info -->
 
 </div> <!-- End of row #2 -->
@@ -98,7 +96,7 @@
 <?php include_once("footer.php")?>
 
 
-<script> 
+<script>
 // JavaScript functions: addToWatchlist and removeFromWatchlist.
 
 function addToWatchlist(button) {
@@ -110,12 +108,12 @@ function addToWatchlist(button) {
     type: "POST",
     data: {functionname: 'add_to_watchlist', arguments: [<?php echo($item_id);?>]},
 
-    success: 
+    success:
       function (obj, textstatus) {
         // Callback function for when call is successful and returns obj
         console.log("Success");
         var objT = obj.trim();
- 
+
         if (objT == "success") {
           $("#watch_nowatch").hide();
           $("#watch_watching").show();
@@ -142,12 +140,12 @@ function removeFromWatchlist(button) {
     type: "POST",
     data: {functionname: 'remove_from_watchlist', arguments: [<?php echo($item_id);?>]},
 
-    success: 
+    success:
       function (obj, textstatus) {
         // Callback function for when call is successful and returns obj
         console.log("Success");
         var objT = obj.trim();
- 
+
         if (objT == "success") {
           $("#watch_watching").hide();
           $("#watch_nowatch").show();

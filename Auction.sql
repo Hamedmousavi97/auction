@@ -59,10 +59,10 @@ CREATE TABLE IF NOT EXISTS `payments` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `UserID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `UserName` varchar(255) DEFAULT NULL,
-  `UserEmail` varchar(255) DEFAULT NULL,
+  `UserName` varchar(255) DEFAULT NOT NULL,
+  `UserEmail` varchar(255) DEFAULT NOT NULL,
   `UserRole` varchar(255) DEFAULT NULL,
-  `UserPassword` varchar(255) DEFAULT NULL,
+  `UserPassword` varchar(255) DEFAULT NOT NULL,
   `Address1` varchar(255) DEFAULT NULL,
   `Address2` varchar(255) DEFAULT NULL,
   `City` varchar(255) DEFAULT NULL,

@@ -35,10 +35,10 @@ if (mysqli_num_rows($data) == 1) {
     $_SESSION['logged_in'] = true;
     $_SESSION['username'] = $row['UserName'];
     $_SESSION['account_type'] = $row['UserRole'];
-    
+
     // Redirect to browse.php
     header("Location: browse.php");
-    
+
     // Close the connection
     exit();
  } else {
@@ -49,7 +49,7 @@ if (mysqli_num_rows($data) == 1) {
             window.history.back();
         </script>';
 
-    // Close the connection    
+    // Close the connection
     exit();
 }
 
