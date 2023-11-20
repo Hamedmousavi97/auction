@@ -26,20 +26,34 @@
     </div>
     <div class="col-md-3 pr-0">
       <div class="form-group">
+          <?php
+          /* //foreach($allcategories as $categories) {
+            //echo "option value='" . $option['value']"'> . $option['label']";
+
+            // Fetch categories form the database
+            $query = "SELECT *FROM categories";
+            $result = mysqli_query($conn, $query);
+            $row = mysqli_num_rows($result);
+            $row = var_dump($result);
+
+          // Loop through the result set and generate options
+          // Loop through the result set and generate options
+          if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_array($result)) {
+                echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
+            }
+          } else {
+            echo "<option value=''>No categories found</option>";
+          }
+          mysqli_close($conn); */
+
+          ?>
         <label for="cat" class="sr-only">Search within:</label>
         <select class="form-control" id="cat">
           <option selected value="all">All categories</option>
-          // <?php
-          //foreach($allcategories as $categories) {
-            //echo "option value='" . $option['value']"'> . $option['label']";
-          //}
-          //?>
-          <option value="fill">Fill me in</option>
-          <option value="with">with options</option>
-          <option value="populated">populated from a database?</option>
         </select>
       </div>
-    </div>
+      </div>
     <div class="col-md-3 pr-0">
       <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>

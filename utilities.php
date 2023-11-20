@@ -32,7 +32,7 @@ function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
   else {
     $desc_shortened = $desc;
   }
-  
+
   // Fix language of bid vs. bids
   if ($num_bids == 1) {
     $bid = ' bid';
@@ -40,7 +40,7 @@ function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
   else {
     $bid = ' bids';
   }
-  
+
   // Calculate time to auction end
   $now = new DateTime();
   if ($now > $end_time) {
@@ -51,7 +51,7 @@ function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
     $time_to_end = date_diff($now, $end_time);
     $time_remaining = display_time_remaining($time_to_end) . ' remaining';
   }
-  
+
   // Print HTML
   echo('
     <li class="list-group-item d-flex justify-content-between">
@@ -59,6 +59,22 @@ function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
     <div class="text-center text-nowrap"><span style="font-size: 1.5em">£' . number_format($price, 2) . '</span><br/>' . $num_bids . $bid . '<br/>' . $time_remaining . '</div>
   </li>'
   );
+}
+
+function getCategories($conn) {
+  $categories = array();
+
+  $query = "SELECT * FROM categories";
+  $result = mysqli_query($conn, $query);
+
+  if ($result && mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $categories[] = $row;
+      }
+      mysqli_free_result($result);
+  }
+
+  return $categories;
 }
 
 ?>

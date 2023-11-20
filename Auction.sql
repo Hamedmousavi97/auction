@@ -75,6 +75,34 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 
+
+-- --------------------------------------------------------
+-- Table structure for table `categories`
+--
+
+CREATE TABLE IF NOT EXISTS `categories` (
+  `categoryID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `categoryName` varchar(255) NOT NULL,
+  `categoryDescription` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- insert initial data into the database
+--
+INSERT INTO `categories` (`categoryName`, `categoryDescription`) VALUES
+('Sports', 'Items related to sports'),
+('Fashion', 'Clothing and accessories'),
+('Antique', 'Vintage and collectible items');
+
+
+--
+-- Dumping data for table `categories`
+--
+
+
+
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
