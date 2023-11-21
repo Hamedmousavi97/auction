@@ -77,22 +77,32 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 
 -- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
+-- Create the 'categories' table
 CREATE TABLE IF NOT EXISTS `categories` (
-  `categoryID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `categoryID` int(11) NOT NULL AUTO_INCREMENT,
   `categoryName` varchar(255) NOT NULL,
-  `categoryDescription` varchar(255) NOT NULL
+  `categoryDescription` varchar(255) NOT NULL,
+  PRIMARY KEY (`categoryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- insert initial data into the database
---
-INSERT INTO `categories` (`categoryName`, `categoryDescription`) VALUES
-('Sports', 'Items related to sports'),
-('Fashion', 'Clothing and accessories'),
-('Antique', 'Vintage and collectible items');
+-- Insert initial data into the 'categories' table
+INSERT INTO `categories` (`CategoryID`, `categoryName`, `categoryDescription`) VALUES
+('10', 'Sports', 'Items related to sports'),
+('11', 'Fashion', 'Clothing and accessories'),
+('12', 'Antique', 'Vintage and collectible items'),
+('13', 'Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
+('14', 'Electronics', 'Electronic equipment, such as televisions, stereos, and computers'),
+('15', 'Toys', 'Items for children to play with'),
+('16', 'Home', 'Items for the home'),
+('17', 'Other', 'Items that do not fit into any other category');
+
+
+
 
 
 --

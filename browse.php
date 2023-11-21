@@ -27,33 +27,58 @@
     <div class="col-md-3 pr-0">
       <div class="form-group">
           <?php
-          /* //foreach($allcategories as $categories) {
+            //foreach($allcategories as $categories) {
             //echo "option value='" . $option['value']"'> . $option['label']";
 
+            // Start the session
+            session_start();
+
+            // Connect to database
+            require_once("config.php");
+
+
+            $db_server = "localhost";
+            $db_username = "root";
+            $db_password = "root";
+            $db_name = "Auction";
+
+            //create connection to database
+            $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
+            $conn->set_charset("utf8");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+
+
             // Fetch categories form the database
-            $query = "SELECT *FROM categories";
+            $query = "SELECT * FROM categories";
             $result = mysqli_query($conn, $query);
             $row = mysqli_num_rows($result);
-            $row = var_dump($result);
 
-          // Loop through the result set and generate options
-          // Loop through the result set and generate options
-          if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_array($result)) {
-                echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
-            }
+            // Check if there are rows in the result set
+            echo '<label for="cat" class="sr-only">Search within:</label>';
+            echo '<select class="form-control" id="cat">';
+            echo '<option selected value="all">All categories</option>';
+
+            // Loop through the result set and generate options
+            if ($result && mysqli_num_rows($result) > 0) {
+              while ($row = mysqli_fetch_array($result)) {
+                  echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
+              }
           } else {
-            echo "<option value=''>No categories found</option>";
+              echo "<option value=''>No categories found</option>";
           }
-          mysqli_close($conn); */
 
+          echo '</select>';
+
+          // Close the database connection
+          mysqli_close($conn);
           ?>
-        <label for="cat" class="sr-only">Search within:</label>
-        <select class="form-control" id="cat">
-          <option selected value="all">All categories</option>
-        </select>
       </div>
-      </div>
+    </div>
     <div class="col-md-3 pr-0">
       <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>
@@ -166,7 +191,7 @@
   $item_id = "5";
   $title = "Winston Nagelmakers";
   $description = "Swiss man - 23, Healthy, High IQ, 6'2, Brown Hair, Blue Eyes, 8/10";
-  $current_price = 125000;
+  $current_price = 1250000;
   $num_bids = 0;
   $end_date = new DateTime('2020-11-11T00:00:00');
 
