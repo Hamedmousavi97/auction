@@ -1,10 +1,7 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
-
 <div class="container">
-
 <h2 class="my-3">Browse listings</h2>
-
 <div id="searchSpecs">
 <!-- When this form is submitted, this PHP page is what processes it.
      Search/sort specs are passed to this page through parameters in the URL
@@ -27,58 +24,54 @@
     <div class="col-md-3 pr-0">
       <div class="form-group">
           <?php
-            //foreach($allcategories as $categories) {
-            //echo "option value='" . $option['value']"'> . $option['label']";
-
-            // Start the session
-            session_start();
-
-            // Connect to database
-            require_once("config.php");
+          require_once("config.php");
 
 
-            $db_server = "localhost";
-            $db_username = "root";
-            $db_password = "root";
-            $db_name = "Auction";
+          $db_server = "localhost";
+          $db_username = "root";
+          $db_password = "root";
+          $db_name = "Auction";
 
-            //create connection to database
-            $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
-            $conn->set_charset("utf8");
+          //create connection to database
+          $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
+          $conn->set_charset("utf8");
 
-            // Check connection
-            if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-
-
-            // Fetch categories form the database
-            $query = "SELECT * FROM categories";
-            $result = mysqli_query($conn, $query);
-            $row = mysqli_num_rows($result);
-
-            // Check if there are rows in the result set
-            echo '<label for="cat" class="sr-only">Search within:</label>';
-            echo '<select class="form-control" id="cat">';
-            echo '<option selected value="all">All categories</option>';
-
-            // Loop through the result set and generate options
-            if ($result && mysqli_num_rows($result) > 0) {
-              while ($row = mysqli_fetch_array($result)) {
-                  echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
-              }
-          } else {
-              echo "<option value=''>No categories found</option>";
+          // Check connection
+          if (!$conn) {
+              die("Connection failed: " . mysqli_connect_error());
           }
 
-          echo '</select>';
+          $sql = "SELECT * FROM categories";
+          $result = mysqli_query($conn, $sql);
+          $row = mysqli_num_rows($result);
+           // Check if there are rows in the result set
+           echo '<label for="cat" class="sr-only">Search within:</label>';
+           echo '<select class="form-control" id="cat">';
+           echo '<option selected value="all">All categories</option>';
 
-          // Close the database connection
-          mysqli_close($conn);
+           // Loop through the result set and generate options
+           if ($result && mysqli_num_rows($result) > 0) {
+             while ($row = mysqli_fetch_array($result)) {
+                 echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
+             }
+
+            }
+
           ?>
+        <label for="cat" class="sr-only">Search within:</label>
+        <select class="form-control" id="cat">
+           <?php
+          //foreach($allcategories as $categories) {
+            //echo "option value='" . $option['value']"'> . $option['label']";
+          //}
+          //?>
+          <!-- <option value="fill">Fill me in</option>
+          <option value="with">with options</option>
+          <option value="populated">populated from a database?</option> -->
+        </select>
       </div>
     </div>
+      </div>
     <div class="col-md-3 pr-0">
       <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>
@@ -95,10 +88,7 @@
   </div>
 </form>
 </div> <!-- end search specs bar -->
-
-
 </div>
-
 <?php
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
@@ -107,114 +97,87 @@
   else {
     $keyword = $_GET['keyword'];
   }
-
   if (!isset($_GET['cat'])) {
     // TODO: Define behavior if a category has not been specified.
   }
   else {
     $category = $_GET['cat'];
   }
-
   if (!isset($_GET['order_by'])) {
     // TODO: Define behavior if an order_by value has not been specified.
   }
   else {
     $ordering = $_GET['order_by'];
   }
-
   if (!isset($_GET['page'])) {
     $curr_page = 1;
   }
   else {
     $curr_page = $_GET['page'];
   }
-
   /* TODO: Use above values to construct a query. Use this query to
      retrieve data from the database. (If there is no form data entered,
      decide on appropriate default value/default query to make. */
-
   /* For the purposes of pagination, it would also be helpful to know the
      total number of results that satisfy the above query */
   $num_results = 96; // TODO: Calculate me for real
   $results_per_page = 10;
   $max_page = ceil($num_results / $results_per_page);
 ?>
-
 <div class="container mt-5">
-
 <!-- TODO: If result set is empty, print an informative message. Otherwise... -->
-
 <ul class="list-group">
-
 <!-- TODO: Use a while loop to print a list item for each auction listing
      retrieved from the query -->
-
 <?php
   // Demonstration of what listings will look like using dummy data.
-
   $item_id = "6";
   $title = "UCL Tshirt";
   $description = "Black UCL Tshirt";
   $current_price = 25;
   $num_bids = 3;
   $end_date = new DateTime('2020-11-02T00:00:00');
-
-
   // This uses a function defined in utilities.php
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-
   $item_id = "1";
   $title = "UCL Hoodie";
   $description = "Black UCL Hoodie";
   $current_price = 25;
   $num_bids = 30;
   $end_date = new DateTime('2020-11-02T00:00:00');
-
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-
   $item_id = "2";
   $title = "Roger Federer Tennis Racket";
   $description = "Roger Federer used this Racket during wimbledon 2009";
   $current_price = 1000;
   $num_bids = 1;
   $end_date = new DateTime('2020-09-16T11:00:00');
-
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-
   $item_id = "3";
   $title = "Air Force 1 Shoes all-White";
   $description = "All-White Air Force 1 shoes";
   $current_price = 53;
   $num_bids = 123123;
   $end_date = new DateTime('2020-11-02T00:00:00');
-
   $item_id = "5";
   $title = "Winston Nagelmakers";
   $description = "Swiss man - 23, Healthy, High IQ, 6'2, Brown Hair, Blue Eyes, 8/10";
-  $current_price = 1250000;
+  $current_price = 125000;
   $num_bids = 0;
   $end_date = new DateTime('2020-11-11T00:00:00');
-
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-
   $item_id = "4";
   $title = "British Flag";
   $description = "10 by 10 inch Flag";
   $current_price = 5;
   $num_bids = 345345;
   $end_date = new DateTime('2020-11-02T00:00:00');
-
-
 ?>
-
 </ul>
-
 <!-- Pagination for results listings -->
 <nav aria-label="Search results pages" class="mt-5">
   <ul class="pagination justify-content-center">
-
 <?php
-
   // Copy any currently-set GET variables to the URL.
   $querystring = "";
   foreach ($_GET as $key => $value) {
@@ -222,12 +185,10 @@
       $querystring .= "$key=$value&amp;";
     }
   }
-
   $high_page_boost = max(3 - $curr_page, 0);
   $low_page_boost = max(2 - ($max_page - $curr_page), 0);
   $low_page = max(1, $curr_page - 2 - $low_page_boost);
   $high_page = min($max_page, $curr_page + 2 + $high_page_boost);
-
   if ($curr_page != 1) {
     echo('
     <li class="page-item">
@@ -237,7 +198,6 @@
       </a>
     </li>');
   }
-
   for ($i = $low_page; $i <= $high_page; $i++) {
     if ($i == $curr_page) {
       // Highlight the link
@@ -249,13 +209,11 @@
       echo('
     <li class="page-item">');
     }
-
     // Do this in any case
     echo('
       <a class="page-link" href="browse.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
     </li>');
   }
-
   if ($curr_page != $max_page) {
     echo('
     <li class="page-item">
@@ -266,13 +224,7 @@
     </li>');
   }
 ?>
-
   </ul>
 </nav>
-
-
 </div>
-
-
-
 <?php include_once("footer.php")?>

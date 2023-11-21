@@ -2,7 +2,6 @@
 <?php
 
 //start the session
-session_start();
 
 //connect to database
 $db_server = "localhost";

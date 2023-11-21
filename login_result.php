@@ -20,6 +20,8 @@ $query = "SELECT * FROM users WHERE UserEmail = '$email' AND UserPassword = '$ha
 // Execute the query
 $data = mysqli_query($conn, $query);
 
+
+
 // Check if the query returns a result
 if (mysqli_num_rows($data) == 1) {
 
