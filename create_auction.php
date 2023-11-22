@@ -45,10 +45,26 @@
           <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
           <div class="col-sm-10">
             <select class="form-control" id="auctionCategory" name="auctionCategory">
-              <option selected>Choose...</option>
-              <option value="fill">bike</option>
-              <option value="with">cars</option>
-              <option value="populated">home</option>
+              <!-- <option selected>Choose...</option>
+              <option value="bike">bike</option>
+              <option value="cars">cars</option>
+              <option value="home">home</option> -->
+              <?php
+                require_once("config.php");
+                $sql = "SELECT * FROM categories";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_num_rows($result);
+
+                // Check if there are rows in the result set
+                if ($result && mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_array($result)) {
+                    echo "<option value='" . $row['categoryName'] . "'>" . $row['categoryDescription'] . "</option>";
+                  }
+                } else {
+                  echo "<option value=''>No categories found</option>";
+                }
+
+              ?>
             </select>
             <small id="categoryHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Select a category for this item.</small>
           </div>
