@@ -38,8 +38,14 @@ if (mysqli_num_rows($data) == 1) {
     $_SESSION['username'] = $row['UserName'];
     $_SESSION['account_type'] = $row['UserRole'];
 
+    // show success message
+    echo '<script>
+            alert("Logged in successfully!");
+            window.history.back();
+        </script>';
     // Redirect to browse.php
     header("Location: browse.php");
+
 
     // Close the connection
     exit();

@@ -1,19 +1,20 @@
-<?php 
+<?php
 
 /* TODO #1: Connect to MySQL database (perhaps by requiring a file that
             already does this). */
 require_once("config.php");
-include_once("header.php")?>
+include_once("header.php");?>
 
 <div class="container my-5">
 
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // If form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") 
+if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     /* TODO #2: Extract form data into variables. Because the form was a 'post'
-                form, its data can be accessed via $POST['auctionTitle'], 
+                form, its data can be accessed via $POST['auctionTitle'],
                 $POST['auctionDetails'], etc. Perform checking on the data to
                 make sure it can be inserted into the database. If there is an
                 issue, give some semi-helpful feedback to user. */
@@ -23,9 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $auctionStartPrice = mysqli_real_escape_string($conn, $_POST['auctionStartPrice']);
     $auctionReservePrice = mysqli_real_escape_string($conn, $_POST['auctionReservePrice']);
     $auctionEndDate = mysqli_real_escape_string($conn, $_POST['auctionEndDate']);
-    $username = $_COOKIE['username'];
+    $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : null;
 
-// Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page. 
+
+// Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page.
 //if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
     //echo "<div class='alert alert-danger'>All fields are required. Please try again.</div>";
     //header("refresh:2; url=create_auction.php");
@@ -62,11 +64,12 @@ if ($stmt->execute()) {
 
 // close statement and connection
 $stmt->close();
-$conn->close();           
+$conn->close();
 
 // If all is successful, let user know.
-echo('<div class="text-center">Auction successfully created! <a href="FIXME">View your new listing.</a></div>');
-
+echo('<div class="text-center">Auction successfully created! <a href="mylistings.php">View your new listing.</a></div>');
+header("refresh:2000; url=browse.php");
+exit;
 
 ?>
 

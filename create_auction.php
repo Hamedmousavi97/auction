@@ -1,8 +1,9 @@
-<?php 
+<?php
   require_once("config.php");
   include_once("header.php")?>
 
-<?php 
+
+<?php
 /* (Uncomment this block to redirect people without selling privileges away from this page)
   // If user is not logged in or not a seller, they should not be able to
   // use this page.
@@ -10,6 +11,7 @@
     header('Location: browse.php');
   }
 */
+
 ?>
 
 <div class="container">

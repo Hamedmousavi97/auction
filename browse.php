@@ -1,77 +1,82 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
+
+
+
 <div class="container">
 <h2 class="my-3">Browse listings</h2>
 <div id="searchSpecs">
 <!-- When this form is submitted, this PHP page is what processes it.
      Search/sort specs are passed to this page through parameters in the URL
      (GET method of passing data to a page). -->
-<form method="get" action="browse.php">
-  <div class="row">
-    <div class="col-md-5 pr-0">
-      <div class="form-group">
-        <label for="keyword" class="sr-only">Search keyword:</label>
-	    <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text bg-transparent pr-0 text-muted">
-              <i class="fa fa-search"></i>
-            </span>
-          </div>
-          <input type="text" class="form-control border-left-0" id="keyword" placeholder="Search for anything">
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3 pr-0">
-      <div class="form-group">
-          <?php
-          require_once("config.php");
+     <form method="get" action="browse.php">
+            <div class="row">
+                <div class="col-md-5 pr-0">
+                    <div class="form-group">
+                        <label for="keyword" class="sr-only">Search keyword:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-transparent pr-0 text-muted">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control border-left-0" id="keyword" placeholder="Search for anything">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 pr-0">
+                    <div class="form-group">
+                        <?php
+                        require_once("config.php");
 
 
-          $db_server = "localhost";
-          $db_username = "root";
-          $db_password = "root";
-          $db_name = "Auction";
 
-          //create connection to database
-          $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
-          $conn->set_charset("utf8");
+                        $db_server = "localhost";
+                        $db_username = "root";
+                        $db_password = "root";
+                        $db_name = "Auction";
 
-          // Check connection
-          if (!$conn) {
-              die("Connection failed: " . mysqli_connect_error());
-          }
+                        //create connection to database
+                        $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
+                        $conn->set_charset("utf8");
 
-          $sql = "SELECT * FROM categories";
-          $result = mysqli_query($conn, $sql);
-          $row = mysqli_num_rows($result);
-           // Check if there are rows in the result set
-           echo '<label for="cat" class="sr-only">Search within:</label>';
-           echo '<select class="form-control" id="cat">';
-           echo '<option selected value="all">All categories</option>';
+                        // Check connection
+                        if (!$conn) {
+                            die("Connection failed: " . mysqli_connect_error());
+                        }
 
-           // Loop through the result set and generate options
-           if ($result && mysqli_num_rows($result) > 0) {
-             while ($row = mysqli_fetch_array($result)) {
-                 echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
-             }
+                        $sql = "SELECT * FROM categories";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_num_rows($result);
+                        // Check if there are rows in the result set
+                        echo '<label for="cat" class="sr-only">Search within:</label>';
+                        echo '<select class="form-control" id="cat">';
+                        echo '<option selected value="all">All categories</option>';
 
-            }
+                        // Loop through the result set and generate options
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_array($result)) {
+                              echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
+                            }
 
-          ?>
-        <label for="cat" class="sr-only">Search within:</label>
-        <select class="form-control" id="cat">
-           <?php
-          //foreach($allcategories as $categories) {
-            //echo "option value='" . $option['value']"'> . $option['label']";
-          //}
-          //?>
-          <!-- <option value="fill">Fill me in</option>
-          <option value="with">with options</option>
-          <option value="populated">populated from a database?</option> -->
-        </select>
-      </div>
-    </div>
-      </div>
+                        }
+                        ?>
+                        <label for="cat" class="sr-only">Search within:</label>
+                        <select class="form-control" id="cat">
+                            <?php
+                            // Additional category options can be added here
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <!-- ... (existing form elements) ... -->
+            </div>
+            <div class="col-md-1 px-0">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div> <!-- end search specs bar -->
+
     <div class="col-md-3 pr-0">
       <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>
@@ -125,11 +130,20 @@
   $max_page = ceil($num_results / $results_per_page);
 ?>
 <div class="container mt-5">
-<!-- TODO: If result set is empty, print an informative message. Otherwise... -->
-<ul class="list-group">
-<!-- TODO: Use a while loop to print a list item for each auction listing
-     retrieved from the query -->
-<?php
+    <ul class="list-group">
+      <?php
+      //display the newly created auctions
+
+      $newAuctionsQuery = "SELECT * FROM auctions ORDER BY auctionID DESC LIMIT 10";
+        $newAuctionsResult = mysqli_query($conn, $newAuctionsQuery);
+
+        if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
+            while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
+                print_listing_li($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate']);
+            }
+        }
+
+
   // Demonstration of what listings will look like using dummy data.
   $item_id = "6";
   $title = "UCL Tshirt";
