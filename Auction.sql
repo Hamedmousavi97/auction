@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `auctions` (
+  `UserID` int(11) NOT NULL,
   `auctionID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `auctionTitle` varchar(11) NOT NULL,
   `auctionDetails` text NOT NULL,
@@ -33,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `auctions` (
   `auctionStartPrice` int(255) NOT NULL,
   `auctionReservePrice` int(255) NOT NULL,
   `auctionEndDate` datetime NOT NULL,
+  FOREIGN KEY (UserID) REFERENCES users(UserID),
   `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -60,10 +62,10 @@ CREATE TABLE IF NOT EXISTS `payments` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `UserID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `UserName` varchar(255) DEFAULT NOT NULL,
-  `UserEmail` varchar(255) DEFAULT NOT NULL,
+  `UserName` varchar(255) DEFAULT NULL,
+  `UserEmail` varchar(255) DEFAULT NULL,
   `UserRole` varchar(255) DEFAULT NULL,
-  `UserPassword` varchar(255) DEFAULT NOT NULL,
+  `UserPassword` varchar(255) DEFAULT NULL,
   `Address1` varchar(255) DEFAULT NULL,
   `Address2` varchar(255) DEFAULT NULL,
   `City` varchar(255) DEFAULT NULL,
@@ -93,14 +95,14 @@ CREATE TABLE IF NOT EXISTS `categories` (
 
 -- Insert initial data into the 'categories' table
 INSERT INTO `categories` (`CategoryID`, `categoryName`, `categoryDescription`) VALUES
-('10', 'Sports', 'Items related to sports'),
-('11', 'Fashion', 'Clothing and accessories'),
-('12', 'Antique', 'Vintage and collectible items'),
-('13', 'Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
-('14', 'Electronics', 'Electronic equipment, such as televisions, stereos, and computers'),
-('15', 'Toys', 'Items for children to play with'),
-('16', 'Home', 'Items for the home'),
-('17', 'Other', 'Items that do not fit into any other category');
+('20', 'Sports', 'Items related to sports'),
+('21', 'Fashion', 'Clothing and accessories'),
+('22', 'Antique', 'Vintage and collectible items'),
+('23', 'Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
+('24', 'Electronics', 'Electronic equipment, such as televisions, stereos, and computers'),
+('25', 'Toys', 'Items for children to play with'),
+('26', 'Home', 'Items for the home'),
+('27', 'Other', 'Items that do not fit into any other category');
 
 
 
