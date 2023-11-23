@@ -1,18 +1,26 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
+<?php require_once("config.php");?>
 
 <?php
   // Get info from the URL:
   $item_id = $_GET['item_id'];
 
   // TODO: Use item_id to make a query to the database.
-
-  // DELETEME: For now, using placeholder data.
-  $title = "Placeholder title";
-  $description = "Description blah blah blah";
-  $current_price = 30.50;
-  $num_bids = 1;
-  $end_time = new DateTime('2020-11-02T00:00:00');
+  $sql = "SELECT * FROM auctions WHERE auctionID = '$item_id'";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_array($result);
+  if (!$result) {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+  } else {
+    $title = $row['auctionTitle'];
+    $description = $row['auctionDetails'];
+    $startingPrice = $row['auctionStartPrice'];
+    $num_bids = $row['numBids'];
+    $end_time = new DateTime($row['auctionEndDate']);
+    $current_price = $row['auctionStartPrice'];
+    $auctionEndDate = $row['auctionEndDate'];
+  }
 
   // TODO: Note: Auctions that have ended may pull a different set of data,
   //       like whether the auction ended in a sale or was cancelled due
@@ -21,13 +29,14 @@
   // Calculate time to auction end:
   $now = new DateTime();
   if ($now < $end_time) {
-    $time_to_end = date_diff($now, $end_time);
-    $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
+      $time_to_end = $now->diff($end_time);
+      $time_remaining = display_time_remaining($time_to_end) ;
   }
+  
   // TODO: If the user has a session, use it to make a query to the database
   //       to determine if the user is already watching this item.
   //       For now, this is hardcoded.
-  $has_session = true;
+  $has_session = $_SESSION['username'];
   $watching = false;
 ?>
 
@@ -70,8 +79,9 @@
 <?php if ($now > $end_time): ?>
      This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
      <!-- TODO: Print the result of the auction here? -->
+
 <?php else: ?>
-     Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>
+     Auction ends in <?php echo(date_format($end_time, 'j M H:i') . ' time remaining: ' . $time_remaining) ?></p>
     <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
 
     <!-- Bidding form -->
@@ -80,7 +90,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text">£</span>
         </div>
-	    <input type="number" class="form-control" id="bid">
+	    <input type="number" class="form-control" id="bid" name="bid">
       </div>
       <button type="submit" class="btn btn-primary form-control">Place bid</button>
     </form>
