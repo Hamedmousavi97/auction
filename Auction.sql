@@ -26,17 +26,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `auctions` (
-  `UserID` int(11) NOT NULL,
   `auctionID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `auctionTitle` varchar(11) NOT NULL,
+  `NumBid` int(11) DEFAULT 0,
+  `auctionCurrentPrice` int(255) NOT NULL,
+  `UserName` varchar(255) NOT NULL,
+  `auctionTitle` varchar(255) NOT NULL,
   `auctionDetails` text NOT NULL,
   `auctionCategory` text NOT NULL,
   `auctionStartPrice` int(255) NOT NULL,
   `auctionReservePrice` int(255) NOT NULL,
   `auctionEndDate` datetime NOT NULL,
-  FOREIGN KEY (UserID) REFERENCES users(UserID),
-  `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`UserName`) REFERENCES `users` (`UserName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 -- --------------------------------------------------------
 
@@ -93,16 +97,16 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`categoryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Insert initial data into the 'categories' table
-INSERT INTO `categories` (`CategoryID`, `categoryName`, `categoryDescription`) VALUES
-('20', 'Sports', 'Items related to sports'),
-('21', 'Fashion', 'Clothing and accessories'),
-('22', 'Antique', 'Vintage and collectible items'),
-('23', 'Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
-('24', 'Electronics', 'Electronic equipment, such as televisions, stereos, and computers'),
-('25', 'Toys', 'Items for children to play with'),
-('26', 'Home', 'Items for the home'),
-('27', 'Other', 'Items that do not fit into any other category');
+-- -- Insert initial data into the 'categories' table
+-- INSERT IGNORE INTO `categories` (`categoryName`, `categoryDescription`) VALUES
+-- ('Sports', 'Items related to sports'),
+-- ('Fashion', 'Clothing and accessories'),
+-- ('Antique', 'Vintage and collectible items'),
+-- ('Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
+-- ('Electronics', 'Electronic equipment, such as televisions, stereos, and computers'),
+-- ('Toys', 'Items for children to play with'),
+-- ('Home', 'Items for the home'),
+-- ('Other', 'Items that do not fit into any other category');
 
 
 

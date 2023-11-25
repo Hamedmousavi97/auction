@@ -1,6 +1,8 @@
 <?php
   require_once("config.php");
-  include_once("header.php")?>
+  include_once("header.php")
+
+  ?>
 
 
 <?php
@@ -29,6 +31,7 @@
       extremely low-priority / only done after all database functions are
       complete. -->
       <form method="post" action="create_auction_result.php">
+      <input type="hidden" name="username" value="<?php echo $_SESSION['username']; ?>">
         <div class="form-group row">
           <label for="auctionTitle" class="col-sm-2 col-form-label text-right">Title of auction</label>
           <div class="col-sm-10">

@@ -61,39 +61,35 @@
 
                         }
                         ?>
-                        <label for="cat" class="sr-only">Search within:</label>
-                        <select class="form-control" id="cat">
-                            <?php
-                            // Additional category options can be added here
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <!-- ... (existing form elements) ... -->
-            </div>
-            <div class="col-md-1 px-0">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-    </div> <!-- end search specs bar -->
+                        <div class="col-md-3 pr-0">
+    <div class="form-group">
+        <label for="cat" class="sr-only">Search within:</label>
+        <select class="form-control" id="cat">
+            <?php
+            // Additional category options can be added here
+            ?>
+        </select>
+    </div>
+</div>
+<!-- ... (existing form elements) ... -->
 
-    <div class="col-md-3 pr-0">
-      <div class="form-inline">
+<div class="col-md-3 pr-0">
+    <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>
         <select class="form-control" id="order_by">
-          <option selected value="pricelow">Price (low to high)</option>
-          <option value="pricehigh">Price (high to low)</option>
-          <option value="date">Soonest expiry</option>
+            <option selected value="pricelow">Price (low to high)</option>
+            <option value="pricehigh">Price (high to low)</option>
+            <option value="date">Soonest expiry</option>
         </select>
-      </div>
     </div>
-    <div class="col-md-1 px-0">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-  </div>
-</form>
-</div> <!-- end search specs bar -->
 </div>
+<div class="col-md-1 px-0">
+    <button type="submit" class="btn btn-primary">Search</button>
+</div>
+
+
+    <div class="container mt-5">
+        <ul class="list-group">
 <?php
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
@@ -131,62 +127,25 @@
 ?>
 <div class="container mt-5">
     <ul class="list-group">
-      <?php
-      //display the newly created auctions
-
-      $newAuctionsQuery = "SELECT * FROM auctions ORDER BY auctionID DESC LIMIT 10";
+        <?php
+        // Display the newly created auctions
+        $newAuctionsQuery = "SELECT * FROM auctions ORDER BY auctionID DESC LIMIT 10";
         $newAuctionsResult = mysqli_query($conn, $newAuctionsQuery);
 
         if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
             while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
-                print_listing_li($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate']);
+              echo '<li class="list-group-item">';
+              echo '<strong>' . $row['UserName'] . '</strong>';
+              echo '<br>';
+              print_listing_li($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate'], $row['UserName'], $row['auctionCategory'], $row['auctionReservePrice']);
+              echo '</li>';
+              echo '<br>';
             }
         }
+        ?>
+    </ul>
+</div>
 
-
-  // Demonstration of what listings will look like using dummy data.
-  $item_id = "6";
-  $title = "UCL Tshirt";
-  $description = "Black UCL Tshirt";
-  $current_price = 25;
-  $num_bids = 3;
-  $end_date = new DateTime('2020-11-02T00:00:00');
-  // This uses a function defined in utilities.php
-  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-  $item_id = "1";
-  $title = "UCL Hoodie";
-  $description = "Black UCL Hoodie";
-  $current_price = 25;
-  $num_bids = 30;
-  $end_date = new DateTime('2020-11-02T00:00:00');
-  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-  $item_id = "2";
-  $title = "Roger Federer Tennis Racket";
-  $description = "Roger Federer used this Racket during wimbledon 2009";
-  $current_price = 1000;
-  $num_bids = 1;
-  $end_date = new DateTime('2020-09-16T11:00:00');
-  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-  $item_id = "3";
-  $title = "Air Force 1 Shoes all-White";
-  $description = "All-White Air Force 1 shoes";
-  $current_price = 53;
-  $num_bids = 123123;
-  $end_date = new DateTime('2020-11-02T00:00:00');
-  $item_id = "5";
-  $title = "Winston Nagelmakers";
-  $description = "Swiss man - 23, Healthy, High IQ, 6'2, Brown Hair, Blue Eyes, 8/10";
-  $current_price = 125000;
-  $num_bids = 0;
-  $end_date = new DateTime('2020-11-11T00:00:00');
-  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-  $item_id = "4";
-  $title = "British Flag";
-  $description = "10 by 10 inch Flag";
-  $current_price = 5;
-  $num_bids = 345345;
-  $end_date = new DateTime('2020-11-02T00:00:00');
-?>
 </ul>
 <!-- Pagination for results listings -->
 <nav aria-label="Search results pages" class="mt-5">
