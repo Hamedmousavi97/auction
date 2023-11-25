@@ -41,19 +41,42 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="passwordConfirmation" class="col-sm-2 col-form-label text-right">Repeat password</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="passwordConfirmation" placeholder="Enter password again" name ="confirmPassword">
-      <small id="passwordConfirmationHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+  <label for="passwordConfirmation" class="col-sm-2 col-form-label text-right">Repeat password</label>
+<div class="col-sm-10">
+  <input type="password" class="form-control" id="passwordConfirmation" placeholder="Enter password again" name="confirmPassword">
+  <small id="passwordConfirmationHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+
+  <div class="form-check mb-3">
+    <input type="checkbox" class="form-check-input" onclick="showPassword()"> Show Password
+  </div>
+
+
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="emailNotifications" name="emailNotifications">
+    <label class="form-check-label" for="emailNotifications">Email Notifications (bid updates)</label>
+  </div>
+</div>
+
+<script>
+function showPassword() {
+    var passwordInput = document.getElementById("passwordConfirmation");
+
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+}
+</script>
     </div>
   </div>
   <div class="form-group row">
-    <button type="submit" class="btn btn-primary form-control">Register</button>
+    <div class="col-sm-20 offset-sm-2 mx-auto">
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 300px;">Register</button>
+    </div>
   </div>
 </form>
-
-<div class="text-center">Already have an account? <a href="" data-toggle="modal" data-target="#loginModal">Login</a>
-
-</div>
+<div class="text-center">Already have an account? <a href="" data-toggle="modal" data-target="#loginModal">Login</a></div>
 
 <?php include_once("footer.php")?>
