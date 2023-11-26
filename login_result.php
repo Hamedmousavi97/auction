@@ -37,6 +37,7 @@ if (mysqli_num_rows($data) == 1) {
     $_SESSION['logged_in'] = true;
     $_SESSION['username'] = $row['UserName'];
     $_SESSION['account_type'] = $row['UserRole'];
+    echo 'you are now logged in as ' .$email;
 
     // show success message
     echo '<script>
