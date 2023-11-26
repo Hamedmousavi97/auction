@@ -36,8 +36,7 @@ CREATE TABLE IF NOT EXISTS `auctions` (
   `auctionStartPrice` int(255) NOT NULL,
   `auctionReservePrice` int(255) NOT NULL,
   `auctionEndDate` datetime NOT NULL,
-  `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`UserName`) REFERENCES `users` (`UserName`)
+  `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
