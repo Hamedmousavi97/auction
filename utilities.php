@@ -23,7 +23,7 @@ function display_time_remaining($interval) {
 
 // print_listing_li:
 // This function prints an HTML <li> element containing an auction listing
-function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
+function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $category, $username, $date_created)
 {
   // Truncate long descriptions
   if (strlen($desc) > 250) {
@@ -43,21 +43,28 @@ function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
 
   // Calculate time to auction end
   $now = new DateTime();
-  if ($now > $end_time) {
-    $time_remaining = 'This auction has ended';
+  $end_time = new DateTime($end_time);
+  // Convert date_created to DateTime object
+  $date_created = new DateTime($date_created);
+  $date_created = $date_created->format('j M Y');
+
+  if ($now < $end_time) {
+      $time_to_end = $now->diff($end_time);
+      $time_remaining = 'Auction end in ' . display_time_remaining($time_to_end) ;
+  } else {
+      $time_remaining = 'Auction ended';
   }
-  else {
-    // Get interval:
-    $time_to_end = date_diff($now, $end_time);
-    $time_remaining = display_time_remaining($time_to_end) . ' remaining';
-  }
+
 
   // Print HTML
   echo('
+    <strong> User "' . $username . '" Created an auction at: ' . $date_created . '</strong>
+    <br>
     <li class="list-group-item d-flex justify-content-between">
-    <div class="p-2 mr-5"><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' . $desc_shortened . '</div>
+    <div class="p-2 mr-5"><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' . $desc_shortened . '<br> <strong>' . $category . '</strong></div>
     <div class="text-center text-nowrap"><span style="font-size: 1.5em">£' . number_format($price, 2) . '</span><br/>' . $num_bids . $bid . '<br/>' . $time_remaining . '</div>
-  </li>'
+
+    </li>'
   );
 }
 

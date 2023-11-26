@@ -91,6 +91,7 @@
     <div class="container mt-5">
         <ul class="list-group">
 <?php
+
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
     // TODO: Define behavior if a keyword has not been specified.
@@ -148,9 +149,8 @@
         if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
             while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
               echo '<li class="list-group-item">';
-              echo '<strong>' . $row['UserName'] . '</strong>';
-              echo '<br>';
-              print_listing_li($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate'], $row['UserName'], $row['auctionCategory'], $row['auctionReservePrice']);
+              printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+              echo '</li>';
               echo '</li>';
               echo '<br>';
             }

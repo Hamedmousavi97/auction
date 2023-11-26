@@ -59,7 +59,7 @@
 
 <script>
 function showPassword() {
-    var passwordInput = document.getElementById("passwordConfirmation");
+    var passwordInput = document.getElementById("password" "passwordConfirmation");
 
 
     if (passwordInput.type === "password") {

@@ -24,6 +24,7 @@ function validateEmail($input) {
         return false;
     }
 
+
     return true; // Return true if the email is valid
 }
 

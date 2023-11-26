@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $auctionEndDate = mysqli_real_escape_string($conn, $_POST['auctionEndDate']);
     $username = $_SESSION['username'];
 
-// Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page. 
+// Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page.
 //if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
     //echo "<div class='alert alert-danger'>All fields are required. Please try again.</div>";
     //header("refresh:2; url=create_auction.php");
@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //}
 
 //Check if the reserve price is less than the start price. If it is, display a message and redirect to the add auction page. */
+
 if ($auctionReservePrice < $auctionStartPrice) {
     echo "<div class='alert alert-danger'>The reserve price cannot be less than the start price. Please try again.</div>";
     header("refresh:2; url=create_auction.php");
@@ -40,7 +41,7 @@ if ($auctionReservePrice < $auctionStartPrice) {
             data into the database. */
 
 // prepare and bind
-$stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auctionCategory, auctionStartPrice, auctionReservePrice, auctionEndDate, UserName) VALUES ('$auctionTitle', '$auctionDetails', '$auctionCategory', '$auctionStartPrice', '$auctionReservePrice', '$auctionEndDate', '$username')");
+$stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auctionCategory, auctionStartPrice, auctionReservePrice, auctionEndDate) VALUES ('$auctionTitle', '$auctionDetails', '$auctionCategory', '$auctionStartPrice', '$auctionReservePrice', '$auctionEndDate')");
 
     // Execute the prepared statement
     if ($stmt->execute()) {
@@ -54,11 +55,9 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
     $conn->close();
 
 // If all is successful, let user know.
-echo('<div class="text-center">Auction successfully created! <a href="mylistings.php">View your new listing.</a></div>');
+echo('<div class="text-center">Auction successfully created! <a href="FIXME">View your new listing.</a></div>');
 
 
 ?>
-
-</div>
 
 <?php include_once("footer.php") ?>
