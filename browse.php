@@ -76,7 +76,7 @@
 <div class="col-md-3 pr-0">
     <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>
-        <select class="form-control" id="order_by">
+        <select class="form-control" id="order_by" name="order_by">
             <option selected value="pricelow">Price (low to high)</option>
             <option value="pricehigh">Price (high to low)</option>
             <option value="date">Soonest expiry</option>
@@ -119,18 +119,31 @@
   /* TODO: Use above values to construct a query. Use this query to
      retrieve data from the database. (If there is no form data entered,
      decide on appropriate default value/default query to make. */
+
+
   /* For the purposes of pagination, it would also be helpful to know the
      total number of results that satisfy the above query */
   $num_results = 96; // TODO: Calculate me for real
   $results_per_page = 10;
   $max_page = ceil($num_results / $results_per_page);
-?>
-<div class="container mt-5">
-    <ul class="list-group">
-        <?php
-        // Display the newly created auctions
-        $newAuctionsQuery = "SELECT * FROM auctions ORDER BY auctionID DESC LIMIT 10";
-        $newAuctionsResult = mysqli_query($conn, $newAuctionsQuery);
+
+
+  if ($ordering === 'pricelow') {
+    $orderByClause = 'ORDER BY auctionStartPrice ASC';
+  } elseif ($ordering === 'pricehigh') {
+    $orderByClause = 'ORDER BY auctionStartPrice DESC';
+  } elseif ($ordering === 'date') {
+    $orderByClause = 'ORDER BY auctionEndDate ASC';
+  } else {
+    $orderByClause = 'ORDER BY auctionID DESC';
+  }
+
+  $start_row = ($curr_page - 1) * $results_per_page;
+
+  $query = "SELECT * FROM auctions $orderByClause LIMIT $start_row, $results_per_page";
+
+  $newAuctionsResult = mysqli_query($conn, $query);
+
 
         if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
             while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
