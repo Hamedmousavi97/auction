@@ -78,17 +78,14 @@ ini_set('display_errors', 1);?>
   if ($result && mysqli_num_rows($result) > 0) {
     echo '<ul class="list-group">';
     while ($row = mysqli_fetch_array($result)) {
-        $item_id = $row['auctionID'];
-        $title = $row['auctionTitle'];
-        $description = $row['auctionDetails'];
-        $current_price = $row['auctionStartPrice'];
-        $num_bids = $row['NumBid'];
-        $end_date = $row['auctionEndDate'];
-        $user_id = $row['UserName'];
-
-
-        print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-    }
+        
+      # printing out the list item
+      echo '<li class="list-group-item">';
+      printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+      echo '</li>';
+      echo '</li>';
+      echo '<br>';
+      }
 
     echo '</ul>';
 } else {

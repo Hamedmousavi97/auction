@@ -68,11 +68,4 @@ echo('<div class="text-center">Auction successfully created! <a href="mylistings
 
 ?>
 
-<div class="container my-5">
-<!-- Your HTML content goes here -->
-
-?>
-
-</div>
-
 <?php include_once("footer.php") ?>
