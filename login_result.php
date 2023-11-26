@@ -20,6 +20,8 @@ $query = "SELECT * FROM users WHERE UserEmail = '$email' AND UserPassword = '$ha
 // Execute the query
 $data = mysqli_query($conn, $query);
 
+
+
 // Check if the query returns a result
 if (mysqli_num_rows($data) == 1) {
 
@@ -29,16 +31,23 @@ if (mysqli_num_rows($data) == 1) {
     // Set session variables
     setcookie("account_type", $row['UserRole']);
     setcookie("username", $row['UserName']);
+    setcookie("userID", $row['UserID']);
 
+    // set session variables
     $_SESSION['logged_in'] = true;
     $_SESSION['username'] = $row['UserName'];
     $_SESSION['account_type'] = $row['UserRole'];
     echo 'you are now logged in as ' .$email;
 
-    
+    // show success message
+    echo '<script>
+            alert("Logged in successfully!");
+            window.history.back();
+        </script>';
     // Redirect to browse.php
     header("Location: browse.php");
-    
+
+
     // Close the connection
     exit();
  } else {
@@ -49,7 +58,7 @@ if (mysqli_num_rows($data) == 1) {
             window.history.back();
         </script>';
 
-    // Close the connection    
+    // Close the connection
     exit();
 }
 

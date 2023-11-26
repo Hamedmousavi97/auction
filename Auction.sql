@@ -27,13 +27,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `auctions` (
   `auctionID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `auctionTitle` varchar(11) NOT NULL,
+  `NumBid` int(11) DEFAULT 0,
+  `auctionCurrentPrice` int(255) NOT NULL,
+  `UserName` varchar(255) NOT NULL,
+  `auctionTitle` varchar(255) NOT NULL,
   `auctionDetails` text NOT NULL,
   `auctionCategory` text NOT NULL,
   `auctionStartPrice` int(255) NOT NULL,
   `auctionReservePrice` int(255) NOT NULL,
-  `auctionEndDate` datetime NOT NULL
+  `auctionEndDate` datetime NOT NULL,
+  `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`UserName`) REFERENCES `users` (`UserName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 -- --------------------------------------------------------
 
@@ -73,6 +80,44 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Dumping data for table `users`
 --
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+-- Create the 'categories' table
+CREATE TABLE IF NOT EXISTS `categories` (
+  `categoryID` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryName` varchar(255) NOT NULL,
+  `categoryDescription` varchar(255) NOT NULL,
+  PRIMARY KEY (`categoryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- -- Insert initial data into the 'categories' table
+-- INSERT IGNORE INTO `categories` (`categoryName`, `categoryDescription`) VALUES
+-- ('Sports', 'Items related to sports'),
+-- ('Fashion', 'Clothing and accessories'),
+-- ('Antique', 'Vintage and collectible items'),
+-- ('Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
+-- ('Electronics', 'Electronic equipment, such as televisions, stereos, and computers'),
+-- ('Toys', 'Items for children to play with'),
+-- ('Home', 'Items for the home'),
+-- ('Other', 'Items that do not fit into any other category');
+
+
+
+
+
+--
+-- Dumping data for table `categories`
+--
+
+
+
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

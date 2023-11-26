@@ -4,6 +4,7 @@
 require_once("config.php");
 include_once("browse.php");
 
+
 // Validate email address
 function validateEmail($input) {
     // Remove all illegal characters from email
@@ -47,6 +48,26 @@ $password = $registeredUser['password'];
 $email = $registeredUser['email'];
 $confirmPassword = $registeredUser['confirmPassword'];
 
+
+// check if email is empty
+if (empty($email)) {
+  echo '<script>
+          alert("Email cannot be null or empty. Please enter a valid email.");
+          window.history.back();
+        </script>';
+  exit();
+}
+
+if (empty($username)) {
+  echo '<script>
+          alert("Username cannot be null or empty. Please enter a valid email.");
+          window.history.back();
+        </script>';
+  exit();
+}
+
+
+
 // Check if the password and confirm password fields match
 if ($password != $confirmPassword){
         echo '<script>
@@ -56,11 +77,40 @@ if ($password != $confirmPassword){
         exit();
 }
 
+
+if (strlen($password) < 8) {
+        echo '<script>
+                    alert("Password must be at least 8 characters long.");
+                    window.history.back();
+                </script>';
+        exit();
+
+}
+
+if (!preg_Match('/[0-9]/', $password)) {
+        echo '<script>
+                    alert("Password must contain at least one number.");
+                    window.history.back();
+                </script>';
+        exit();
+
+}
+if (!preg_Match('/[!@#$%^&*()\-_=+{};:,<.>]/', $password)) {
+        echo '<script>
+                    alert("Password must contain at least one special character.");
+                    window.history.back();
+                </script>';
+        exit();
+
+}
+
 // Hash the password
 $hashedPassword = hash('sha256', $password);
 
 // Sanitize email address
 $sanitizedEmail = sanitizeEmail($email);
+
+
 
 // Check if the email is valid
 if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
@@ -92,6 +142,7 @@ if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
     // Prepare the SQL statement
     $query = "INSERT INTO users (UserName, UserPassword, UserEmail, UserRole) VALUES ('$username', '$hashedPassword', '$email', '$accountType')";
     $stmt = $conn->prepare($query);
+
 
     // Execute the statement
     if ($stmt->execute()) {

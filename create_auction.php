@@ -1,8 +1,11 @@
-<?php 
+<?php
   require_once("config.php");
-  include_once("header.php")?>
+  include_once("header.php")
 
-<?php 
+  ?>
+
+
+<?php
 /* (Uncomment this block to redirect people without selling privileges away from this page)
   // If user is not logged in or not a seller, they should not be able to
   // use this page.
@@ -10,6 +13,7 @@
     header('Location: browse.php');
   }
 */
+
 ?>
 
 <div class="container">
@@ -27,6 +31,7 @@
       extremely low-priority / only done after all database functions are
       complete. -->
       <form method="post" action="create_auction_result.php">
+      <input type="hidden" name="username" value="<?php echo $_SESSION['username']; ?>">
         <div class="form-group row">
           <label for="auctionTitle" class="col-sm-2 col-form-label text-right">Title of auction</label>
           <div class="col-sm-10">
@@ -37,21 +42,18 @@
         <div class="form-group row">
           <label for="auctionDetails" class="col-sm-2 col-form-label text-right">Details</label>
           <div class="col-sm-10">
-            <textarea class="form-control" id="auctionDetails" name="auctionDetails" rows="4"></textarea>
+            <textarea class="form-control" id="auctionDetails" rows="4"></textarea>
             <small id="detailsHelp" class="form-text text-muted">Full details of the listing to help bidders decide if it's what they're looking for.</small>
           </div>
         </div>
         <div class="form-group row">
           <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
           <div class="col-sm-10">
-            <select class="form-control" id="auctionCategory" name="auctionCategory">
+            <select class="form-control" id="auctionCategory">
               <option selected>Choose...</option>
-              <option value="Art and Collectibles">Art and Collectibles</option>
-              <option value="Antiques">Antiques</option>
-              <option value="Jewelries and Watches">Jewelries and Watches</option>
-              <option value="Toys and Collectibles">Toys and Collectibles</option>
-              <option value="Charity Auctions">Charity Auctions</option>
-              <option value="Collectible Coins and Currency">Collectible Coins and Currency</option>
+              <option value="fill">Fill me in</option>
+              <option value="with">with options</option>
+              <option value="populated">populated from a database?</option>
             </select>
             <small id="categoryHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Select a category for this item.</small>
           </div>
