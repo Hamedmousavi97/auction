@@ -2,9 +2,7 @@
 <?php include_once("config.php")?>
 <?php require("utilities.php")?>
 
-<?php session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);?>
+
 
 <div class="container">
 
@@ -78,7 +76,7 @@ ini_set('display_errors', 1);?>
   if ($result && mysqli_num_rows($result) > 0) {
     echo '<ul class="list-group">';
     while ($row = mysqli_fetch_array($result)) {
-        
+
       # printing out the list item
       echo '<li class="list-group-item">';
       printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);

@@ -2,6 +2,11 @@
 <?php require("utilities.php")?>
 
 
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 
 <div class="container">
 <h2 class="my-3">Browse listings</h2>
@@ -29,8 +34,6 @@
                         <?php
                         require_once("config.php");
 
-
-
                         $db_server = "localhost";
                         $db_username = "root";
                         $db_password = "root";
@@ -38,77 +41,70 @@
 
                         //create connection to database
                         $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
-                        $conn->set_charset("utf8");
 
                         // Check connection
                         if (!$conn) {
                             die("Connection failed: " . mysqli_connect_error());
                         }
 
+                        $conn->set_charset("utf8");
+
                         $sql = "SELECT * FROM categories";
                         $result = mysqli_query($conn, $sql);
-                        $row = mysqli_num_rows($result);
-                        // Check if there are rows in the result set
+
                         echo '<label for="cat" class="sr-only">Search within:</label>';
-                        echo '<select class="form-control" id="cat">';
+                        echo '<select class="form-control" id="cat" name="cat">';
                         echo '<option selected value="all">All categories</option>';
 
                         // Loop through the result set and generate options
                         if ($result && mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_array($result)) {
-                              echo "<option value='" . $row['categoryID'] . "'>" . $row['categoryName'] . "</option>";
+                          while ($row = mysqli_fetch_array($result)) {
+                              // Add "selected" attribute if the category matches the one in the URL
+                              $selected = ($row['categoryName'] == $category) ? 'selected' : '';
+                              echo "<option value='" . $row['categoryName'] . "' $selected>" . $row['categoryName'] . "</option>";
                             }
-
                         }
                         ?>
-                        <div class="col-md-3 pr-0">
-    <div class="form-group">
-        <label for="cat" class="sr-only">Search within:</label>
-        <select class="form-control" id="cat">
-            <?php
-            // Additional category options can be added here
-            ?>
-        </select>
-    </div>
-</div>
-<!-- ... (existing form elements) ... -->
-
-<div class="col-md-3 pr-0">
-    <div class="form-inline">
-        <label class="mx-2" for="order_by">Sort by:</label>
-        <select class="form-control" id="order_by" name="order_by">
-            <option selected value="pricelow">Price (low to high)</option>
-            <option value="pricehigh">Price (high to low)</option>
-            <option value="date">Soonest expiry</option>
-        </select>
-    </div>
-</div>
-<div class="col-md-1 px-0">
-    <button type="submit" class="btn btn-primary">Search</button>
-</div>
-
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 pr-0">
+                    <div class="form-inline">
+                        <label class="mx-2" for="order_by">Sort by:</label>
+                        <select class="form-control" id="order_by" name="order_by">
+                            <option selected value="pricelow">Price (low to high)</option>
+                            <option value="pricehigh">Price (high to low)</option>
+                            <option value="date">Soonest expiry</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-1 px-0">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
 
     <div class="container mt-5">
         <ul class="list-group">
-<?php
-
+        <?php
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
     // TODO: Define behavior if a keyword has not been specified.
-  }
-  else {
+    $keyword = '';
+  } else {
     $keyword = $_GET['keyword'];
   }
+
   if (!isset($_GET['cat'])) {
-    // TODO: Define behavior if a category has not been specified.
-  }
-  else {
+    $category = 'Sports';
+} else {
     $category = $_GET['cat'];
-  }
+}
+
   if (!isset($_GET['order_by'])) {
     // TODO: Define behavior if an order_by value has not been specified.
-  }
-  else {
+    $ordering = '';
+  } else {
     $ordering = $_GET['order_by'];
   }
   if (!isset($_GET['page'])) {
@@ -118,47 +114,48 @@
     $curr_page = $_GET['page'];
   }
   /* TODO: Use above values to construct a query. Use this query to
-     retrieve data from the database. (If there is no form data entered,
-     decide on appropriate default value/default query to make. */
+                    retrieve data from the database. (If there is no form data entered,
+                    decide on appropriate default value/default query to make. */
+                    $num_results = 96;
+                    $results_per_page = 10;
+                    $max_page = ceil($num_results / $results_per_page);
+
+                    if ($ordering === 'pricelow') {
+                        $orderByClause = 'ORDER BY auctionStartPrice ASC';
+                    } elseif ($ordering === 'pricehigh') {
+                        $orderByClause = 'ORDER BY auctionStartPrice DESC';
+                    } elseif ($ordering === 'date') {
+                        $orderByClause = 'ORDER BY auctionEndDate ASC';
+                    } else {
+                        $orderByClause = 'ORDER BY auctionID DESC';
+                    }
+
+                    $start_row = ($curr_page - 1) * $results_per_page;
+
+                    if ($category === 'all') {
+                        $categories = '';
+                    } else {
+                        $categories = is_numeric($category)
+                            ? "AND auctionCategoryID = $category"
+                            : "AND auctionCategory = '$category'";
+                    }
+
+                    $query = "SELECT * FROM auctions WHERE 1 $categories $orderByClause LIMIT $start_row, $results_per_page";
+                    $newAuctionsResult = mysqli_query($conn, $query);
 
 
-  /* For the purposes of pagination, it would also be helpful to know the
-     total number of results that satisfy the above query */
-  $num_results = 96; // TODO: Calculate me for real
-  $results_per_page = 10;
-  $max_page = ceil($num_results / $results_per_page);
 
-
-  if ($ordering === 'pricelow') {
-    $orderByClause = 'ORDER BY auctionStartPrice ASC';
-  } elseif ($ordering === 'pricehigh') {
-    $orderByClause = 'ORDER BY auctionStartPrice DESC';
-  } elseif ($ordering === 'date') {
-    $orderByClause = 'ORDER BY auctionEndDate ASC';
-  } else {
-    $orderByClause = 'ORDER BY auctionID DESC';
-  }
-
-  $start_row = ($curr_page - 1) * $results_per_page;
-
-  $query = "SELECT * FROM auctions $orderByClause LIMIT $start_row, $results_per_page";
-
-  $newAuctionsResult = mysqli_query($conn, $query);
-
-
-        if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
-            while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
-              echo '<li class="list-group-item">';
-              printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
-              echo '</li>';
-              echo '</li>';
-              echo '<br>';
-            }
-        }
-        ?>
-    </ul>
-</div>
-
+                    if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
+                        while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
+                            echo '<li class="list-group-item">';
+                            printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+                            echo '</li>';
+                            echo '<br>';
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
 </ul>
 <!-- Pagination for results listings -->
 <nav aria-label="Search results pages" class="mt-5">
