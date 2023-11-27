@@ -18,7 +18,7 @@
     $startingPrice = $row['auctionStartPrice'];
     $num_bids = $row['numBids'];
     $end_time = new DateTime($row['auctionEndDate']);
-    $current_price = $row['auctionStartPrice'];
+    $current_price = $row['auctionCurrentPrice'];
     $auctionEndDate = $row['auctionEndDate'];
   }
 
