@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $auctionReservePrice = mysqli_real_escape_string($conn, $_POST['auctionReservePrice']);
     $auctionEndDate = mysqli_real_escape_string($conn, $_POST['auctionEndDate']);
     $username = $_SESSION['username'];
+    $auctionCurrentPrice = $auctionStartPrice;
 
 // Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page.
 //if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
@@ -41,7 +42,7 @@ if ($auctionReservePrice < $auctionStartPrice) {
             data into the database. */
 
 // prepare and bind
-$stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auctionCategory, auctionStartPrice, auctionReservePrice, auctionEndDate) VALUES ('$auctionTitle', '$auctionDetails', '$auctionCategory', '$auctionStartPrice', '$auctionReservePrice', '$auctionEndDate')");
+$stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auctionCategory, auctionStartPrice, auctionReservePrice, auctionEndDate, auctionCurrentPrice, UserName) VALUES ('$auctionTitle', '$auctionDetails', '$auctionCategory', '$auctionStartPrice', '$auctionReservePrice', '$auctionEndDate', '$auctionCurrentPrice', '$username')");
 
     // Execute the prepared statement
     if ($stmt->execute()) {

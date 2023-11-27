@@ -46,8 +46,6 @@ CREATE TABLE `auctions` (
 -- Dumping data for table `auctions`
 --
 
-INSERT INTO `auctions` (`auctionID`, `NumBid`, `auctionCurrentPrice`, `UserName`, `auctionTitle`, `auctionDetails`, `Image`, `auctionCategory`, `auctionStartPrice`, `auctionReservePrice`, `auctionEndDate`, `auctionStartDate`) VALUES
-(7, 0, 0, 'summersim', 'blablabla', '', '', 'Art and Collectibles', 4, 6, '2023-12-31 16:45:00', '2023-11-26 16:45:12');
 
 -- --------------------------------------------------------
 
@@ -67,8 +65,6 @@ CREATE TABLE `bidreport` (
 -- Dumping data for table `bidreport`
 --
 
-INSERT INTO `bidreport` (`bidid`, `auctionID`, `UserName`, `biddatetime`, `bidamount`) VALUES
-(46, 0, 'summersim', '2023-11-26 23:12:12', 5);
 
 -- --------------------------------------------------------
 
@@ -86,8 +82,25 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
-(4243, 'Art and Collectibles', 'Art and Collectibles');
+-- INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
+-- (4243, 'Art and Collectibles', 'Art and Collectibles'),
+-- (1, 'Books', 'Books'),
+-- (2, 'Movies', 'Movies'),
+-- (3, 'Music', 'Music'),
+-- (4, 'Video Games', 'Video Games'),
+-- (5, 'Automotive', 'Automotive'),
+-- (6, 'Baby', 'Baby'),
+-- (7, 'Beauty', 'Beauty'),
+-- (8, 'Computers', 'Computers'),
+-- (9, 'Health', 'Health'),
+-- (10, 'Sports', 'Items related to sports'),
+-- (11, 'Fashion', 'Clothing and accessories'),
+-- (12, 'Antique', 'Vintage and collectible items'),
+-- (13, 'Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
+-- (14, 'Electronics', 'Electronic equipment, such as televisions, stereos, and accessories'),
+-- (15, 'Toys', 'Items for children to play with'),
+-- (16, 'Home', 'Items for the home'),
+-- (17, 'Other', 'Items that do not fit into any other category');
 
 -- --------------------------------------------------------
 
@@ -128,9 +141,6 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `UserName`, `UserEmail`, `UserRole`, `UserPassword`, `Address1`, `Address2`, `City`, `Postcode`, `UserImage`) VALUES
-(1, 'summersim', 'xinyisim@gmail.com', 'seller', 'af279d1c700abd9701eb18c477f7ef58c1fa3eca3dc50b42a1acd6ac51a5df6a', NULL, NULL, NULL, NULL, NULL),
-(2, 'summer', 'summer@gmail.com', 'buyer', '5a6bfa82183555d57186d11175343af050a769113b41a98796747c9049405aae', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables

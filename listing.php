@@ -91,6 +91,7 @@
         </div>
 	    <input type="number" class="form-control" id="bid" name="bidamount">
       </div>
+      <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
       <button type="submit" class="btn btn-primary form-control">Place bid</button>
     </form>
 <?php endif ?>

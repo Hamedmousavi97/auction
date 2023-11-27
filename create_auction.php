@@ -42,7 +42,7 @@
         <div class="form-group row">
           <label for="auctionDetails" class="col-sm-2 col-form-label text-right">Details</label>
           <div class="col-sm-10">
-          <textarea class="form-control" id="auctionDetails" rows="4"></textarea>
+          <textarea class="form-control" id="auctionDetails" rows="4" name="auctionDetails"></textarea>
             <small id="detailsHelp" class="form-text text-muted">Full details of the listing to help bidders decide if it's what they're looking for.</small>
           </div>
         </div>
