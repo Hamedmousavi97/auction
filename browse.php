@@ -101,7 +101,7 @@ error_reporting(E_ALL);
   }
 
   if (!isset($_GET['cat'])) {
-    $category = 'Sports';
+    $category = 'all';
   } else {
       $category = $_GET['cat'];
   }
