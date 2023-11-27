@@ -52,6 +52,9 @@ error_reporting(E_ALL);
                         $sql = "SELECT * FROM categories";
                         $result = mysqli_query($conn, $sql);
 
+                        $category = isset($_GET['cat']) ? $_GET['cat'] : 'all';
+
+
                         echo '<label for="cat" class="sr-only">Search within:</label>';
                         echo '<select class="form-control" id="cat" name="cat">';
                         echo '<option selected value="all">All categories</option>';
@@ -64,20 +67,22 @@ error_reporting(E_ALL);
                               echo "<option value='" . $row['categoryName'] . "' $selected>" . $row['categoryName'] . "</option>";
                             }
                         }
+                        $ordering = isset($_GET['order_by']) ? $_GET['order_by'] : 'pricelow';
+
                         ?>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3 pr-0">
-                    <div class="form-inline">
-                        <label class="mx-2" for="order_by">Sort by:</label>
-                        <select class="form-control" id="order_by" name="order_by">
-                            <option selected value="pricelow">Price (low to high)</option>
-                            <option value="pricehigh">Price (high to low)</option>
-                            <option value="date">Soonest expiry</option>
-                        </select>
-                    </div>
-                </div>
+                  <div class="form-inline">
+                      <label class="mx-2" for="order_by">Sort by:</label>
+                      <select class="form-control" id="order_by" name="order_by">
+                          <option value="pricelow" <?php echo ($ordering === 'pricelow' ? 'selected' : ''); ?>>Price (low to high)</option>
+                          <option value="pricehigh" <?php echo ($ordering === 'pricehigh' ? 'selected' : ''); ?>>Price (high to low)</option>
+                          <option value="date" <?php echo ($ordering === 'date' ? 'selected' : ''); ?>>Soonest expiry</option>
+                      </select>
+                  </div>
+              </div>
                 <div class="col-md-1 px-0">
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
@@ -97,9 +102,9 @@ error_reporting(E_ALL);
 
   if (!isset($_GET['cat'])) {
     $category = 'Sports';
-} else {
-    $category = $_GET['cat'];
-}
+  } else {
+      $category = $_GET['cat'];
+  }
 
   if (!isset($_GET['order_by'])) {
     // TODO: Define behavior if an order_by value has not been specified.
