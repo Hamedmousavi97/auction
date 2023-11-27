@@ -37,6 +37,22 @@
   //       For now, this is hardcoded.
   $has_session = $_SESSION['username'];
   $watching = false;
+
+  // sunny
+if ($has_session) {
+  $username = $_SESSION['username'];
+  $check_query = "SELECT COUNT(*) FROM watchlist WHERE username = ? AND auctionID = ?";
+  $check_stmt = $conn->prepare($check_query);
+  $check_stmt->bind_param("si", $username, $item_id);
+  $check_stmt->execute();
+  $check_stmt->bind_result($count);
+  $check_stmt->fetch();
+  if ($count > 0) {
+    $watching = true;
+  }
+  $check_stmt->close();
+}
+
 ?>
 
 
@@ -52,12 +68,14 @@
      just as easily use PHP as in other places in the code */
   if ($now < $end_time):
 ?>
-    <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
-      <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addToWatchlist()">+ Add to watchlist</button>
-    </div>
-    <div id="watch_watching" <?php if (!$has_session || !$watching) echo('style="display: none"');?> >
-      <button type="button" class="btn btn-success btn-sm" disabled>Watching</button>
-      <button type="button" class="btn btn-danger btn-sm" onclick="removeFromWatchlist()">Remove watch</button>
+   <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
+  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addToWatchlist()">+ Add to watchlist</button>
+</div>
+<div id="watch_watching" <?php if (!$has_session || !$watching) echo('style="display: none"');?> >
+  <button type="button" class="btn btn-success btn-sm" disabled>Watching</button>
+  <button type="button" class="btn btn-danger btn-sm" onclick="removeFromWatchlist()">Remove watch</button>
+</div>
+
     </div>
 <?php endif /* Print nothing otherwise */ ?>
   </div>
@@ -121,10 +139,14 @@ function addToWatchlist(button) {
     success:
       function (obj, textstatus) {
         // Callback function for when call is successful and returns obj
-        console.log("Success");
         var objT = obj.trim();
+        console.log(obj);
+        console.log("Success");
+        statusCheck = `<!-- connection to database -->
+"success"`; // this is the string that is returned from the php file
+        console.log(statusCheck);
 
-        if (objT == "success") {
+        if (objT == statusCheck) {
           $("#watch_nowatch").hide();
           $("#watch_watching").show();
         }
@@ -155,8 +177,11 @@ function removeFromWatchlist(button) {
         // Callback function for when call is successful and returns obj
         console.log("Success");
         var objT = obj.trim();
+        statusCheck = `<!-- connection to database -->
+"success"`; // this is the string that is returned from the php file
 
-        if (objT == "success") {
+
+        if (objT == statusCheck) {
           $("#watch_watching").hide();
           $("#watch_nowatch").show();
         }
