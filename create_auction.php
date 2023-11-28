@@ -1,8 +1,18 @@
 <?php
   require_once("config.php");
-  include_once("header.php")
+  include_once("header.php");
 
   ?>
+  <script>
+    function validateForm() {
+        var auctionTitle = document.getElementById("auctionTitle").value.trim();
+        if (auctionTitle === "") {
+            alert("Please enter a valid auction title");
+            return false;
+        }
+        return true;
+    }
+</script>
 
 
 <?php
@@ -46,15 +56,12 @@
             <small id="detailsHelp" class="form-text text-muted">Full details of the listing to help bidders decide if it's what they're looking for.</small>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
-          <div class="col-sm-10">
-          <select class="form-control" id="auctionCategory" name="auctionCategory">
-              <!-- <option selected>Choose...</option>
-              <option value="bike">bike</option>
-              <option value="cars">cars</option>
-              <option value="home">home</option> -->
-              <?php
+          <div class="form-group row">
+    <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
+    <div class="col-sm-10">
+        <select class="form-control" id="auctionCategory" name="auctionCategory" onchange="showOtherCategory(this)">
+
+                <?php
                 require_once("config.php");
                 $sql = "SELECT * FROM categories";
                 $result = mysqli_query($conn, $sql);
@@ -68,50 +75,68 @@
                 } else {
                   echo "<option value=''>No categories found</option>";
                 }
+                ?>
+              </select>
+              <small id="categoryHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Select a category for this item.</small>
+              </div>
+              </div>
 
-              ?>
-            </select>
-            <small id="categoryHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Select a category for this item.</small>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="auctionStartPrice" class="col-sm-2 col-form-label text-right">Starting price</label>
-          <div class="col-sm-10">
-	        <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">£</span>
+              <div class="form-group row" id="otherCategoryInput" style="display: none;">
+                  <div class="col-sm-10 offset-sm-2">
+                      <input type="text" class="form-control" id="otherCategory" name="otherCategory" placeholder="Enter a new category">
+                      <small id="otherCategoryHelp" class="form-text text-muted">If the category you want isn't listed, enter it here.</small>
+                  </div>
               </div>
-              <input type="number" class="form-control" id="auctionStartPrice" name="auctionStartPrice">
-            </div>
-            <small id="startBidHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Initial bid amount.</small>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="auctionReservePrice" class="col-sm-2 col-form-label text-right">Reserve price</label>
-          <div class="col-sm-10">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">£</span>
+          <script>
+            function showOtherCategory(select) {
+              var otherCategoryInput = document.getElementById('otherCategoryInput');
+
+              // If "Other" is selected, show the input field; otherwise, hide it
+              otherCategoryInput.style.display = select.value === 'Other' ? 'block' : 'none';
+            }
+          </script>
+          <div class="form-group row">
+            <label for="auctionStartPrice" class="col-sm-2 col-form-label text-right">Starting price</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">£</span>
+                </div>
+                <input type="number" class="form-control" id="auctionStartPrice" name="auctionStartPrice">
               </div>
-              <input type="number" class="form-control" id="auctionReservePrice" name="auctionReservePrice">
+              <small id="startBidHelp" class="form-text text-muted"><span class="text-danger">* Required.</span>
+                Initial bid amount.</small>
             </div>
-            <small id="reservePriceHelp" class="form-text text-muted">Optional. Auctions that end below this price will not go through. This value is not displayed in the auction listing.</small>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="auctionEndDate" class="col-sm-2 col-form-label text-right">End date</label>
-          <div class="col-sm-10">
-            <input type="datetime-local" class="form-control" id="auctionEndDate" name="auctionEndDate">
-            <small id="endDateHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Day for the auction to end.</small>
+          <div class="form-group row">
+            <label for="auctionReservePrice" class="col-sm-2 col-form-label text-right">Reserve price</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">£</span>
+                </div>
+                <input type="number" class="form-control" id="auctionReservePrice" name="auctionReservePrice">
+              </div>
+              <small id="reservePriceHelp" class="form-text text-muted">Optional. Auctions that end below this
+                price will not go through. This value is not displayed in the auction listing.</small>
+            </div>
           </div>
-        </div>
-        <button type="submit" class="btn btn-primary form-control">Create Auction</button>
-      </form>
+          <div class="form-group row">
+            <label for="auctionEndDate" class="col-sm-2 col-form-label text-right">End date</label>
+            <div class="col-sm-10">
+              <input type="datetime-local" class="form-control" id="auctionEndDate" name="auctionEndDate">
+              <small id="endDateHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Day
+                for the auction to end.</small>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary form-control">Create Auction</button>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
 </div>
 
 
-<?php include_once("footer.php")?>
+
+<?php include_once("footer.php"); ?>
