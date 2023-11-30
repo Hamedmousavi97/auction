@@ -48,6 +48,10 @@ $username = $registeredUser['username'];
 $password = $registeredUser['password'];
 $email = $registeredUser['email'];
 $confirmPassword = $registeredUser['confirmPassword'];
+$address1 = $registeredUser['Address1'];
+$address2 = $registeredUser['Address2'];
+$city = $registeredUser['City'];
+$postcode = $registeredUser['Postcode'];
 
 
 // check if email is empty
@@ -141,7 +145,7 @@ if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
   } else {
       // Proceed with user registration
     // Prepare the SQL statement
-    $query = "INSERT INTO users (UserName, UserPassword, UserEmail, UserRole) VALUES ('$username', '$hashedPassword', '$email', '$accountType')";
+    $query = "INSERT INTO users (UserName, UserPassword, UserEmail, UserRole, Address1, Address2, City, Postcode) VALUES ('$username', '$hashedPassword', '$email', '$accountType', '$address1', '$address2', '$city', '$postcode')";
     $stmt = $conn->prepare($query);
 
 
