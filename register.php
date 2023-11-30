@@ -34,6 +34,34 @@
 	</div>
   </div>
   <div class="form-group row">
+    <label for="Address1" class="col-sm-2 col-form-label text-right">Address 1</label>
+	<div class="col-sm-10">
+      <input type="text" class="form-control" id="Address1" placeholder="Address 1" name="Address1">
+      <small id="Address1" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+	</div>
+  </div>
+  <div class="form-group row">
+    <label for="Address2" class="col-sm-2 col-form-label text-right">Address 2</label>
+	<div class="col-sm-10">
+      <input type="text" class="form-control" id="Address2" placeholder="Address 2" name="Address2">
+      <small id="Address2" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+	</div>
+  </div>
+  <div class="form-group row">
+    <label for="City" class="col-sm-2 col-form-label text-right">City</label>
+	<div class="col-sm-10">
+      <input type="text" class="form-control" id="City" placeholder="City" name="City">
+      <small id="City" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+	</div>
+  </div>
+  <div class="form-group row">
+    <label for="Postcode" class="col-sm-2 col-form-label text-right">Postcode</label>
+	<div class="col-sm-10">
+      <input type="text" class="form-control" id="Postcode" placeholder="Postcode" name="Postcode">
+      <small id="Postcode" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+	</div>
+  </div>
+  <div class="form-group row">
     <label for="password" class="col-sm-2 col-form-label text-right">Password</label>
     <div class="col-sm-10">
       <input type="password" class="form-control" id="password" placeholder="Password" name="password">
