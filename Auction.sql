@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Nov 26, 2023 at 11:19 PM
+-- Generation Time: Nov 30, 2023 at 04:53 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `auctions` (
   `auctionID` int(11) NOT NULL,
   `NumBid` int(11) DEFAULT '0',
+  `BidID` int(11) NOT NULL,
   `auctionCurrentPrice` int(255) NOT NULL,
   `UserName` varchar(255) NOT NULL,
   `auctionTitle` varchar(255) NOT NULL,
@@ -46,6 +47,9 @@ CREATE TABLE `auctions` (
 -- Dumping data for table `auctions`
 --
 
+INSERT INTO `auctions` (`auctionID`, `NumBid`, `BidID`, `auctionCurrentPrice`, `UserName`, `auctionTitle`, `auctionDetails`, `Image`, `auctionCategory`, `auctionStartPrice`, `auctionReservePrice`, `auctionEndDate`, `auctionStartDate`) VALUES
+(8, 5, 51, 130, 'seller', 'LEGO DISNEY 3 Minifigures 100th Anniversary 71038 - Complete Set of 18 (SEALED)', '', '', 'Toys and Collectibles', 90, 98, '2023-12-02 15:21:00', '2023-11-30 15:21:40'),
+(9, 1, 52, 1200, 'seller', 'Diamond Rolex Oyster Perpetual Date Watch Case Men Genuine Iced Bezel Parts', 'Original genuine Rolex Oyster Perpetual Date 15000 watch case with original dial and crown, along with a custom natural diamond bezel. \r\n\r\nPlease note a movement is not included as this set is sold for parts, but will add an aftermarket jubilee bracelet band, movement ring holder/spacer, date wheel, and watch hands separately. \r\n\r\nThis genuine Rolex date watch case comes with a custom diamond pyramid bezel and has all visible serial number engravings. It needs a movement and it’s ready to be worn and enjoyed again.', '', 'Jewelries and Watches', 1000, 1100, '2023-12-04 18:50:00', '2023-11-30 16:51:51');
 
 -- --------------------------------------------------------
 
@@ -65,6 +69,13 @@ CREATE TABLE `bidreport` (
 -- Dumping data for table `bidreport`
 --
 
+INSERT INTO `bidreport` (`bidid`, `auctionID`, `UserName`, `biddatetime`, `bidamount`) VALUES
+(47, 8, 'buyer', '2023-11-30 15:22:18', 100),
+(48, 8, 'buyer', '2023-11-30 15:49:11', 110),
+(49, 8, 'buyer', '2023-11-30 16:38:51', 120),
+(50, 8, 'buyer', '2023-11-30 16:39:18', 120),
+(51, 8, 'buyer', '2023-11-30 16:49:19', 130),
+(52, 9, 'buyer', '2023-11-30 16:52:22', 1200);
 
 -- --------------------------------------------------------
 
@@ -82,25 +93,12 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
--- INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
--- (4243, 'Art and Collectibles', 'Art and Collectibles'),
--- (1, 'Books', 'Books'),
--- (2, 'Movies', 'Movies'),
--- (3, 'Music', 'Music'),
--- (4, 'Video Games', 'Video Games'),
--- (5, 'Automotive', 'Automotive'),
--- (6, 'Baby', 'Baby'),
--- (7, 'Beauty', 'Beauty'),
--- (8, 'Computers', 'Computers'),
--- (9, 'Health', 'Health'),
--- (10, 'Sports', 'Items related to sports'),
--- (11, 'Fashion', 'Clothing and accessories'),
--- (12, 'Antique', 'Vintage and collectible items'),
--- (13, 'Jewellery', 'Personal ornaments, such as necklaces, rings, or bracelets'),
--- (14, 'Electronics', 'Electronic equipment, such as televisions, stereos, and accessories'),
--- (15, 'Toys', 'Items for children to play with'),
--- (16, 'Home', 'Items for the home'),
--- (17, 'Other', 'Items that do not fit into any other category');
+INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
+(123, 'Art and Collectibles', 'Art and Collectibles'),
+(124, 'Antiques', 'Antiques'),
+(125, 'Jewelries and Watches', 'Jewelries and Watches'),
+(126, 'Toys and Collectibles', 'Toys and Collectibles'),
+(127, 'Charity Auctions', 'Charity Auctions');
 
 -- --------------------------------------------------------
 
@@ -141,6 +139,21 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
+INSERT INTO `users` (`UserID`, `UserName`, `UserEmail`, `UserRole`, `UserPassword`, `Address1`, `Address2`, `City`, `Postcode`, `UserImage`) VALUES
+(3, 'buyer', 'buyer@gmail.com', 'buyer', 'af279d1c700abd9701eb18c477f7ef58c1fa3eca3dc50b42a1acd6ac51a5df6a', NULL, NULL, NULL, NULL, NULL),
+(4, 'seller', 'seller@gmail.com', 'seller', 'e122329e5ce53e90ceb703dd19b807ca237c5c9796c2e4c8aef0b0bc506a6760', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `watchlist`
+--
+
+CREATE TABLE `watchlist` (
+  `watchlistID` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `auctionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -177,6 +190,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`UserID`);
 
 --
+-- Indexes for table `watchlist`
+--
+ALTER TABLE `watchlist`
+  ADD PRIMARY KEY (`watchlistID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -184,13 +203,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `auctions`
 --
 ALTER TABLE `auctions`
-  MODIFY `auctionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `auctionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `bidreport`
 --
 ALTER TABLE `bidreport`
-  MODIFY `bidid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `bidid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -208,32 +227,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
-
---
--- Table structure for table `watchlist`
---
-
-CREATE TABLE `watchlist` (
-  `watchlistID` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `auctionID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `watchlist`
---
-ALTER TABLE `watchlist`
-  ADD PRIMARY KEY (`watchlistID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `watchlist`

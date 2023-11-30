@@ -1,5 +1,7 @@
 <?php include_once("header.php")?>
+<?php include_once("config.php")?>
 <?php require("utilities.php")?>
+
 
 <div class="container">
 
@@ -14,11 +16,63 @@
   
   
   // TODO: Check user's credentials (cookie/session).
-  
+
+  if (!isset($_SESSION['username'])) {
+
+    header('Location: browse.php');
+    exit();
+  }
+
+  $db_server = "localhost";
+  $db_username = "root";
+  $db_password = "root";
+  $db_name = "Auction";
+
+  // Create a connection to the database
+  $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
+  $conn->set_charset("utf8");
+
+  $username = $_SESSION['username'];
+
   // TODO: Perform a query to pull up the auctions they've bidded on.
   
+  $sql = "SELECT * FROM auctions
+  JOIN bidreport ON auctions.BidID = bidreport.BidID
+  WHERE bidreport.UserName = ?";
+
+  $stmt = mysqli_prepare($conn, $sql);
+  if ($stmt === false) {
+      die("Prepare failed: " . mysqli_error($conn));
+  }
+  mysqli_stmt_bind_param($stmt, "s", $username);
+  mysqli_stmt_execute($stmt);
+
+  $result = mysqli_stmt_get_result($stmt);
+
+  // Check for errors
+  if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+  }
+ 
   // TODO: Loop through results and print them out as list items.
   
+
+  if ($result && mysqli_num_rows($result) > 0) {
+    echo '<ul class="list-group">';
+    while ($row = mysqli_fetch_array($result)) {
+
+      # printing out the list item
+      echo '<li class="list-group-item">';
+      printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+      echo '</li>';
+      echo '</li>';
+      echo '<br>';
+      }
+
+    echo '</ul>';
+} else {
+    echo "<p>You have no bids.</p>";
+}
 ?>
 
 <?php include_once("footer.php")?>
