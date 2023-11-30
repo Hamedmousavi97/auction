@@ -28,14 +28,14 @@
       die("Connection failed: " . mysqli_connect_error());
   }
 
-  // TODO: Perform a query to pull up auctions they might be interested in.
+  // Perform a query to pull up auctions they might be interested in.
   $query = "SELECT * FROM auctions WHERE auctionID IN (SELECT auctionID FROM bids WHERE userID = '$userId') ORDER BY auctionEndDate DESC";
   $result = mysqli_query($conn, $query);
 
-  // TODO: Loop through results and print them out as list items.
+  // Loop through results and print them out as list items.
   if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-      print_listing_li($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate'], $row['UserName'], $row['auctionCategory'], $row['auctionReservePrice']);
+      printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate'], $row['UserName'], $row['auctionCategory'], $row['auctionReservePrice']);
     }
   } else {
     echo "<p>No recommendations available based on your bid history.</p>";

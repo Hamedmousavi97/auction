@@ -25,7 +25,7 @@ error_reporting(E_ALL);
                                     <i class="fa fa-search"></i>
                                 </span>
                             </div>
-                            <input type="text" class="form-control border-left-0" id="keyword" placeholder="Search for anything">
+                            <input type="text" class="form-control border-left-0" id="keyword" placeholder="Search for anything" name="keyword">
                         </div>
                     </div>
                 </div>
@@ -33,14 +33,6 @@ error_reporting(E_ALL);
                     <div class="form-group">
                         <?php
                         require_once("config.php");
-
-                        $db_server = "localhost";
-                        $db_username = "root";
-                        $db_password = "root";
-                        $db_name = "Auction";
-
-                        //create connection to database
-                        $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
 
                         // Check connection
                         if (!$conn) {
@@ -66,6 +58,9 @@ error_reporting(E_ALL);
                               $selected = ($row['categoryName'] == $category) ? 'selected' : '';
                               echo "<option value='" . $row['categoryName'] . "' $selected>" . $row['categoryName'] . "</option>";
                             }
+                        }
+                        else {
+                          echo "<option value=''>No categories found</option>";
                         }
                         $ordering = isset($_GET['order_by']) ? $_GET['order_by'] : 'pricelow';
 
@@ -94,10 +89,12 @@ error_reporting(E_ALL);
         <?php
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
-    // TODO: Define behavior if a keyword has not been specified.
+    // Define behavior if a keyword has not been specified.
     $keyword = '';
+    echo '<h3>All listings</h3>';
   } else {
     $keyword = $_GET['keyword'];
+    echo '<h3>Search results for "' . $keyword . '"</h3>';
   }
 
   if (!isset($_GET['cat'])) {
@@ -107,7 +104,7 @@ error_reporting(E_ALL);
   }
 
   if (!isset($_GET['order_by'])) {
-    // TODO: Define behavior if an order_by value has not been specified.
+    // Define behavior if an order_by value has not been specified.
     $ordering = '';
   } else {
     $ordering = $_GET['order_by'];
@@ -118,7 +115,7 @@ error_reporting(E_ALL);
   else {
     $curr_page = $_GET['page'];
   }
-  /* TODO: Use above values to construct a query. Use this query to
+  /* Use above values to construct a query. Use this query to
                     retrieve data from the database. (If there is no form data entered,
                     decide on appropriate default value/default query to make. */
                     $num_results = 96;
@@ -145,7 +142,7 @@ error_reporting(E_ALL);
                             : "AND auctionCategory = '$category'";
                     }
 
-                    $query = "SELECT * FROM auctions WHERE 1 $categories $orderByClause LIMIT $start_row, $results_per_page";
+                    $query = "SELECT * FROM auctions WHERE 1 $categories AND (auctionTitle LIKE '%$keyword%' OR auctionDetails LIKE '%$keyword%') $orderByClause LIMIT $start_row, $results_per_page";
                     $newAuctionsResult = mysqli_query($conn, $query);
 
 
@@ -157,6 +154,9 @@ error_reporting(E_ALL);
                             echo '</li>';
                             echo '<br>';
                         }
+                    }
+                    else {
+                        echo "<p>No results found. Please try another keyword</p>";
                     }
                     ?>
                 </ul>
