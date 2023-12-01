@@ -37,6 +37,12 @@ $username = $_SESSION['username'];
 $ordering = isset($_GET['order_by']) ? $_GET['order_by'] : 'pricelow';
 $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 
+
+// If the keyword is not set, set it to an empty string
+if ($keyword === null) {
+    $keyword = '';
+}
+
 // Fetch categories for dropdown
 $sqlCategories = "SELECT * FROM categories";
 $resultCategories = mysqli_query($conn, $sqlCategories);
@@ -134,6 +140,9 @@ $result = mysqli_stmt_get_result($stmt);
     </form>
 
     <div class="container mt-5">
+    <?php
+    echo '<h3>Search results for "' . $keyword . '"</h3>';
+    ?>
         <ul class="list-group">
             <?php
             // Loop through results and print them out as list items.
