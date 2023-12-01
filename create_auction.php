@@ -2,14 +2,26 @@
   require_once("config.php");
   include_once("header.php");
 
-  ?>
-  <script>
+?>
+<script>
     function validateForm() {
+        console.log("Validating form...");
         var auctionTitle = document.getElementById("auctionTitle").value.trim();
+
+        // Regular expression pattern for allowing only letters, spaces, and common symbols
+        var titleRegex = /^[a-zA-Z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+
         if (auctionTitle === "") {
             alert("Please enter a valid auction title");
             return false;
         }
+
+        if (!titleRegex.test(auctionTitle)) {
+            alert("Please enter a title with only letters and spaces.");
+            return false;
+        }
+
+        console.log("Form is valid.");
         return true;
     }
 </script>
@@ -27,7 +39,7 @@
 ?>
 
 <div class="container">
-
+<form method="post" action="create_auction_result.php" enctype="multipart/form-data" onsubmit="return validateForm();">
 <!-- Create auction form -->
 <div style="max-width: 800px; margin: 10px auto">
   <h2 class="my-3">Create new auction</h2>
@@ -124,7 +136,10 @@
           <div class="form-group row">
             <label for="auctionEndDate" class="col-sm-2 col-form-label text-right">End date</label>
             <div class="col-sm-10">
-              <input type="datetime-local" class="form-control" id="auctionEndDate" name="auctionEndDate">
+            <?php
+            $currentDateTime = (new DateTime())->format('Y-m-d\TH:i');
+            ?>
+            <input type="datetime-local" class="form-control" id="auctionEndDate" name="auctionEndDate" min="<?= $currentDateTime ?>" max="9999-12-31T23:59">
               <small id="endDateHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Day
                 for the auction to end.</small>
             </div>

@@ -57,9 +57,8 @@ error_reporting(E_ALL);
                               // Add "selected" attribute if the category matches the one in the URL
                               $selected = ($row['categoryName'] == $category) ? 'selected' : '';
                               echo "<option value='" . $row['categoryName'] . "' $selected>" . $row['categoryName'] . "</option>";
-                            }
                         }
-                        else {
+                        }else {
                           echo "<option value=''>No categories found</option>";
                         }
                         $ordering = isset($_GET['order_by']) ? $_GET['order_by'] : 'pricelow';
@@ -119,7 +118,7 @@ error_reporting(E_ALL);
                     retrieve data from the database. (If there is no form data entered,
                     decide on appropriate default value/default query to make. */
                     $num_results = 96;
-                    $results_per_page = 10;
+                    $results_per_page = 5;
                     $max_page = ceil($num_results / $results_per_page);
 
                     if ($ordering === 'pricelow') {

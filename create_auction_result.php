@@ -56,7 +56,7 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
     $conn->close();
 
 // If all is successful, let user know.
-echo('<div class="text-center">Auction successfully created! <a href="FIXME">View your new listing.</a></div>');
+echo('<div class="text-center">Auction successfully created! <a href="mylistings.php">View your new listing.</a></div>');
 
 
 ?>

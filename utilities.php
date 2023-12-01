@@ -58,7 +58,7 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
 
   // Print HTML
   echo('
-    <strong> User "' . $username . '" Created an auction at: ' . $date_created . '</strong>
+    <strong> User "' . $username . '" Created an auction on: ' . $date_created . '</strong>
     <br>
     <li class="list-group-item d-flex justify-content-between">
     <div class="p-2 mr-5"><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' . $desc_shortened . '<br> <strong>' . $category . '</strong></div>
