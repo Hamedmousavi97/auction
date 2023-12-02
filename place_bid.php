@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             
             // Insert data into bid report table
-            $stmt2 = $conn->prepare("INSERT INTO bidreport (auctionID, UserName, bidamount) VALUES ('$auctionId', '$username', '$bidAmount')");
+            $stmt2 = $conn->prepare("INSERT INTO bidreport (auctionID, bidUsername, bidamount) VALUES ('$auctionId', '$username', '$bidAmount')");
 
             // Execute the prepared statement
             if ($stmt2->execute()) {
@@ -75,7 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } else {
         // Inform the user that their bid is too low
-        $error = "Your bid must be higher than the current highest bid.";
+        echo '<script>
+        alert("Please make sure to enter a valid amount. Your bid should be more than the current price.");
+        window.history.back();
+        </script>';
     }
 
 

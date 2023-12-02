@@ -61,7 +61,7 @@ INSERT INTO `auctions` (`auctionID`, `NumBid`, `BidID`, `auctionCurrentPrice`, `
 CREATE TABLE `bidreport` (
   `bidid` int(11) NOT NULL,
   `auctionID` int(11) NOT NULL,
-  `UserName` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `bidUsername` varchar(255) CHARACTER SET utf8 NOT NULL,
   `biddatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bidamount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

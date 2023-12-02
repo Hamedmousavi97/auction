@@ -71,42 +71,64 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
 }
 
 // function to finalise the auction
-function finaliseAuctions() {
+function finaliseAuctions($item_id) {
     global $conn;
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+
 
     // Get the current date and time
     $currentDateTime = date("Y-m-d H:i:s");
 
     // Query for auctions that have ended but not finalized
-    $query = "SELECT auctions.*, bidreport.* FROM auctions INNER JOIN bidreport ON auctions.BidID = bidreport.bidid WHERE auctionEndDate <= '$currentDateTime' AND isFinished = 0";
+    $query = "SELECT auctions.*, bidreport.* FROM auctions INNER JOIN bidreport ON auctions.BidID = bidreport.bidid WHERE auctionEndDate <= '$currentDateTime' ";
     $result = mysqli_query($conn, $query);
 
+
     if ($result && mysqli_num_rows($result) > 0) {
+        
         while ($row = mysqli_fetch_assoc($result)) {
             // Get the winning bid for the auction
-            $auctionID = $row['auctions.auctionID'];
-            $winner = $row['bidreport.UserName'];
-            $auctionTitle = $row['auctions.auctionTitle'];
-            $auctionWinningBid = $row['bidreport.bidamount'];
-            $auctionReservePrice = $row['auctions.reservePrice'];
+            $auctionID = $row['auctionID'];
+            $winner = $row['bidUsername'];
+            $auctionTitle = $row['auctionTitle'];
+            $auctionWinningBid = $row['bidamount'];
+            $auctionReservePrice = $row['auctionReservePrice'];
 
-            if ($auctionReservePrice > $auctionWinningBid) {
-                // Update the auction with the winning bid information and set it as finalized
-                $updateQuery = "UPDATE auctions SET 
-                                isFinalized = 1
-                                WHERE auctionID = $auctionID";
+            
+            if ($item_id == $auctionID) {
+            
+              if ($auctionReservePrice < $auctionWinningBid) {
+                  // Update the auction with the winning bid information and set it as finalized
+                  $updateQuery = "UPDATE auctions SET 
+                                  isFinished = 1
+                                  WHERE auctionID = $auctionID";
 
-                $updateResult = mysqli_query($conn, $updateQuery);
+                  $updateResult = mysqli_query($conn, $updateQuery);
 
-                if ($updateResult) {
-                    
+                  if ($updateResult) {
+                      
 
-                    echo "Auction $auctionTitle has been finalised.".$winner ." won the bid with the bid of £: " . $auctionWinningBid . "<br>";
-                } else {
-                    echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
-                }
-            } else {
-                echo "No winning bid found for auction ID $auctionID". $winner ." <br>";
+                      echo "</br>Auction $auctionTitle has been finalised. ".$winner ." won the bid with the bid of £" . $auctionWinningBid . "<br>";
+                  } else {
+                      echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
+                  }
+              } else {
+                  echo "No winning bid found for this auction ID $auctionID". $winner." <br>";
+
+              }
+            }
+            else {
+              $updateQuery = "UPDATE auctions SET 
+              isFinished = 1
+              WHERE auctionID = $auctionID";
+
+              $updateResult = mysqli_query($conn, $updateQuery);
+
+              echo "<br>This auction did not meet the reserved price. <br>";
+
             }
         }
     }

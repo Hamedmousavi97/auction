@@ -3,6 +3,10 @@
 <?php require_once("config.php");?>
 
 <?php
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+
   // Get info from the URL:
   $item_id = $_GET['item_id'];
 
@@ -90,12 +94,13 @@ if ($has_session) {
 
     <p>
 <?php if ($now > $end_time): ?>
-     This auction ended 
+     This auction ended on: 
      <?php 
       echo(date_format($end_time, 'j M H:i'));      
-      finaliseAuctions();
- ?>
-     <!-- TODO: Print the result of the auction here? -->
+      finaliseAuctions($item_id);
+
+      ?>
+     <!-- Print the result of the auction here? -->
 
 <?php else: ?>
      Auction ends in <?php echo(date_format($end_time, 'j M H:i') . ' time remaining: ' . $time_remaining) ?></p>

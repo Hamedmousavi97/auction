@@ -33,7 +33,7 @@
   
   $sql = "SELECT * FROM auctions
   JOIN bidreport ON auctions.BidID = bidreport.bidid
-  WHERE bidreport.UserName = ?";
+  WHERE bidreport.bidUsername = ?";
 
   $stmt = mysqli_prepare($conn, $sql);
   if ($stmt === false) {
