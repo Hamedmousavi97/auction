@@ -21,6 +21,30 @@
   <!-- Custom CSS file -->
   <link rel="stylesheet" href="css/custom.css">
 
+    <!-- Add new style for biddin-history table -->
+    <style>
+    .bidding-history h3 {
+    font-size: 1.5em;
+    margin-top: 20px;
+    }
+
+    .bidding-history table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid black;
+    }
+
+    .bidding-history th, .bidding-history td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    .bidding-history th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  </style>
+
   <title>Group 2 Auction Website </title>
 </head>
 

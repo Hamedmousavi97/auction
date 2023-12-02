@@ -58,6 +58,12 @@ if ($has_session) {
   $check_stmt->close();
 }
 
+$bid_query = "SELECT bidUsername, biddatetime, bidamount FROM bidreport WHERE auctionID = ? ORDER BY biddatetime DESC";
+$bid_stmt = mysqli_prepare($conn, $bid_query);
+mysqli_stmt_bind_param($bid_stmt, "i", $item_id);
+mysqli_stmt_execute($bid_stmt);
+$bid_result = mysqli_stmt_get_result($bid_stmt);
+
 ?>
 
 
@@ -71,6 +77,28 @@ if ($has_session) {
         <p style="font-size: 20px;"><?php echo($description); ?><h2>
       </div>
       <img src="data:image/jpg;charset=utf8;base64,<?php echo $row['Image']; ?>" width="500" height="500" />
+
+      <!-- bidding history -->
+      <div class="bidding-history">
+      <?php
+      if (mysqli_num_rows($bid_result) > 0) {
+          echo "<h3>Bidding History</h3>";
+          echo "<table>";
+          echo "<tr><th>Username</th><th>Bid Amount(£)</th><th>Bid Time</th></tr>"; // 表头
+          while ($bid_row = mysqli_fetch_assoc($bid_result)) {
+              echo "<tr>";
+              echo "<td>" . htmlspecialchars($bid_row['bidUsername']) . "</td>";
+              echo "<td>£" . htmlspecialchars($bid_row['bidamount']) . "</td>";
+              echo "<td>" . htmlspecialchars($bid_row['biddatetime']) . "</td>";
+              echo "</tr>";
+          }
+          echo "</table>";
+      } else {
+          echo "<p>No bids have been placed for this auction.</p>";
+      }
+      ?>
+    </div>
+
     </div>
     <div class="col-sm-4 align-self-center"> <!-- Right col -->
       <?php if ($now < $end_time): ?>
