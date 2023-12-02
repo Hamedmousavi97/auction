@@ -7,7 +7,7 @@ include_once("header.php");
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    /* TODO #2: Extract form data into variables. Because the form was a 'post'
+    /* #2: Extract form data into variables. Because the form was a 'post'
               form, its data can be accessed via $POST['auctionTitle'],
               $POST['auctionDetails'], etc. Perform checking on the data to
               make sure it can be inserted into the database. If there is an
@@ -29,6 +29,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //exit();
 //}
 
+
+$Image = ''; 
+
+if (isset($_FILES['Image']) && $_FILES['Image']['error'] == 0) {
+    $file = $_FILES['Image'];
+    
+    $allowedTypes = ['image/jpeg'];
+    $maxSize = 5 * 1024 * 1024; // 5 MB
+
+
+    if (!in_array($file['type'], $allowedTypes)) {
+        echo '<div class="alert alert-danger">Invalid file type. Only JPG, PNG, and GIF files are allowed.</div>';
+        exit(); 
+    }
+
+
+    if ($file['size'] > $maxSize) {
+        echo '<div class="alert alert-danger">File is too large. Maximum size is 5MB.</div>';
+        exit(); 
+    }
+
+    $imageData = file_get_contents($file['tmp_name']);
+
+    $base64Image = base64_encode($imageData);
+} else {
+    echo '<div class="alert alert-danger">Please upload an image.</div>';
+    exit();
+}
+
+
 //Check if the reserve price is less than the start price. If it is, display a message and redirect to the add auction page. */
 
 if ($auctionReservePrice < $auctionStartPrice) {
@@ -38,11 +68,11 @@ if ($auctionReservePrice < $auctionStartPrice) {
 }
 }
 
-/* TODO #3: If everything looks good, make the appropriate call to insert
+/* #3: If everything looks good, make the appropriate call to insert
             data into the database. */
 
 // prepare and bind
-$stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auctionCategory, auctionStartPrice, auctionReservePrice, auctionEndDate, auctionCurrentPrice, UserName) VALUES ('$auctionTitle', '$auctionDetails', '$auctionCategory', '$auctionStartPrice', '$auctionReservePrice', '$auctionEndDate', '$auctionCurrentPrice', '$username')");
+$stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auctionCategory, auctionStartPrice, auctionReservePrice, auctionEndDate, auctionCurrentPrice, UserName, Image) VALUES ('$auctionTitle', '$auctionDetails', '$auctionCategory', '$auctionStartPrice', '$auctionReservePrice', '$auctionEndDate', '$auctionCurrentPrice', '$username', '$base64Image')");
 
     // Execute the prepared statement
     if ($stmt->execute()) {

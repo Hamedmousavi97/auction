@@ -64,6 +64,9 @@
   }
   if (isset($_SESSION['account_type']) && $_SESSION['account_type'] == 'seller') {
   echo('
+  <li class="nav-item mx-1">
+    <a class="nav-link" href="mybids.php">My Bids</a>
+  </li>
 	<li class="nav-item mx-1">
       <a class="nav-link" href="mylistings.php">My Listings</a>
     </li>

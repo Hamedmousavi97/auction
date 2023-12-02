@@ -149,6 +149,15 @@ error_reporting(E_ALL);
                     if ($newAuctionsResult && mysqli_num_rows($newAuctionsResult) > 0) {
                         while ($row = mysqli_fetch_assoc($newAuctionsResult)) {
                             echo '<li class="list-group-item">';
+
+                            if (!empty($row['Image'])) {
+
+                              echo '<img src="data:image/jpg;charset=utf8;base64,'. $row['Image'] .'" width="100" height="100"/>';
+                            } else {
+                                echo '<img src="https://i1.sndcdn.com/avatars-000568343097-2ul7ra-t240x240.jpg" alt="Default Image" style="width: 100px; height: 100px;">';
+                            }
+    
+
                             printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
                             echo '</li>';
                             echo '<br>';

@@ -40,6 +40,7 @@ CREATE TABLE `auctions` (
   `auctionStartPrice` int(255) NOT NULL,
   `auctionReservePrice` int(255) NOT NULL,
   `auctionEndDate` datetime NOT NULL,
+  `isFinished` tinyint(1) NOT NULL DEFAULT '0',
   `auctionStartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -7,20 +7,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// TODO: Check user's credentials (cookie/session).
+// Check user's credentials (cookie/session).
 if (!isset($_SESSION['username'])) {
     header('Location: browse.php');
     exit();
 }
 
-// TODO: Connect to the database
-$db_server = "localhost";
-$db_username = "root";
-$db_password = "root";
-$db_name = "Auction";
 
 // Create a connection to the database
-$conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
 $conn->set_charset("utf8");
 
 // Check connection

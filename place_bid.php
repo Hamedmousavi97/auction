@@ -56,6 +56,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Execute the prepared statement
                 if ($stmt3->execute()) {
                     echo "New bid id inserted successfully";
+                    // show success message
+                    echo '<script>
+                            alert("Bid placed successfully!");
+                            window.history.back();
+                        </script>';
+                    // Redirect to browse.php
+                    header("Location: <a href=`listing.php?item_id=' . $item_id . '`>");
                 } else {
                     echo "Error inserting your data into the database: " . $stmt3->error;
                 }

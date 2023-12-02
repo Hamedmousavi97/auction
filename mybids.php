@@ -15,7 +15,7 @@
   // the shared "utilities.php" where they can be shared by multiple files.
   
   
-  // TODO: Check user's credentials (cookie/session).
+  //  Check user's credentials (cookie/session).
 
   if (!isset($_SESSION['username'])) {
 
@@ -23,21 +23,16 @@
     exit();
   }
 
-  $db_server = "localhost";
-  $db_username = "root";
-  $db_password = "root";
-  $db_name = "Auction";
 
   // Create a connection to the database
-  $conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
   $conn->set_charset("utf8");
 
   $username = $_SESSION['username'];
 
-  // TODO: Perform a query to pull up the auctions they've bidded on.
+  //  Perform a query to pull up the auctions they've bidded on.
   
   $sql = "SELECT * FROM auctions
-  JOIN bidreport ON auctions.BidID = bidreport.BidID
+  JOIN bidreport ON auctions.BidID = bidreport.bidid
   WHERE bidreport.UserName = ?";
 
   $stmt = mysqli_prepare($conn, $sql);
@@ -54,7 +49,7 @@
     die("Query failed: " . mysqli_error($conn));
   }
  
-  // TODO: Loop through results and print them out as list items.
+  // Loop through results and print them out as list items.
   
 
   if ($result && mysqli_num_rows($result) > 0) {

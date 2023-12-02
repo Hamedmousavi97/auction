@@ -1,5 +1,7 @@
 <?php
 
+include_once("config.php");
+
 // display_time_remaining:
 // Helper function to help figure out what time to display
 function display_time_remaining($interval) {
@@ -68,6 +70,64 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
   );
 }
 
+// function to finalise the auction
+function finaliseAuctions() {
+    global $conn;
+
+    // Get the current date and time
+    $currentDateTime = date("Y-m-d H:i:s");
+
+    // Query for auctions that have ended but not finalized
+    $query = "SELECT auctions.*, bidreport.* FROM auctions INNER JOIN bidreport ON auctions.BidID = bidreport.bidid WHERE auctionEndDate <= '$currentDateTime' AND isFinished = 0";
+    $result = mysqli_query($conn, $query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Get the winning bid for the auction
+            $auctionID = $row['auctions.auctionID'];
+            $winner = $row['bidreport.UserName'];
+            $auctionTitle = $row['auctions.auctionTitle'];
+            $auctionWinningBid = $row['bidreport.bidamount'];
+            $auctionReservePrice = $row['auctions.reservePrice'];
+
+            if ($auctionReservePrice > $auctionWinningBid) {
+                // Update the auction with the winning bid information and set it as finalized
+                $updateQuery = "UPDATE auctions SET 
+                                isFinalized = 1
+                                WHERE auctionID = $auctionID";
+
+                $updateResult = mysqli_query($conn, $updateQuery);
+
+                if ($updateResult) {
+                    
+
+                    echo "Auction $auctionTitle has been finalised.".$winner ." won the bid with the bid of £: " . $auctionWinningBid . "<br>";
+                } else {
+                    echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
+                }
+            } else {
+                echo "No winning bid found for auction ID $auctionID". $winner ." <br>";
+            }
+        }
+    }
+}
+
+// function getWinningBid($auctionID) {
+//     global $conn;
+
+//     // Query to get the winning bid for the given auction
+//     $query = "SELECT * FROM bids WHERE auctionID = $auctionID ORDER BY bidAmount DESC LIMIT 1";
+//     $result = mysqli_query($conn, $query);
+
+//     if ($result && mysqli_num_rows($result) > 0) {
+//         return mysqli_fetch_assoc($result);
+//     }
+
+//     return null;
+// }
+
+
+
 function getCategories($conn) {
   $categories = array();
 
@@ -83,5 +143,8 @@ function getCategories($conn) {
 
   return $categories;
 }
+
+
+
 
 ?>

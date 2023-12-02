@@ -90,7 +90,11 @@ if ($has_session) {
 
     <p>
 <?php if ($now > $end_time): ?>
-     This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
+     This auction ended 
+     <?php 
+      echo(date_format($end_time, 'j M H:i'));      
+      finaliseAuctions();
+ ?>
      <!-- TODO: Print the result of the auction here? -->
 
 <?php else: ?>
