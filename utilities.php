@@ -83,7 +83,7 @@ function finaliseAuctions($item_id) {
     $currentDateTime = date("Y-m-d H:i:s");
 
     // Query for auctions that have ended but not finalized
-    $query = "SELECT auctions.*, bidreport.* FROM auctions INNER JOIN bidreport ON auctions.BidID = bidreport.bidid WHERE auctionEndDate <= '$currentDateTime' ";
+    $query = "SELECT auctions.*, bidreport.* FROM auctions JOIN bidreport ON auctions.BidID = bidreport.bidid WHERE auctionEndDate <= '$currentDateTime' AND auctions.auctionID = $item_id";
     $result = mysqli_query($conn, $query);
 
 
@@ -111,12 +111,12 @@ function finaliseAuctions($item_id) {
                   if ($updateResult) {
                       
 
-                      echo "</br>Auction $auctionTitle has been finalised. ".$winner ." won the bid with the bid of £" . $auctionWinningBid . "<br>";
+                      echo "</br>Auction $auctionTitle $auctionID has been finalised. <br>".$winner ." won the bid with the bid of £" . $auctionWinningBid . "<br>";
                   } else {
                       echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
                   }
               } else {
-                  echo "No winning bid found for this auction ID $auctionID". $winner." <br>";
+                  echo "No winning bid found for this auction ID $auctionID <br>";
 
               }
             }
@@ -131,6 +131,8 @@ function finaliseAuctions($item_id) {
 
             }
         }
+    } else {
+        echo "<br>This auction did not meet the reserved price. <br>";
     }
 }
 
