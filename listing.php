@@ -65,9 +65,10 @@ if ($has_session) {
 
   <div class="row"> <!-- Row #1 with auction title + watch button -->
     <div class="col-sm-8"> <!-- Left col -->
-      <h2 class="my-3"><?php echo($title); ?></h2>
+      <h1 class="my-3"><?php echo($title); ?></h1>
+        <p style="font-size: 20px;">Seller: <?php echo($auctionCreator); ?></p>
       <div class="itemDescription">
-        <?php echo($description); ?>
+        <p style="font-size: 20px;"><?php echo($description); ?><h2>
       </div>
       <img src="data:image/jpg;charset=utf8;base64,<?php echo $row['Image']; ?>" width="500" height="500" />
     </div>
@@ -97,6 +98,7 @@ if ($has_session) {
               <input type="number" class="form-control" id="bid" name="bidamount">
             </div>
             <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
+
             <?php if ($has_session == true and $username == $auctionCreator): ?>
               <button type="button" class="btn btn-primary form-control" disabled>You can't bid on your own auction</button>
             <?php elseif ($has_session == true): ?>
@@ -104,6 +106,11 @@ if ($has_session) {
             <?php else: ?>
               <!-- redirct to login modal on the header page -->
               <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
+
+
+
+
+
             <?php endif; ?>
           </form>
       <?php endif /* Print nothing otherwise */ ?>
