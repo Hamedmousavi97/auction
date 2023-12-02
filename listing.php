@@ -98,7 +98,6 @@ if ($has_session) {
               <input type="number" class="form-control" id="bid" name="bidamount">
             </div>
             <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
-
             <?php if ($has_session == true and $username == $auctionCreator): ?>
               <button type="button" class="btn btn-primary form-control" disabled>You can't bid on your own auction</button>
             <?php elseif ($has_session == true): ?>

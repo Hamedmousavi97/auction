@@ -3,6 +3,15 @@ include_once("header.php");
 include_once("config.php");
 require("utilities.php");
 
+if (isset($_GET['deleteAuction']) && isset($_GET['auctionID'])) {
+    $auctionID = $_GET['auctionID'];
+    $username = $_SESSION['username']; // 确保已登录的用户是拍卖创建者
+    deleteAuction($auctionID, $username);
+    // 删除后重定向回拍卖列表
+    header('Location: mylistings.php');
+    exit();
+}
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -158,6 +167,10 @@ $result = mysqli_stmt_get_result($stmt);
                     echo '<li class="list-group-item">';
                     echo '<img src="data:image/jpg;charset=utf8;base64,'. $row['Image'] .'" width="100" height="100"/>';
                     printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+                    // delete auction
+                    if ($username == $row['UserName']) { // 确保只有拍卖创建者看到这个链接
+                        echo '<a href="mylistings.php?deleteAuction=true&auctionID=' . $row['auctionID'] . '" onclick="return confirm(\'Are you sure you want to delete this auction?\');">Delete Auction</a>';
+                    }
                     echo '</li>';
                     echo '<br>';
                 }

@@ -170,5 +170,42 @@ function getCategories($conn) {
 
 
 
+// function to delet auction (seller only)
+function canDeleteAuction($auctionID) {
+  global $conn;
+
+  // Query to get the auction details
+  $query = "SELECT auctionCurrentPrice, auctionReservePrice FROM auctions WHERE auctionID = $auctionID";
+  $result = mysqli_query($conn, $query);
+
+  if ($result && mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+      if ($row['auctionCurrentPrice'] < $row['auctionReservePrice']) {
+          // Current price is less than reserve price, can delete
+          return true;
+      }
+  }
+  return false; // Cannot delete if current price is equal or more than reserve price
+}
+
+function deleteAuction($auctionID) {
+  global $conn;
+
+  if (canDeleteAuction($auctionID)) {
+      $query = "DELETE FROM auctions WHERE auctionID = $auctionID";
+      $result = mysqli_query($conn, $query);
+
+      if ($result) {
+          echo "Auction deleted successfully.";
+      } else {
+          echo "Error deleting auction: " . mysqli_error($conn);
+      }
+  } else {
+      echo "Cannot delete auction as current price meets or exceeds reserve price.";
+  }
+}
+
+
+
 
 ?>
