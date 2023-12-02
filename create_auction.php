@@ -70,7 +70,7 @@
         </div>
           <div class="form-group row">
             <label for="Image">Upload Image:</label>
-            <input type="file" name="Image" id="Image" accept="Image/*"> 
+            <input type="file" name="Image" id="Image" accept="Image/*">
           <div class="form-group row">
 
     <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>

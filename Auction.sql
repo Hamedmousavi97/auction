@@ -95,11 +95,19 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
-(123, 'Art and Collectibles', 'Art and Collectibles'),
+/* (123, 'Art and Collectibles', 'Art and Collectibles'),
 (124, 'Antiques', 'Antiques'),
 (125, 'Jewelries and Watches', 'Jewelries and Watches'),
 (126, 'Toys and Collectibles', 'Toys and Collectibles'),
-(127, 'Charity Auctions', 'Charity Auctions');
+(127, 'Charity Auctions', 'Charity Auctions'),
+(128, 'Cars and Automotives', 'Cars and Automotives'),
+(129, 'Electronics and Gadgets', 'Electronics and Gadgets'),
+(130, 'Home and Appliances', 'Home and Appliances'),
+(131, 'Sports and Outdoors', 'Sports and Outdoors'),
+(132, 'Clothing and Accessories', 'Clothing and Accessories'),
+(133, 'Health and Beauty', 'Health and Beauty'),
+(134, 'Books, Music and Movies', 'Books, Music and Movies'),
+(135, 'Other', 'Other'); */
 
 -- --------------------------------------------------------
 

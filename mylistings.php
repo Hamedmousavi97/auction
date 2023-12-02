@@ -135,7 +135,18 @@ $result = mysqli_stmt_get_result($stmt);
 
     <div class="container mt-5">
     <?php
+  if (!isset($_GET['keyword'])) {
+    // Define behavior if a keyword has not been specified.
+    $keyword = '';
+    echo '<h3>All listings</h3>';
+  } else {
+    $keyword = $_GET['keyword'];
+    if ($keyword == '' ){
+      echo '<h3>All listings</h3>';
+    } else {
     echo '<h3>Search results for "' . $keyword . '"</h3>';
+  }
+}
     ?>
         <ul class="list-group">
             <?php
@@ -145,6 +156,7 @@ $result = mysqli_stmt_get_result($stmt);
                 while ($row = mysqli_fetch_array($result)) {
                     # printing out the list item
                     echo '<li class="list-group-item">';
+                    echo '<img src="data:image/jpg;charset=utf8;base64,'. $row['Image'] .'" width="100" height="100"/>';
                     printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
                     echo '</li>';
                     echo '<br>';

@@ -1,8 +1,8 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
-<?php require_once("config.php");?>
+<?php require_once("config.php");
 
-<?php
+
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
@@ -69,10 +69,11 @@ if ($has_session) {
       <div class="itemDescription">
         <?php echo($description); ?>
       </div>
+      <img src="data:image/jpg;charset=utf8;base64,<?php echo $row['Image']; ?>" width="500" height="500" />
     </div>
     <div class="col-sm-4 align-self-center"> <!-- Right col -->
       <?php if ($now < $end_time): ?>
-          <div id="watch_nowatch" 
+          <div id="watch_nowatch"
             <?php if ($has_session && $watching && $auctionCreator !== $username) echo('style="display: none"');?> >
               <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addToWatchlist()">+ Add to watchlist</button>
           </div>
@@ -80,9 +81,35 @@ if ($has_session) {
             <button type="button" class="btn btn-success btn-sm" disabled>Watching</button>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeFromWatchlist()">Remove watch</button>
           </div>
+
+
+            <!-- Move the bidding information here -->
+          <p>Auction ends in <?php echo(date_format($end_time, 'j M H:i') . ' time remaining: ' . $time_remaining) ?></p>
+          <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
+          <p class="lead">Number of bids: <?php echo($num_bids) ?></p>
+
+          <!-- Bidding form -->
+          <form method="POST" action="place_bid.php">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">£</span>
+              </div>
+              <input type="number" class="form-control" id="bid" name="bidamount">
+            </div>
+            <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
+            <?php if ($has_session == true and $username == $auctionCreator): ?>
+              <button type="button" class="btn btn-primary form-control" disabled>You can't bid on your own auction</button>
+            <?php elseif ($has_session == true): ?>
+              <button type="submit" class="btn btn-primary form-control">Place bid</button>
+            <?php else: ?>
+              <!-- redirct to login modal on the header page -->
+              <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
+            <?php endif; ?>
+          </form>
       <?php endif /* Print nothing otherwise */ ?>
     </div>
   </div>
+            </div> <!-- End of container-->
 
 
 <div class="row"> <!-- Row #2 with auction description + bidding info -->
@@ -94,43 +121,20 @@ if ($has_session) {
 
     <p>
 <?php if ($now > $end_time): ?>
-     This auction ended on: 
-     <?php 
-      echo(date_format($end_time, 'j M H:i'));      
+  This auction ended
+     <?php
+      echo(date_format($end_time, 'j M H:i'));
       finaliseAuctions($item_id);
 
       ?>
-     <!-- Print the result of the auction here? -->
-
-<?php else: ?>
-     Auction ends in <?php echo(date_format($end_time, 'j M H:i') . ' time remaining: ' . $time_remaining) ?></p>
-    <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
-    <p class="lead">Number of bids: <?php echo($num_bids) ?></p>
-
-    <!-- Bidding form -->
-    <form method="POST" action="place_bid.php">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">£</span>
-        </div>
-	    <input type="number" class="form-control" id="bid" name="bidamount">
-      </div>
-      <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
-      <?php if ($has_session == true and $username == $auctionCreator): ?>
-        <button type="button" class="btn btn-primary form-control" disabled>You can't bid on your own auction</button>
-      <?php elseif ($has_session == true): ?>
-        <button type="submit" class="btn btn-primary form-control">Place bid</button>
-      <?php else: ?>
-        <!-- redirct to login modal on the header page -->
-        <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
-      <?php endif; ?>
-    </form>
-<?php endif ?>
 </div>
 
   </div> <!-- End of right col with bidding info -->
 
 </div> <!-- End of row #2 -->
+<?php endif; ?>
+    </p>
+  </div>
 
 
 

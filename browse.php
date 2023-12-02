@@ -93,8 +93,12 @@ error_reporting(E_ALL);
     echo '<h3>All listings</h3>';
   } else {
     $keyword = $_GET['keyword'];
+    if ($keyword == '' ){
+      echo '<h3>All listings</h3>';
+    } else {
     echo '<h3>Search results for "' . $keyword . '"</h3>';
   }
+}
 
   if (!isset($_GET['cat'])) {
     $category = 'all';
@@ -156,7 +160,7 @@ error_reporting(E_ALL);
                             } else {
                                 echo '<img src="https://i1.sndcdn.com/avatars-000568343097-2ul7ra-t240x240.jpg" alt="Default Image" style="width: 100px; height: 100px;">';
                             }
-    
+
 
                             printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
                             echo '</li>';
