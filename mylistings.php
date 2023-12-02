@@ -166,8 +166,9 @@ $result = mysqli_stmt_get_result($stmt);
                     echo '<li class="list-group-item">';
                     echo '<img src="data:image/jpg;charset=utf8;base64,'. $row['Image'] .'" width="100" height="100"/>';
                     printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+                    
                     // delete auction
-                    if ($username == $row['UserName']) { 
+                    if ($username == $row['UserName'] && $row['auctionCurrentPrice'] < $row['auctionReservePrice']) {
                         echo '<a href="mylistings.php?deleteAuction=true&auctionID=' . $row['auctionID'] . '" onclick="return confirm(\'Are you sure you want to delete this auction?\');">Delete Auction</a>';
                     }
                     echo '</li>';
