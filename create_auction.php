@@ -69,8 +69,9 @@
           </div>
         </div>
           <div class="form-group row">
-            <label for="Image">Upload Image:</label>
+            <label for="Image" class="col-sm-2 col-form-label text-right">Upload Image:</label>
             <input type="file" name="Image" id="Image" accept="Image/*">
+          </div>
           <div class="form-group row">
 
     <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
