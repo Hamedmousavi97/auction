@@ -12,14 +12,20 @@
   // the shared "utilities.php" where they can be shared by multiple files.
   
   
-  // TODO: Check user's credentials (cookie/session).
-  if (!isset($_SESSION['userId'])) {
+  // Check user's credentials (cookie/session).
+  if (!isset($_SESSION['username'])) {
     // Redirect to login page, or show an error message
     echo "<p>Please log in to view recommendations.</p>";
     exit;
   }
 
-  $userId = $_SESSION['userId'];
+  $username = $_SESSION['username'];
+
+  // Get the user's ID
+  $sql = "SELECT UserID FROM users WHERE UserName = '$username'";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_assoc($result);
+  $userId = $row['UserID'];
 
   // Database connection setup
   require_once("config.php");
@@ -29,14 +35,24 @@
   }
 
   // Perform a query to pull up auctions they might be interested in.
-  $query = "SELECT * FROM auctions WHERE auctionID IN (SELECT auctionID FROM bids WHERE userID = '$userId') ORDER BY auctionEndDate DESC";
+  $query = "SELECT * FROM auctions WHERE auctionID IN (SELECT auctionID FROM bidreport WHERE bidUsername = '$username') ORDER BY auctionEndDate DESC";
   $result = mysqli_query($conn, $query);
 
   // Loop through results and print them out as list items.
   if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-      printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate'], $row['UserName'], $row['auctionCategory'], $row['auctionReservePrice']);
-    }
+      ini_set('display_errors', 1);
+      ini_set('display_startup_errors', 1);
+      error_reporting(E_ALL);
+      echo '<li class="list-group-item">';
+      if (!empty($row['Image'])) {
+        echo '<img src="data:image/jpg;charset=utf8;base64,'. $row['Image'] .'" width="100" height="100"/>';
+      } else {
+          echo '<img src="https://i1.sndcdn.com/avatars-000568343097-2ul7ra-t240x240.jpg" alt="Default Image" style="width: 100px; height: 100px;">';
+      }
+      printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionCurrentPrice'], $row['NumBid'], $row['auctionEndDate'], $row['auctionCategory'], $row['UserName'], $row['auctionStartDate']);
+      echo '</li>';
+      echo '<br>';    }
   } else {
     echo "<p>No recommendations available based on your bid history.</p>";
   }

@@ -29,58 +29,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $current_price = $row['auctionStartPrice'];
         $auctionReservePrice = $row['auctionReservePrice'];
         $auctionEndDate = $row['auctionEndDate'];
+        $auctionCreator = $row['UserName'];
     }
 
-    // Check if the bid is valid
-    if ($bidAmount > $current_price ) {
-
-        // Update the number of bids
-        $num_bids = $num_bids + 1;
-        
-        // Update the current highest bid
-        $stmt = $conn->prepare("UPDATE auctions SET auctionCurrentPrice = '$bidAmount', NumBid = '$num_bids' WHERE auctionID = '$auctionId'" );
-        if ($stmt->execute()) {
-            
-            // Insert data into bid report table
-            $stmt2 = $conn->prepare("INSERT INTO bidreport (auctionID, bidUsername, bidamount) VALUES ('$auctionId', '$username', '$bidAmount')");
-
-            // Execute the prepared statement
-            if ($stmt2->execute()) {
-            
-                //Update bid ID into auction table
-                $bid_id = mysqli_insert_id($conn);
-
-                //Insert bid ID into auctions table
-                $stmt3 = $conn->prepare("UPDATE auctions SET BidID = '$bid_id' WHERE auctionID = '$auctionId'" );
-
-                // Execute the prepared statement
-                if ($stmt3->execute()) {
-                    echo "New bid id inserted successfully";
-                    // show success message
-                    echo '<script>
-                            alert("Bid placed successfully!");
-                            window.history.back();
-                        </script>';
-                    // Redirect to browse.php
-                    header("Location: <a href=`listing.php?item_id=' . $item_id . '`>");
-                } else {
-                    echo "Error inserting your data into the database: " . $stmt3->error;
-                }
-            } else {
-                echo "Error inserting your data into the database: " . $stmt2->error;
-            }
-        } else {
-            echo "Error updating the current price: " . $stmt->error;
-        }
-
-    } else {
-        // Inform the user that their bid is too low
+    // check if the user is the auction creator
+    if ($auctionCreator == $username) {
         echo '<script>
-        alert("Please make sure to enter a valid amount. Your bid should be more than the current price.");
+        alert("You cannot bid on your own auction!");
         window.history.back();
         </script>';
-    }
+    } else {
+        // Check if the bid is valid
+        if ($bidAmount > $current_price ) {
 
+            // Update the number of bids
+            $num_bids = $num_bids + 1;
+            
+            // Update the current highest bid
+            $stmt = $conn->prepare("UPDATE auctions SET auctionCurrentPrice = '$bidAmount', NumBid = '$num_bids' WHERE auctionID = '$auctionId'" );
+            if ($stmt->execute()) {
+                
+                // Insert data into bid report table
+                $stmt2 = $conn->prepare("INSERT INTO bidreport (auctionID, bidUsername, bidamount) VALUES ('$auctionId', '$username', '$bidAmount')");
+
+                // Execute the prepared statement
+                if ($stmt2->execute()) {
+                
+                    //Update bid ID into auction table
+                    $bid_id = mysqli_insert_id($conn);
+
+                    //Insert bid ID into auctions table
+                    $stmt3 = $conn->prepare("UPDATE auctions SET BidID = '$bid_id' WHERE auctionID = '$auctionId'" );
+
+                    // Execute the prepared statement
+                    if ($stmt3->execute()) {
+                        echo "New bid id inserted successfully";
+                        // show success message
+                        echo '<script>
+                                alert("Bid placed successfully!");
+                                window.history.back();
+                            </script>';
+                        // Redirect to browse.php
+                        header("Location: <a href=`listing.php?item_id=' . $item_id . '`>");
+                    } else {
+                        echo "Error inserting your data into the database: " . $stmt3->error;
+                    }
+                } else {
+                    echo "Error inserting your data into the database: " . $stmt2->error;
+                }
+            } else {
+                echo "Error updating the current price: " . $stmt->error;
+            }
+
+        } else {
+            // Inform the user that their bid is too low
+            echo '<script>
+            alert("Please make sure to enter a valid amount. Your bid should be more than the current price.");
+            window.history.back();
+            </script>';
+        }
+    }
 
 
 

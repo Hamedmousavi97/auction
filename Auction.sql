@@ -142,7 +142,7 @@ CREATE TABLE `users` (
   `City` varchar(255) DEFAULT NULL,
   `Postcode` varchar(255) DEFAULT NULL,
   `UserImage` varchar(255) DEFAULT NULL,
-  `UserRating` int(11) NOT NULL DEFAULT '0',
+  `UserRating` decimal(3,1) NOT NULL DEFAULT '0',
   `UserRatingCount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

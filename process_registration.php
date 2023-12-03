@@ -153,7 +153,11 @@ if ($sanitizedEmail && validateEmail($sanitizedEmail)) {
     if ($stmt->execute()) {
       setcookie("account_type", $accountType);
       setcookie("username", $username);
-        header("Location: header.php");
+      echo '<script>
+              alert("Account created successfully! Please log in to continue.");
+              window.history.back();
+          </script>';
+      header("Location: browse.php");
         exit(); // Ensure no further execution after redirection
     } else {
 

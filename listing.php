@@ -25,6 +25,7 @@
     $current_price = $row['auctionCurrentPrice'];
     $auctionEndDate = $row['auctionEndDate'];
     $auctionCreator = $row['UserName'];
+    $auctionReservePrice = $row['auctionReservePrice'];
   }
 
   //Get the auction creator's rating
@@ -84,7 +85,7 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
     <div class="col-sm-8"> <!-- Left col -->
       <h1 class="my-3"><?php echo($title); ?></h1>
         <p style="font-size: 20px;">Seller: <?php echo($auctionCreator); ?></p>
-        <p style="font-size: 20px;">Seller Rating: <?php echo($auctionCreatorRating); ?>/5 (<?php echo($auctionCreatorRatingCount); ?>)</p>
+        <p style="font-size: 20px;">Seller Rating: <?php echo(number_format($auctionCreatorRating,1)); ?>/5 (<?php echo($auctionCreatorRatingCount); ?>)</p>
       <div class="itemDescription">
         <p style="font-size: 20px;"><?php echo($description); ?><h2>
       </div>
@@ -126,7 +127,8 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
 
             <!-- Move the bidding information here -->
           <p>Auction ends in <?php echo(date_format($end_time, 'j M H:i') . ' time remaining: ' . $time_remaining) ?></p>
-          <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
+          <p class="lead">Current Price: £<?php echo(number_format($current_price, 2)) ?></p>
+          <p class="lead">Reserve Price: £<?php echo(number_format($auctionReservePrice, 2)) ?></p>
           <p class="lead">Number of bids: <?php echo($num_bids) ?></p>
 
           <!-- Bidding form -->
