@@ -29,7 +29,7 @@
   }
 
   //Get the auction creator's rating
-  $sql2 = "SELECT * FROM users WHERE UserName = '$auctionCreator'"; 
+  $sql2 = "SELECT * FROM users WHERE UserName = '$auctionCreator'";
   $result2 = mysqli_query($conn, $sql2);
   $row2 = mysqli_fetch_array($result2);
   if (!$result2) {
@@ -156,9 +156,9 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
               <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
             <?php endif; ?>
 
-            
+
           </form>
-          
+
           <!-- rating form -->
           <br>
           <form method="POST" action="rating.php">
@@ -189,7 +189,7 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
               <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
             <?php endif; ?>
 
-            
+
           </form>
       <?php endif /* Print nothing otherwise */ ?>
     </div>
@@ -210,6 +210,9 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
      <?php
       echo(date_format($end_time, 'j M H:i'));
       finaliseAuctions($item_id);
+      $message =  "The $a auction has ended. Please log in to view the details.";
+      SendEmail($email, $subject, $message);
+
 
       ?>
 </div>

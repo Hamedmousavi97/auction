@@ -34,7 +34,7 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
   else {
     $desc_shortened = $desc;
   }
-  
+
   global $conn;
   if (!isset($_SESSION['username'])) {
     $watching = '';
@@ -42,13 +42,13 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
   else {
     $current_user = $_SESSION['username'];
     $query = "SELECT * FROM watchlist WHERE auctionID = '$item_id' AND username = '$current_user'";
-    $result = mysqli_query($conn, $query);    
+    $result = mysqli_query($conn, $query);
     if ($result && mysqli_num_rows($result) > 0) {
       $watching = '<button type="button" class="btn btn-success btn-sm" disabled>Watching</button>';
     }
     else {
       $watching = '';
-    }  
+    }
   }
 
   // Fix language of bid vs. bids
@@ -99,7 +99,7 @@ function finaliseAuctions($item_id) {
 
 
     if ($result && mysqli_num_rows($result) > 0) {
-        
+
         while ($row = mysqli_fetch_assoc($result)) {
             // Get the winning bid for the auction
             $auctionID = $row['auctionID'];
@@ -108,19 +108,19 @@ function finaliseAuctions($item_id) {
             $auctionWinningBid = $row['bidamount'];
             $auctionReservePrice = $row['auctionReservePrice'];
 
-            
+
             if ($item_id == $auctionID) {
-            
+
               if ($auctionReservePrice < $auctionWinningBid) {
                   // Update the auction with the winning bid information and set it as finalized
-                  $updateQuery = "UPDATE auctions SET 
+                  $updateQuery = "UPDATE auctions SET
                                   isFinished = 1
                                   WHERE auctionID = $auctionID";
 
                   $updateResult = mysqli_query($conn, $updateQuery);
 
                   if ($updateResult) {
-                      
+
 
                       echo "</br>Auction $auctionTitle $auctionID has been finalised. <br>".$winner ." won the bid with the bid of £" . $auctionWinningBid . "<br>";
                   } else {
@@ -132,7 +132,7 @@ function finaliseAuctions($item_id) {
               }
             }
             else {
-              $updateQuery = "UPDATE auctions SET 
+              $updateQuery = "UPDATE auctions SET
               isFinished = 1
               WHERE auctionID = $auctionID";
 
@@ -214,6 +214,47 @@ function deleteAuction($auctionID) {
   } else {
       echo "Cannot delete auction as current price meets or exceeds reserve price.";
   }
+}
+
+
+require 'vendor/autoload.php';
+
+use \SendGrid\Mail\Mail;
+
+function SendEmail($email, $subject, $message) {
+
+  $email = new Mail();
+// Replace the email address and name with your verified sender
+$email->setFrom(
+    'databasecheckingemail@gmail.com',
+    'Winston Nagelmackers'
+);
+$email->setSubject('Auction Testing');
+// Replace the email address and name with your recipient
+$email->addTo(
+    'databasecheckingemail@gmail.com',
+    'Winston Nagelmackers'
+);
+$email->addContent(
+    'text/html',
+    '<strong>'. $message .'</strong>'
+);
+$sendgrid = new \SendGrid('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');
+try {
+    $response = $sendgrid->send($email);
+    printf("Response status: %d\n\n", $response->statusCode());
+
+    $headers = array_filter($response->headers());
+    echo "Response Headers\n\n";
+    foreach ($headers as $header) {
+        echo '- ' . $header . "\n";
+    }
+} catch (Exception $e) {
+    echo 'Caught exception: '. $e->getMessage() ."\n";
+}
+
+
+
 }
 
 

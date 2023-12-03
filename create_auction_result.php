@@ -2,6 +2,7 @@
 
 // Include configuration and header
 require_once("config.php");
+require_once("utilities.php");
 include_once("header.php");
 
 // Check if the form has been submitted
@@ -30,24 +31,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //}
 
 
-$Image = ''; 
+$Image = '';
 
 if (isset($_FILES['Image']) && $_FILES['Image']['error'] == 0) {
     $file = $_FILES['Image'];
-    
+
     $allowedTypes = ['image/jpeg'];
     $maxSize = 5 * 1024 * 1024; // 5 MB
 
 
     if (!in_array($file['type'], $allowedTypes)) {
         echo '<div class="alert alert-danger">Invalid file type. Only JPG, PNG, and GIF files are allowed.</div>';
-        exit(); 
+        exit();
     }
 
 
     if ($file['size'] > $maxSize) {
         echo '<div class="alert alert-danger">File is too large. Maximum size is 5MB.</div>';
-        exit(); 
+        exit();
     }
 
     $imageData = file_get_contents($file['tmp_name']);
@@ -77,6 +78,12 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
     // Execute the prepared statement
     if ($stmt->execute()) {
         echo "New record inserted successfully";
+        echo "<br>";
+        echo "<br>";
+        echo "Message sent to your email address";
+        $message = "Creation of $auctionTitle successful, please log in to view the details.";
+        SendEmail($email, $subject, $message);
+
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -87,6 +94,12 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
 
 // If all is successful, let user know.
 echo('<div class="text-center">Auction successfully created! <a href="mylistings.php">View your new listing.</a></div>');
+
+
+
+// Send an email using SendGrid
+//Include the SendGrid library
+
 
 
 ?>

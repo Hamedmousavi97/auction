@@ -4,6 +4,8 @@
 require_once("config.php");
 include_once("header.php");
 require_once("browse.php");
+require_once("utilities.php");
+
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,6 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bidAmount = isset($_POST['bidamount']) ? (int)$_POST['bidamount'] : 0;
     $auctionId = isset($_POST['item_id']) ? (int)$_POST['item_id'] : null;
     $username = $_SESSION['username'];
+    $auctionTitle = isset($_POST['auctionTitle']) ? $_POST['auctionTitle'] : '';
+
 
     // get the auction details from the database
     $sql = "SELECT * FROM auctions WHERE auctionID = '$auctionId'";
@@ -30,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $auctionReservePrice = $row['auctionReservePrice'];
         $auctionEndDate = $row['auctionEndDate'];
         $auctionCreator = $row['UserName'];
+
     }
 
     // check if the user is the auction creator
@@ -44,17 +49,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Update the number of bids
             $num_bids = $num_bids + 1;
-            
+
             // Update the current highest bid
             $stmt = $conn->prepare("UPDATE auctions SET auctionCurrentPrice = '$bidAmount', NumBid = '$num_bids' WHERE auctionID = '$auctionId'" );
             if ($stmt->execute()) {
-                
+
                 // Insert data into bid report table
                 $stmt2 = $conn->prepare("INSERT INTO bidreport (auctionID, bidUsername, bidamount) VALUES ('$auctionId', '$username', '$bidAmount')");
 
                 // Execute the prepared statement
                 if ($stmt2->execute()) {
-                
+                  $sql = "SELECT * FROM auctions WHERE auctionCreator = '$auctionCreator'";
+                  $message =  "A bid of £$bidAmount been placed on you're $auctionTitle auction. Please log in to view the details.";
+                  SendEmail($email, $subject, $message); // the message for auction creator, new bid placed
+                  $sql = "SELECT * FROM bidreport WHERE bidUsername = '$username'";
+                  $message =  "A bid of £$bidAmount by $username has been placed on the $auctionTitle successfully. Please log in to view the details.";
+                  SendEmail($email, $subject, $message); // the message for bid placer that the bid was successful
+
                     //Update bid ID into auction table
                     $bid_id = mysqli_insert_id($conn);
 
@@ -71,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </script>';
                         // Redirect to browse.php
                         header("Location: <a href=`listing.php?item_id=' . $item_id . '`>");
-                    } else {
+                      } else {
                         echo "Error inserting your data into the database: " . $stmt3->error;
                     }
                 } else {
