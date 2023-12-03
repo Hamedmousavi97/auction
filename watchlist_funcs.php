@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // make sure session has started
 session_start(); 
@@ -22,7 +20,7 @@ require_once("config.php");
 // }
 
 if ($_POST['functionname'] == "add_to_watchlist") {
-  // TODO: Update database and return success/failure.
+  // Update database and return success/failure.
   $query = "INSERT INTO watchlist (username, auctionID) VALUES ('$username', '$auctionID')";
   $stmt = $conn->prepare($query);
 
@@ -34,7 +32,7 @@ if ($_POST['functionname'] == "add_to_watchlist") {
 }
 
 else if ($_POST['functionname'] == "remove_from_watchlist") {
-  // TODO: Update database and return success/failure.
+  // Update database and return success/failure.
   $query = "DELETE FROM watchlist WHERE username = ? AND auctionID = ?";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("ii", $username, $auctionID);
