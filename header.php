@@ -21,6 +21,30 @@
   <!-- Custom CSS file -->
   <link rel="stylesheet" href="css/custom.css">
 
+    <!-- Add new style for biddin-history table -->
+    <style>
+    .bidding-history h3 {
+    font-size: 1.5em;
+    margin-top: 20px;
+    }
+
+    .bidding-history table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid black;
+    }
+
+    .bidding-history th, .bidding-history td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    .bidding-history th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  </style>
+
   <title>Group 2 Auction Website </title>
 </head>
 
@@ -72,7 +96,10 @@
     </li>
 	<li class="nav-item ml-3">
       <a class="nav-link btn border-light" href="create_auction.php">+ Create auction</a>
-    </li>');
+    </li>
+    <li class="nav-item mx-1">
+    <a class="nav-link" href="recommendations.php">Recommended</a>
+  </li>');
   }
 ?>
   </ul>

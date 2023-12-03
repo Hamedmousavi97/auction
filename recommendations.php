@@ -15,13 +15,13 @@
   
   
   // TODO: Check user's credentials (cookie/session).
-
-  if (!isset($_SESSION['username'])) {
-    header('Location: browse.php'); // Redirect to browse page if not logged in
-    exit();
+  if (!isset($_SESSION['userId'])) {
+    // Redirect to login page, or show an error message
+    echo "<p>Please log in to view recommendations.</p>";
+    exit;
   }
 
-  $username = $_SESSION['username'];
+  $userId = $_SESSION['userId'];
 
   // Database connection setup
   require_once("config.php");
@@ -30,66 +30,18 @@
       die("Connection failed: " . mysqli_connect_error());
   }
 
+  // Perform a query to pull up auctions they might be interested in.
+  $query = "SELECT * FROM auctions WHERE auctionID IN (SELECT auctionID FROM bids WHERE userID = '$userId') ORDER BY auctionEndDate DESC";
+  $result = mysqli_query($conn, $query);
 
-  // Assuming you have a database connection established
-
-  // Function to get recommended auctions based on user's bids
-  function getRecommendedAuctions($conn, $username)
-  {
-    $recommendedAuctions = [];
-
-      // Fetch user's bids
-      $userBidsQuery = "SELECT * FROM auctions
-      JOIN bidreport ON auctions.BidID = bidreport.bidid
-      WHERE bidreport.Username = ?";
-
-      // Using prepared statement to prevent SQL injection
-        $stmt = $conn->prepare($userBidsQuery);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $userBidsResult = $stmt->get_result();
-     
-      if ($userBidsResult->num_rows > 0) {
-      
-          // Loop through user's bids to find matching categories
-          while ($row = $userBidsResult->fetch_assoc()) {
-              $auctionId = $row['auctionID'];
-              $category = $row['auctionCategory'];
-
-              // Get auctions with the same category, excluding those the user has already bid on
-              $recommendationsQuery = "SELECT * FROM auctions WHERE auctionCategory = ? AND auctionID <> ?";
-              $stmt = $conn->prepare($recommendationsQuery);
-              $stmt->bind_param("si", $category, $auctionId);
-              $stmt->execute();
-              $recommendationsResult = $stmt->get_result();
-
-              if ($recommendationsResult->num_rows > 0) {
-                  // Add recommended auctions to the array
-                  while ($auction = $recommendationsResult->fetch_assoc()) {
-                      $recommendedAuctions[] = $auction;
-                  }
-              }
-          }
-          return $recommendedAuctions;
-      }
+  // Loop through results and print them out as list items.
+  if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      printListingLi($row['auctionID'], $row['auctionTitle'], $row['auctionDetails'], $row['auctionStartPrice'], $row['numBids'], $row['auctionEndDate'], $row['UserName'], $row['auctionCategory'], $row['auctionReservePrice']);
     }
-      $recommendedAuctions = getRecommendedAuctions($conn, $username);
-
-      // Display recommended auctions
-      if (!empty($recommendedAuctions)) {
-        echo '<ul class="list-group">';
-        foreach ($recommendedAuctions as $auction) {
-            echo '<li class="list-group-item">';
-            if (isset($auction['auctionID'])) {
-                // Assuming the keys in $auction array match the parameters of printListingLi function
-                printListingLi($auction['auctionID'], $auction['auctionTitle'], $auction['auctionDetails'], $auction['auctionCurrentPrice'], $auction['NumBid'], $auction['auctionEndDate'], $auction['auctionCategory'], $auction['UserName'], $auction['auctionStartDate']);
-            }
-            echo '</li>';
-        }
-        echo '</ul>';
-      } else {
-        echo "No recommendations found.";
-      }
+  } else {
+    echo "<p>No recommendations available based on your bid history.</p>";
+  }
 
 
     

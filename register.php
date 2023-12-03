@@ -44,7 +44,7 @@
     <label for="Address2" class="col-sm-2 col-form-label text-right">Address 2</label>
 	<div class="col-sm-10">
       <input type="text" class="form-control" id="Address2" placeholder="Address 2" name="Address2">
-      <small id="Address2" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+      <small id="Address2" class="form-text text-muted"><span class="text-danger"></span></small>
 	</div>
   </div>
   <div class="form-group row">

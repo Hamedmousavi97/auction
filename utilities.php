@@ -34,6 +34,22 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
   else {
     $desc_shortened = $desc;
   }
+  
+  global $conn;
+  if (!isset($_SESSION['username'])) {
+    $watching = '';
+  }
+  else {
+    $current_user = $_SESSION['username'];
+    $query = "SELECT * FROM watchlist WHERE auctionID = '$item_id' AND username = '$current_user'";
+    $result = mysqli_query($conn, $query);    
+    if ($result && mysqli_num_rows($result) > 0) {
+      $watching = '<button type="button" class="btn btn-success btn-sm" disabled>Watching</button>';
+    }
+    else {
+      $watching = '';
+    }  
+  }
 
   // Fix language of bid vs. bids
   if ($num_bids == 1) {
@@ -57,10 +73,10 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
       $time_remaining = 'Auction ended';
   }
 
-
   // Print HTML
   echo('
     <strong> User "' . $username . '" Created an auction on: ' . $date_created . '</strong>
+    <div class="text-right"> ' . $watching . '</div>
     <br>
     <li class="list-group-item d-flex justify-content-between">
     <div class="p-2 mr-5"><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' . $desc_shortened . '<br> <strong>' . $category . '</strong></div>
@@ -73,11 +89,6 @@ function printListingLi($item_id, $title, $desc, $price, $num_bids, $end_time, $
 // function to finalise the auction
 function finaliseAuctions($item_id) {
     global $conn;
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
-
 
     // Get the current date and time
     $currentDateTime = date("Y-m-d H:i:s");

@@ -25,6 +25,18 @@
     $current_price = $row['auctionCurrentPrice'];
     $auctionEndDate = $row['auctionEndDate'];
     $auctionCreator = $row['UserName'];
+    $auctionReservePrice = $row['auctionReservePrice'];
+  }
+
+  //Get the auction creator's rating
+  $sql2 = "SELECT * FROM users WHERE UserName = '$auctionCreator'"; 
+  $result2 = mysqli_query($conn, $sql2);
+  $row2 = mysqli_fetch_array($result2);
+  if (!$result2) {
+    echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
+  } else {
+    $auctionCreatorRating = $row2['UserRating'];
+    $auctionCreatorRatingCount = $row2['UserRatingCount'];
   }
 
   // Note: Auctions that have ended may pull a different set of data,
@@ -58,6 +70,12 @@ if ($has_session) {
   $check_stmt->close();
 }
 
+$bid_query = "SELECT bidUsername, biddatetime, bidamount FROM bidreport WHERE auctionID = ? ORDER BY biddatetime DESC";
+$bid_stmt = mysqli_prepare($conn, $bid_query);
+mysqli_stmt_bind_param($bid_stmt, "i", $item_id);
+mysqli_stmt_execute($bid_stmt);
+$bid_result = mysqli_stmt_get_result($bid_stmt);
+
 ?>
 
 
@@ -67,10 +85,33 @@ if ($has_session) {
     <div class="col-sm-8"> <!-- Left col -->
       <h1 class="my-3"><?php echo($title); ?></h1>
         <p style="font-size: 20px;">Seller: <?php echo($auctionCreator); ?></p>
+        <p style="font-size: 20px;">Seller Rating: <?php echo(number_format($auctionCreatorRating,1)); ?>/5 (<?php echo($auctionCreatorRatingCount); ?>)</p>
       <div class="itemDescription">
         <p style="font-size: 20px;"><?php echo($description); ?><h2>
       </div>
       <img src="data:image/jpg;charset=utf8;base64,<?php echo $row['Image']; ?>" width="500" height="500" />
+
+      <!-- bidding history -->
+      <div class="bidding-history">
+      <?php
+      if (mysqli_num_rows($bid_result) > 0) {
+          echo "<h3>Bidding History</h3>";
+          echo "<table>";
+          echo "<tr><th>Username</th><th>Bid Amount(£)</th><th>Bid Time</th></tr>"; // 表头
+          while ($bid_row = mysqli_fetch_assoc($bid_result)) {
+              echo "<tr>";
+              echo "<td>" . htmlspecialchars($bid_row['bidUsername']) . "</td>";
+              echo "<td>£" . htmlspecialchars($bid_row['bidamount']) . "</td>";
+              echo "<td>" . htmlspecialchars($bid_row['biddatetime']) . "</td>";
+              echo "</tr>";
+          }
+          echo "</table>";
+      } else {
+          echo "<p>No bids have been placed for this auction.</p>";
+      }
+      ?>
+    </div>
+
     </div>
     <div class="col-sm-4 align-self-center"> <!-- Right col -->
       <?php if ($now < $end_time): ?>
@@ -86,7 +127,8 @@ if ($has_session) {
 
             <!-- Move the bidding information here -->
           <p>Auction ends in <?php echo(date_format($end_time, 'j M H:i') . ' time remaining: ' . $time_remaining) ?></p>
-          <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
+          <p class="lead">Current Price: £<?php echo(number_format($current_price, 2)) ?></p>
+          <p class="lead">Reserve Price: £<?php echo(number_format($auctionReservePrice, 2)) ?></p>
           <p class="lead">Number of bids: <?php echo($num_bids) ?></p>
 
           <!-- Bidding form -->
@@ -98,10 +140,13 @@ if ($has_session) {
               <input type="number" class="form-control" id="bid" name="bidamount">
             </div>
             <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
+            <br>
             <?php if ($username == $auctionCreator && $current_price < $row['auctionReservePrice']): ?>
-            <a href="mylistings.php?deleteAuction=true&auctionID=<?php echo $item_id; ?>" onclick="return confirm('Are you sure you want to delete this auction?');">Delete Auction</a>
+            <br>
+              <a class="btn btn-danger btn-sm" href="mylistings.php?deleteAuction=true&auctionID=<?php echo $item_id; ?>" onclick="return confirm('Are you sure you want to delete this auction?');">Delete Auction</a>
+            <br>
           <?php endif; ?>
-
+              <br>
             <?php if ($has_session == true and $username == $auctionCreator): ?>
               <button type="button" class="btn btn-primary form-control" disabled>You can't bid on your own auction</button>
             <?php elseif ($has_session == true): ?>
@@ -109,12 +154,42 @@ if ($has_session) {
             <?php else: ?>
               <!-- redirct to login modal on the header page -->
               <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
-
-
-
-
-
             <?php endif; ?>
+
+            
+          </form>
+          
+          <!-- rating form -->
+          <br>
+          <form method="POST" action="rating.php">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <p class="lead">
+                  Please provide a rating for this seller
+                </p>
+              </div>
+              <div class="input-group-prepend">
+                <p class="lead">
+                  You should enter an amount between 1 and 5 for the highest rating.
+                </p>
+              </div>
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rating</span>
+              </div>
+              <input type="number" class="form-control" id="rating" name="ratingAmount">
+            </div>
+            <input type="hidden" name="auctionCreator" value="<?php echo($auctionCreator);?>">
+            <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
+            <?php if ($has_session == true and $username == $auctionCreator): ?>
+              <button type="button" class="btn btn-primary form-control" disabled>You can't rate yourself!</button>
+            <?php elseif ($has_session == true): ?>
+              <button type="submit" class="btn btn-primary form-control">Rate this seller</button>
+            <?php else: ?>
+              <!-- redirct to login modal on the header page -->
+              <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
+            <?php endif; ?>
+
+            
           </form>
       <?php endif /* Print nothing otherwise */ ?>
     </div>
@@ -155,7 +230,6 @@ if ($has_session) {
 // JavaScript functions: addToWatchlist and removeFromWatchlist.
 
 function addToWatchlist(button) {
-  console.log("These print statements are helpful for debugging btw");
 
   // This performs an asynchronous call to a PHP function using POST method.
   // Sends item ID as an argument to that function.

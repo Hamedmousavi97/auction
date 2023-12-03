@@ -93,21 +93,21 @@ CREATE TABLE `categories` (
 --
 -- Dumping data for table `categories`
 --
-
-INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
-/* (123, 'Art and Collectibles', 'Art and Collectibles'),
-(124, 'Antiques', 'Antiques'),
-(125, 'Jewelries and Watches', 'Jewelries and Watches'),
-(126, 'Toys and Collectibles', 'Toys and Collectibles'),
-(127, 'Charity Auctions', 'Charity Auctions'),
-(128, 'Cars and Automotives', 'Cars and Automotives'),
-(129, 'Electronics and Gadgets', 'Electronics and Gadgets'),
-(130, 'Home and Appliances', 'Home and Appliances'),
-(131, 'Sports and Outdoors', 'Sports and Outdoors'),
-(132, 'Clothing and Accessories', 'Clothing and Accessories'),
-(133, 'Health and Beauty', 'Health and Beauty'),
-(134, 'Books, Music and Movies', 'Books, Music and Movies'),
-(135, 'Other', 'Other'); */
+/*
+INSERT INTO `categories` (`categoryName`, `categoryDescription`) VALUES
+('Art and Collectibles', 'Art and Collectibles'),
+( 'Antiques', 'Antiques'),
+( 'Jewelries and Watches', 'Jewelries and Watches'),
+( 'Toys and Collectibles', 'Toys and Collectibles'),
+( 'Charity Auctions', 'Charity Auctions'),
+( 'Cars and Automotives', 'Cars and Automotives'),
+( 'Electronics and Gadgets', 'Electronics and Gadgets'),
+( 'Home and Appliances', 'Home and Appliances'),
+( 'Sports and Outdoors', 'Sports and Outdoors'),
+( 'Clothing and Accessories', 'Clothing and Accessories'),
+( 'Health and Beauty', 'Health and Beauty'),
+( 'Books, Music and Movies', 'Books, Music and Movies'),
+( 'Other', 'Other'); */
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,9 @@ CREATE TABLE `users` (
   `Address2` varchar(255) DEFAULT NULL,
   `City` varchar(255) DEFAULT NULL,
   `Postcode` varchar(255) DEFAULT NULL,
-  `UserImage` varchar(255) DEFAULT NULL
+  `UserImage` varchar(255) DEFAULT NULL,
+  `UserRating` decimal(3,1) NOT NULL DEFAULT '0',
+  `UserRatingCount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
