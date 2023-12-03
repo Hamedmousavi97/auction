@@ -145,7 +145,7 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
             <br>
               <a class="btn btn-danger btn-sm" href="mylistings.php?deleteAuction=true&auctionID=<?php echo $item_id; ?>" onclick="return confirm('Are you sure you want to delete this auction?');">Delete Auction</a>
             <br>
-          <?php endif; ?>
+            <?php endif; ?>
               <br>
             <?php if ($has_session == true and $username == $auctionCreator): ?>
               <button type="button" class="btn btn-primary form-control" disabled>You can't bid on your own auction</button>
@@ -159,74 +159,75 @@ $bid_result = mysqli_stmt_get_result($bid_stmt);
 
           </form>
 
-          <!-- rating form -->
-          <br>
-          <form method="POST" action="rating.php">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <p class="lead">
-                  Please provide a rating for this seller
-                </p>
-              </div>
-              <div class="input-group-prepend">
-                <p class="lead">
-                  You should enter an amount between 1 and 5 for the highest rating.
-                </p>
-              </div>
-              <div class="input-group-prepend">
-                <span class="input-group-text">Rating</span>
-              </div>
-              <input type="number" class="form-control" id="rating" name="ratingAmount">
-            </div>
-            <input type="hidden" name="auctionCreator" value="<?php echo($auctionCreator);?>">
-            <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
-            <?php if ($has_session == true and $username == $auctionCreator): ?>
-              <button type="button" class="btn btn-primary form-control" disabled>You can't rate yourself!</button>
-            <?php elseif ($has_session == true): ?>
-              <button type="submit" class="btn btn-primary form-control">Rate this seller</button>
-            <?php else: ?>
-              <!-- redirct to login modal on the header page -->
-              <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
-            <?php endif; ?>
-
-
-          </form>
       <?php endif /* Print nothing otherwise */ ?>
     </div>
   </div>
-            </div> <!-- End of container-->
+</div> <!-- End of container-->
 
 
 <div class="row"> <!-- Row #2 with auction description + bidding info -->
   <div class="col-sm-8"> <!-- Left col with item info -->
-
   </div>
+    <div class="col-sm-4 align-self-center"> <!-- Right col with bidding info -->
+      <?php if ($now > $end_time): ?>
+        This auction ended on
+          <?php
+            echo(date_format($end_time, 'j M H:i'));
+            finaliseAuctions($item_id);
+            $message =  "The $title has ended. Please log in to view the details.";
+            SendEmail($email, $subject, $message);
+      
+          ?>
+            <!-- rating form -->
+              <br>
+              <form method="POST" action="rating.php">
+                <p>
+                  <label for="rating">Rate this seller:
+                  <select name="ratingAmount" id="rating" name="ratingAmount">
+                    <option value="1">1 - Very bad</option>
+                    <option value="2">2 - Bad</option>
+                    <option value="3">3 - Average</option>
+                    <option value="4">4 - Good</option>
+                    <option value="5">5 - Very good</option>
+                  </select>
+                </label>
+                </p>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                  </div>
+                  <div class="input-group-prepend">
+                    <br>
+                  </div>
+                  
+                <input type="hidden" name="auctionCreator" value="<?php echo($auctionCreator);?>">
+                <input type="hidden" name="item_id" value="<?php echo($item_id);?>">
+                <?php if ($has_session == true and $username == $auctionCreator): ?>
+                  <button type="button" class="btn btn-primary form-control" disabled>You can't rate yourself!</button>
+                <?php elseif ($has_session == true): ?>
+                  <button type="submit" class="btn btn-primary form-control">Rate this seller</button>
+                <?php else: ?>
+                  <!-- redirct to login modal on the header page -->
+                  <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">Please log in</button>
+                <?php endif; ?>
+                </form>
+              <br>
+            </div>
+          </div> <!-- End of right col with bidding info -->
+        </div> <!-- End of row #2 -->
+      <?php endif; ?>
+    </div>
 
-  <div class="col-sm-4"> <!-- Right col with bidding info -->
-
-    <p>
-<?php if ($now > $end_time): ?>
-  This auction ended
-     <?php
-      echo(date_format($end_time, 'j M H:i'));
-      finaliseAuctions($item_id);
-      $message =  "The $a auction has ended. Please log in to view the details.";
-      SendEmail($email, $subject, $message);
-
-
-      ?>
-</div>
 
   </div> <!-- End of right col with bidding info -->
 
 </div> <!-- End of row #2 -->
-<?php endif; ?>
     </p>
   </div>
 
 
 
 <?php include_once("footer.php")?>
+  <?php include_once("footer.php")?>
 
 
 <script>

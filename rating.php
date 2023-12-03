@@ -30,47 +30,91 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ratingCount = $row['UserRatingCount'];
     }
 
-    // check if the user is the auction creator
-    if ($auctionCreator == $username) {
+    
+    //Check if the user has already rated the auction creator
+    $sql2 = "SELECT * FROM ratings WHERE auctionID = '$item_id' AND ratingUsername = '$username'";
+    $result2 = mysqli_query($conn, $sql2);
+    $row2 = mysqli_fetch_array($result2);
+    if (!$row2) {
+        echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
+    } else {
+        $ratingExists = $row2['ratingUsername'];
+    }
+
+    // Check that only the auction winner can rate the auction creator
+    $sql3 = "SELECT * FROM auctions JOIN bidreport ON auctions.BidID = bidreport.bidid WHERE auctions.auctionID = '$item_id' ";
+    $result3 = mysqli_query($conn, $sql3);
+    $row3 = mysqli_fetch_array($result3);
+    if (!$row3) {
+        echo "Error: " . $sql3 . "<br>" . mysqli_error($conn);
+    } else {
+        $auctionWinner = $row3['bidUsername'];
+    }
+    
+    // Check if the user has already rated the auction creator
+    if ($ratingExists == $username) {
         echo '<script>
-        alert("You cannot rate yourself!");
+        alert("You have already rated this user!");
         window.history.back();
         </script>';
+        
     } else {
 
-        // Check if the rating is between 1 and 5
-        if ($rating >= 1 && $rating <= 5 ) {
-
-            //Update user rating
-            $currentRating = $currentRating*$ratingCount + $rating;
-            $ratingCount = $ratingCount + 1;
-            $currentRating = $currentRating/$ratingCount;
-            
-            // Update the current user rating in the table
-            $stmt = $conn->prepare("UPDATE users SET UserRating = '$currentRating', UserRatingCount = '$ratingCount' WHERE UserName = '$auctionCreator'" );
-            if ($stmt->execute()) {
+        // Check if the user is the auction winner
+        if ($auctionWinner != $username) {
+            echo '<script>
+            alert("Only the auction winner can rate the auction creator!");
+            window.history.back();
+            console.log("auctionWinner: " . $auctionWinner);
+            </script>';
+        } else {
+            // check if the user is the auction creator
+            if ($auctionCreator == $username) {
                 echo '<script>
-                alert("Rated successfully!");
+                alert("You cannot rate yourself!");
                 window.history.back();
                 </script>';
-
-                // Redirect to same page as before
-                header("Location: <a href=`listing.php?item_id=' . $item_id . '`>");
             } else {
-                echo "Error inserting your data into the database: " . $stmt->error;
+
+                // Check if the rating is between 1 and 5
+                if ($rating >= 1 && $rating <= 5 ) {
+
+                    //Update user rating
+                    $currentRating = $currentRating*$ratingCount + $rating;
+                    $ratingCount = $ratingCount + 1;
+                    $currentRating = $currentRating/$ratingCount;
+                    
+                    // Update the current user rating in the table
+                    $stmt = $conn->prepare("UPDATE users SET UserRating = '$currentRating', UserRatingCount = '$ratingCount' WHERE UserName = '$auctionCreator'" );
+                    if ($stmt->execute()) {
+                        $stmt2 = $conn->prepare("INSERT INTO ratings (auctionID, ratingUsername, ratingAmount, ratedUsername) VALUES ('$item_id', '$username', '$rating', '$auctionCreator')");
+                        if ($stmt2->execute()) {
+                            echo '<script>
+                            alert("Rated successfully!");
+                            window.history.back();
+                            </script>';
+                            // Redirect to same page as before
+                            header("Location: <a href=`listing.php?item_id=' . $item_id . '`>");
+                        } else {
+                            echo "Error inserting your data into the database: " . $stmt->error;
+                        }
+                    } else {
+                        echo "Error inserting your data into the database: " . $stmt->error;
+                    }
+
+                } else {
+                    // Inform the user that their bid is too low
+                    echo '<script>
+                    alert("Please make sure to enter a valid number. Your rating should be a number between 1 and 5.");
+                    window.history.back();
+                    </script>';
+                }
+
+                // Close the statement and connection
+                $stmt->close();
+                $conn->close();
             }
-
-        } else {
-            // Inform the user that their bid is too low
-            echo '<script>
-            alert("Please make sure to enter a valid number. Your rating should be a number between 1 and 5.");
-            window.history.back();
-            </script>';
-        }
-
-        // Close the statement and connection
-        $stmt->close();
-        $conn->close();
+        }    
     }
 }
 ?>

@@ -70,13 +70,22 @@ CREATE TABLE `bidreport` (
 -- Dumping data for table `bidreport`
 --
 
-INSERT INTO `bidreport` (`bidid`, `auctionID`, `UserName`, `biddatetime`, `bidamount`) VALUES
-(47, 8, 'buyer', '2023-11-30 15:22:18', 100),
-(48, 8, 'buyer', '2023-11-30 15:49:11', 110),
-(49, 8, 'buyer', '2023-11-30 16:38:51', 120),
-(50, 8, 'buyer', '2023-11-30 16:39:18', 120),
-(51, 8, 'buyer', '2023-11-30 16:49:19', 130),
-(52, 9, 'buyer', '2023-11-30 16:52:22', 1200);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bidreport`
+--
+
+CREATE TABLE `ratings` (
+  `ratingID` int(11) NOT NULL,
+  `auctionID` int(11) NOT NULL,
+  `ratedUsername` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `ratingUsername` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `ratedatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ratingAmount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -221,6 +230,12 @@ ALTER TABLE `auctions`
 --
 ALTER TABLE `bidreport`
   MODIFY `bidid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- AUTO_INCREMENT for table `ratings`
+--
+ALTER TABLE `ratings`
+  MODIFY `ratingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `categories`
