@@ -71,7 +71,10 @@ $auctions = getAllAuctions();
                     <tr>
                         <td><?php echo $user['UserID']; ?></td>
                         <td><?php echo $user['UserName']; ?></td>
-                        <td><a href="admin_dashboard.php?deleteUser=true&UserID=<?php echo $user['UserID']; ?>">Delete</a></td>
+                        <td>
+                            <a href="admin_dashboard.php?deleteUser=true&UserID=<?php echo $user['UserID']; ?>"
+                            onclick="return confirm('Are you sure you want to delete this user?');">Delete</a></td>
+                        
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -88,8 +91,18 @@ $auctions = getAllAuctions();
                 <?php foreach ($auctions as $auction): ?>
                     <tr>
                         <td><?php echo $auction['auctionID']; ?></td>
-                        <td><?php echo $auction['auctionTitle']; ?></td>
-                        <td><a href="admin_dashboard.php?admin_deleteAuction=true&AuctionID=<?php echo $auction['auctionID']; ?>">Delete</a></td>
+                        
+                        <td>
+                    <!-- hyperlink-->
+                            <a href="listing.php?auctionID=<?php echo $auction['auctionID']; ?>">
+                                <?php echo $auction['auctionTitle']; ?>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="admin_dashboard.php?admin_deleteAuction=true&AuctionID=<?php echo $auction['auctionID']; ?>"
+                            onclick="return confirm('Are you sure you want to delete this auction?');">Delete</a>
+                        </td>
+                        
                     </tr>
                 <?php endforeach; ?>
             </table>
