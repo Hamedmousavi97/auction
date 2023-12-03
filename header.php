@@ -63,6 +63,8 @@
   if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
     echo '<a class="nav-link" href="logout.php">Welcome '.$_SESSION['username'].'! Logout</a>';
   }
+
+  // admin code end here
   else {
     echo '<button type="button" class="btn nav-link" data-toggle="modal" data-target="#loginModal">Login</button>';
   }
@@ -77,6 +79,10 @@
       <a class="nav-link" href="browse.php">Browse</a>
     </li>
 <?php
+  // if admin, display admin dashboard link
+  if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['account_type'] == 'admin') {
+    echo '<a class="nav-link" href="admin_dashboard.php">Admin Dashboard</a>';
+  }
   if (isset($_SESSION['account_type']) && $_SESSION['account_type'] == 'buyer') {
   echo('
 	<li class="nav-item mx-1">
@@ -101,6 +107,7 @@
     <a class="nav-link" href="recommendations.php">Recommended</a>
   </li>');
   }
+
 ?>
   </ul>
 </nav>

@@ -199,6 +199,41 @@ function canDeleteAuction($auctionID) {
   return false; // Cannot delete if current price is equal or more than reserve price
 }
 
+// this is for admin to delet
+
+function getAllUsers() {
+  global $conn; 
+  $users = array();
+  
+  $query = "SELECT * FROM users";
+  $result = mysqli_query($conn, $query);
+  
+  if ($result) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $users[] = $row;
+      }
+      mysqli_free_result($result);
+  }
+  return $users;
+}
+
+function getAllAuctions() {
+  global $conn;
+  $auctions = array();
+  
+  $query = "SELECT * FROM auctions";
+  $result = mysqli_query($conn, $query);
+  
+  if ($result) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $auctions[] = $row;
+      }
+      mysqli_free_result($result);
+  }
+  return $auctions;
+}
+
+
 function deleteAuction($auctionID) {
   global $conn;
 
@@ -216,6 +251,50 @@ function deleteAuction($auctionID) {
   }
 }
 
+// Admin - delet user
+function deleteUser($UserID) {
+  global $conn; 
+
+  // check admin
+  if ($_SESSION['account_type'] != 'admin') {
+      echo "Access denied: Only admin can delete users.";
+      return;
+  }
+
+  $sql = "DELETE FROM users WHERE UserID = ?";
+  $stmt = mysqli_prepare($conn, $sql);
+  mysqli_stmt_bind_param($stmt, "i", $UserID);
+  mysqli_stmt_execute($stmt);
+
+  if (mysqli_stmt_affected_rows($stmt) > 0) {
+      echo "User deleted successfully.";
+  } else {
+      echo "Error deleting user.";
+  }
+}
+
+
+// Admin - delet auction
+function admin_deleteAuction($auctionID) {
+  global $conn;
+
+  // check admin
+  if ($_SESSION['account_type'] != 'admin') {
+      echo "Access denied: Only admin can delete auctions.";
+      return;
+  }
+
+  $sql = "DELETE FROM auctions WHERE auctionID = ?";
+  $stmt = mysqli_prepare($conn, $sql);
+  mysqli_stmt_bind_param($stmt, "i", $auctionID);
+  mysqli_stmt_execute($stmt);
+
+  if (mysqli_stmt_affected_rows($stmt) > 0) {
+      echo "Auction deleted successfully.";
+  } else {
+      echo "Error deleting auction.";
+  }
+}
 
 require 'vendor/autoload.php';
 
