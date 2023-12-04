@@ -70,7 +70,9 @@
         </div>
           <div class="form-group row">
             <label for="Image" class="col-sm-2 col-form-label text-right">Upload Image:</label>
-            <input type="file" name="Image" id="Image" accept="Image/*">
+            <div class="col-sm-10">
+              <input type="file" name="Image" id="Image" accept="Image/*">
+              <small id="titleHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> A photo of the product to show the conditions of the product.</small>
           </div>
           <div class="form-group row">
 

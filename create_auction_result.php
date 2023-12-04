@@ -24,11 +24,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $auctionCurrentPrice = $auctionStartPrice;
 
 // Add a condition to check if all fields have been filled out. If not, display a message and redirect to the add auction page.
-//if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
-    //echo "<div class='alert alert-danger'>All fields are required. Please try again.</div>";
-    //header("refresh:2; url=create_auction.php");
-    //exit();
-//}
+if (empty($auctionTitle) || empty($auctionDetails) || empty($auctionCategory) || empty($auctionStartPrice) || empty($auctionReservePrice) || empty($auctionEndDate)) {
+    echo '<script>
+            alert("Please fill up all the fields.!");
+            window.history.back();
+        </script>';
+    header("url=create_auction.php");
+    exit();
+}
+
+// Add a condition to check if the start price is less than 0. If it is, display a message and redirect to the add auction page.
+if ($auctionStartPrice < 0) {
+    echo '<script>
+            alert("You can not sell your product less than 0!");
+            window.history.back();
+        </script>';
+    header("url=create_auction.php");    
+    exit();
+}
+
+// Add a condition to check if the reserve price is less than 0. If it is, display a message and redirect to the add auction page.
+if ($auctionReservePrice < 0) {
+    echo '<script>
+            alert("Reserve Price should be more than 0!");
+            window.history.back();
+        </script>';
+    header("url=create_auction.php");
+    exit();
+}
+
+// Add a condition to check if the end date is less than the current date. If it is, display a message and redirect to the add auction page.
+if ($auctionEndDate < date("Y-m-d")) {
+    echo '<script>
+            alert("The End date should be in future not past!");
+            window.history.back();
+        </script>';
+    header("url=create_auction.php");
+    exit();
+}
+
+// Add a condition to check if the start price is less than the reserve price. If it is, display a message and redirect to the add auction page.
+if ($auctionStartPrice < $auctionReservePrice) {
+    echo '<script>
+            alert("You can not sell your product less than your start price!");
+            window.history.back();
+        </script>';
+    header("url=create_auction.php");    
+    exit();
+}
+
+
 
 
 $Image = '';
