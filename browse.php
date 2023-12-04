@@ -118,12 +118,23 @@ error_reporting(E_ALL);
   else {
     $curr_page = $_GET['page'];
   }
-  /* Use above values to construct a query. Use this query to
-                    retrieve data from the database. (If there is no form data entered,
-                    decide on appropriate default value/default query to make. */
-                    $num_results = 96;
-                    $results_per_page = 5;
-                    $max_page = ceil($num_results / $results_per_page);
+
+  // Show 5 results per page and fix the maximum number of pages 
+  $sql = "SELECT count(*) FROM auctions WHERE isFinished = 0 AND (auctionTitle LIKE '%$keyword%' OR auctionDetails LIKE '%$keyword%')";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_row($result);
+  $num_results = $row[0];
+  $results_per_page = 5;
+  $max_page = ceil($num_results / $results_per_page);
+  if ($max_page > $results_per_page) {
+    $max_page = $results_per_page;
+  }
+  $start_row = ($curr_page - 1) * $results_per_page;
+  $end_row = ($curr_page + $results_per_page) - 1;
+  if ($end_row > $num_results) {
+    $end_row = $num_results;
+  }
+
 
                     if ($ordering === 'pricelow') {
                         $orderByClause = 'ORDER BY auctionStartPrice ASC';
