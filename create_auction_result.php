@@ -122,7 +122,6 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
 
     // Execute the prepared statement
     if ($stmt->execute()) {
-        echo "New record inserted successfully";
         echo "<br>";
         echo "<br>";
         $message = "Creation of $auctionTitle successful, please log in to view the details.";

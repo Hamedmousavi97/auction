@@ -80,6 +80,7 @@
     <div class="col-sm-10">
         <select class="form-control" id="auctionCategory" name="auctionCategory" onchange="showOtherCategory(this)">
 
+
                 <?php
                 require_once("config.php");
                 $sql = "SELECT * FROM categories";
@@ -103,7 +104,7 @@
               <div class="form-group row" id="otherCategoryInput" style="display: none;">
                   <div class="col-sm-10 offset-sm-2">
                       <input type="text" class="form-control" id="otherCategory" name="otherCategory" placeholder="Enter a new category">
-                      <small id="otherCategoryHelp" class="form-text text-muted">If the category you want isn't listed, enter it here.</small>
+                      <small id="titleHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Please write the new category of the product you are trying to sell.</small>
                   </div>
               </div>
           <script>
