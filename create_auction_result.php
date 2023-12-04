@@ -64,7 +64,7 @@ if ($auctionEndDate < date("Y-m-d")) {
 }
 
 // Add a condition to check if the start price is less than the reserve price. If it is, display a message and redirect to the add auction page.
-if ($auctionStartPrice < $auctionReservePrice) {
+if ($auctionStartPrice > $auctionReservePrice) {
     echo '<script>
             alert("You can not sell your product less than your start price!");
             window.history.back();
