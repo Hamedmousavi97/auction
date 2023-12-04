@@ -31,7 +31,7 @@
 
     // Sanitize email address
     function sanitizeEmail($email) {
-        
+
         // Remove all illegal characters from email
         $email = trim($email);
 
@@ -178,10 +178,9 @@
                 // Show success message
                 echo '<script>
                         alert("Account created successfully! Please log in to continue.");
-                        window.history.back();
                     </script>';
 
-                // Redirect to the login page    
+                // Redirect to the login page
                 header("Location: browse.php");
                 exit(); // Ensure no further execution after redirection
             } else {
