@@ -136,8 +136,8 @@
                 </div>
                 <input type="number" class="form-control" id="auctionReservePrice" name="auctionReservePrice">
               </div>
-              <small id="reservePriceHelp" class="form-text text-muted">Optional. Auctions that end below this
-                price will not go through. This value is not displayed in the auction listing.</small>
+              <small id="startBidHelp" class="form-text text-muted"><span class="text-danger">* Required.</span>
+                Please enter a reserve price. The reserve price is the minimum the seller would be willing to accept for an auction</small>
             </div>
           </div>
           <div class="form-group row">

@@ -211,12 +211,12 @@ function canDeleteAuction($auctionID) {
 // this is for admin to delet
 
 function getAllUsers() {
-  global $conn; 
+  global $conn;
   $users = array();
-  
+
   $query = "SELECT * FROM users";
   $result = mysqli_query($conn, $query);
-  
+
   if ($result) {
       while ($row = mysqli_fetch_assoc($result)) {
           $users[] = $row;
@@ -229,10 +229,10 @@ function getAllUsers() {
 function getAllAuctions() {
   global $conn;
   $auctions = array();
-  
+
   $query = "SELECT * FROM auctions";
   $result = mysqli_query($conn, $query);
-  
+
   if ($result) {
       while ($row = mysqli_fetch_assoc($result)) {
           $auctions[] = $row;
@@ -262,7 +262,7 @@ function deleteAuction($auctionID) {
 
 // Admin - delet user
 function deleteUser($UserID) {
-  global $conn; 
+  global $conn;
 
   // check admin
   if ($_SESSION['account_type'] != 'admin') {
@@ -330,12 +330,12 @@ $email->addContent(
 $sendgrid = new \SendGrid('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');
 try {
     $response = $sendgrid->send($email);
-    printf("Response status: %d\n\n", $response->statusCode());
+    // printf("Response status: %d\n\n", $response->statusCode());
 
     $headers = array_filter($response->headers());
-    echo "Response Headers\n\n";
+    // echo "Response Headers\n\n";
     foreach ($headers as $header) {
-        echo '- ' . $header . "\n";
+        // echo '- ' . $header . "\n";
     }
 } catch (Exception $e) {
     echo 'Caught exception: '. $e->getMessage() ."\n";

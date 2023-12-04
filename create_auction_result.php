@@ -39,7 +39,7 @@ if ($auctionStartPrice < 0) {
             alert("You can not sell your product less than 0!");
             window.history.back();
         </script>';
-    header("url=create_auction.php");    
+    header("url=create_auction.php");
     exit();
 }
 
@@ -69,7 +69,7 @@ if ($auctionStartPrice > $auctionReservePrice) {
             alert("You can not sell your product less than your start price!");
             window.history.back();
         </script>';
-    header("url=create_auction.php");    
+    header("url=create_auction.php");
     exit();
 }
 
@@ -125,7 +125,6 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
         echo "New record inserted successfully";
         echo "<br>";
         echo "<br>";
-        echo "Message sent to your email address";
         $message = "Creation of $auctionTitle successful, please log in to view the details.";
         SendEmail($email, $subject, $message);
 
@@ -138,9 +137,7 @@ $stmt = $conn->prepare("INSERT INTO auctions (auctionTitle, auctionDetails, auct
     $conn->close();
 
 // If all is successful, let user know.
-echo('<div class="text-center">Auction successfully created! <a href="mylistings.php">View your new listing.</a></div>');
-
-
+echo('<div class="text-center" style="font-size: 50px; font-weight: bold; margin-top: 20px;">Auction successfully created! View it <a href="mylistings.php">here</a>.</div>');
 
 // Send an email using SendGrid
 //Include the SendGrid library

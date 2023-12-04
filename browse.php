@@ -156,8 +156,9 @@ error_reporting(E_ALL);
                             : "AND auctionCategory = '$category'";
                     }
 
-                    $query = "SELECT * FROM auctions WHERE isFinished = 0 AND 1 $categories AND (auctionTitle LIKE '%$keyword%' OR auctionDetails LIKE '%$keyword%') $orderByClause LIMIT $start_row, $results_per_page";
+                    $query = "SELECT * FROM auctions WHERE 1 $categories AND (auctionTitle LIKE '%$keyword%' OR auctionDetails LIKE '%$keyword%') AND auctionEndDate > NOW() $orderByClause LIMIT $start_row, $results_per_page";
                     $newAuctionsResult = mysqli_query($conn, $query);
+
 
 
 
@@ -204,7 +205,7 @@ error_reporting(E_ALL);
     echo('
     <li class="page-item">
       <a class="page-link" href="browse.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
-        <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
+        <span aria-hidden="true"><i class="fafa-arrow-left"></i></span>
         <span class="sr-only">Previous</span>
       </a>
     </li>');
