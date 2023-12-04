@@ -28,7 +28,7 @@ $auctions = getAllAuctions();
 
         .table-container {
             margin: auto;
-            width: 80%; /* 根据需要调整宽度 */
+            width: 80%;
         }
 
         table {
