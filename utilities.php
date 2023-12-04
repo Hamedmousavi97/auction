@@ -127,8 +127,15 @@ function finaliseAuctions($item_id) {
                       echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
                   }
               } else {
-                  echo "No winning bid found for this auction ID $auctionID <br>";
-
+                $updateQuery = "UPDATE auctions SET
+                isFinished = 1
+                WHERE auctionID = $auctionID";
+                $updateResult = mysqli_query($conn, $updateQuery);
+                if ($updateResult) {
+                  echo "<br>This auction did not meet the reserved price. <br>";
+                } else {
+                  echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
+                }
               }
             }
             else {
@@ -137,9 +144,11 @@ function finaliseAuctions($item_id) {
               WHERE auctionID = $auctionID";
 
               $updateResult = mysqli_query($conn, $updateQuery);
-
-              echo "<br>This auction did not meet the reserved price. <br>";
-
+              if ($updateResult) {
+                echo "<br>This auction did not meet the reserved price. <br>";
+              } else {
+                echo "Error updating auction $auctionTitle: " . mysqli_error($conn) . "<br>";
+              }
             }
         }
     } else {

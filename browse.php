@@ -145,7 +145,7 @@ error_reporting(E_ALL);
                             : "AND auctionCategory = '$category'";
                     }
 
-                    $query = "SELECT * FROM auctions WHERE 1 $categories AND (auctionTitle LIKE '%$keyword%' OR auctionDetails LIKE '%$keyword%') $orderByClause LIMIT $start_row, $results_per_page";
+                    $query = "SELECT * FROM auctions WHERE isFinished = 0 AND 1 $categories AND (auctionTitle LIKE '%$keyword%' OR auctionDetails LIKE '%$keyword%') $orderByClause LIMIT $start_row, $results_per_page";
                     $newAuctionsResult = mysqli_query($conn, $query);
 
 
