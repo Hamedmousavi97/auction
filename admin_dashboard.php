@@ -1,4 +1,6 @@
 <?php
+
+// This is the admin page where admins are able to manage users and auctions.
 include_once("header.php");
 include_once("utilities.php");
 
@@ -6,6 +8,8 @@ include_once("utilities.php");
 if (isset($_GET['deleteUser']) && isset($_GET['UserID'])) {
     deleteUser($_GET['UserID']);
 }
+
+// check if delete auction
 if (isset($_GET['admin_deleteAuction']) && isset($_GET['AuctionID'])) {
     admin_deleteAuction($_GET['AuctionID']);
 }
@@ -21,6 +25,8 @@ $auctions = getAllAuctions();
     <title>Admin Dashboard</title>
     <!-- Bootstrap  -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Stylings -->
     <style>
         .container {
             padding: 20px;
@@ -55,10 +61,15 @@ $auctions = getAllAuctions();
         }
     </style>
 </head>
+
+<!-- Body -->
 <body>
+
+    <!-- Admin dashboard -->
     <div class="container">
         <h1>Admin Dashboard</h1>
         
+        <!-- Table of users -->
         <div class="table-container">
             <h2>Users</h2>
             <table>
@@ -67,6 +78,8 @@ $auctions = getAllAuctions();
                     <th>Username</th>
                     <th>Action</th>
                 </tr>
+
+                <!-- Loop through all users -->
                 <?php foreach ($users as $user): ?>
                     <tr>
                         <td><?php echo $user['UserID']; ?></td>
@@ -80,7 +93,10 @@ $auctions = getAllAuctions();
             </table>
         </div>
 
+        <!-- Table of auctions -->
         <div class="table-container">
+
+            <!-- Loop through all auctions -->
             <h2>Auctions</h2>
             <table>
                 <tr>
@@ -88,12 +104,15 @@ $auctions = getAllAuctions();
                     <th>Title</th>
                     <th>Action</th>
                 </tr>
+
+                <!-- Loop through all auctions -->
                 <?php foreach ($auctions as $auction): ?>
                     <tr>
                         <td><?php echo $auction['auctionID']; ?></td>
                         
                         <td>
-                    <!-- hyperlink-->
+                            
+                            <!-- hyperlink to the auction page-->
                             <a href="listing.php?auctionID=<?php echo $auction['auctionID']; ?>">
                                 <?php echo $auction['auctionTitle']; ?>
                             </a>
@@ -102,7 +121,6 @@ $auctions = getAllAuctions();
                             <a href="admin_dashboard.php?admin_deleteAuction=true&AuctionID=<?php echo $auction['auctionID']; ?>"
                             onclick="return confirm('Are you sure you want to delete this auction?');">Delete</a>
                         </td>
-                        
                     </tr>
                 <?php endforeach; ?>
             </table>
