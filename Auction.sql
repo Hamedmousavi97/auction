@@ -267,32 +267,32 @@ ALTER TABLE `watchlist`
 --
 -- Constraints for table `auctions`
 --
-ALTER TABLE `auctions`
-  ADD CONSTRAINT `auctions_ibfk_1` FOREIGN KEY (`UserName`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auctions_ibfk_2` FOREIGN KEY (`BidID`) REFERENCES `bidreport` (`bidid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auctions_ibfk_3` FOREIGN KEY (`auctionCategory`) REFERENCES `categories` (`categoryName`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- ALTER TABLE `auctions`
+--   ADD CONSTRAINT `auctions_ibfk_1` FOREIGN KEY (`UserName`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE,
+--   ADD CONSTRAINT `auctions_ibfk_2` FOREIGN KEY (`BidID`) REFERENCES `bidreport` (`bidid`) ON DELETE CASCADE ON UPDATE CASCADE,
+--   ADD CONSTRAINT `auctions_ibfk_3` FOREIGN KEY (`auctionCategory`) REFERENCES `categories` (`categoryName`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bidreport`
 --
-ALTER TABLE `bidreport`
-  ADD CONSTRAINT `bidreport_ibfk_1` FOREIGN KEY (`bidUsername`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `bidreport_ibfk_2` FOREIGN KEY (`auctionID`) REFERENCES `auctions` (`auctionID`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- ALTER TABLE `bidreport`
+--   ADD CONSTRAINT `bidreport_ibfk_1` FOREIGN KEY (`bidUsername`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE,
+--   ADD CONSTRAINT `bidreport_ibfk_2` FOREIGN KEY (`auctionID`) REFERENCES `auctions` (`auctionID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ratings`
 --
-ALTER TABLE `ratings`
-  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`auctionID`) REFERENCES `auctions` (`auctionID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`ratedUsername`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- ALTER TABLE `ratings`
+--   ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`auctionID`) REFERENCES `auctions` (`auctionID`) ON DELETE CASCADE ON UPDATE CASCADE,
+--   ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`ratedUsername`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `watchlist`
 --
-ALTER TABLE `watchlist`
-  ADD CONSTRAINT `watchlist_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `watchlist_ibfk_2` FOREIGN KEY (`auctionID`) REFERENCES `auctions` (`auctionID`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
+-- ALTER TABLE `watchlist`
+--   ADD CONSTRAINT `watchlist_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`UserName`) ON DELETE CASCADE ON UPDATE CASCADE,
+--   ADD CONSTRAINT `watchlist_ibfk_2` FOREIGN KEY (`auctionID`) REFERENCES `auctions` (`auctionID`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

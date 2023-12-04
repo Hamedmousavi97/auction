@@ -1,14 +1,19 @@
 <?php
+    // process the log out and terminate the sessions 
+    // start the session
+    session_start();
 
-session_start();
+    // terminate sessions
+    unset($_SESSION['logged_in']);
+    unset($_SESSION['account_type']);
 
-unset($_SESSION['logged_in']);
-unset($_SESSION['account_type']);
-setcookie(session_name(), "", time() - 360);
-session_destroy();
+    // distroy the cookies
+    setcookie(session_name(), "", time() - 360);
 
+    // destroy the session
+    session_destroy();
 
-// Redirect to index
-header("Location: index.php");
+    // Redirect to index
+    header("Location: index.php");
 
 ?>
