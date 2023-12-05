@@ -51,8 +51,11 @@
         // Get the category of the auction
         $categories = $row['auctionCategory'];
 
+        //Set the current date and time
+        $currentDate = date("Y-m-d H:i:s");
+      
         // Query into the auction table to find out more auctions based on the user category
-        $query2 = "SELECT * FROM auctions WHERE auctionCategory = '$categories'";
+        $query2 = "SELECT * FROM auctions WHERE auctionCategory = '$categories' AND auctionEndDate > '$currentDate' ORDER BY auctionEndDate DESC";
         $result2 = mysqli_query($conn, $query2);
 
         // Loop through results and print them out as list items.
