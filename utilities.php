@@ -145,7 +145,7 @@
             if ($updateResult) {
 
               // Display final information.
-              echo "</br>Auction $auctionTitle $auctionID has been finalised. <br>".$winner ." won the bid with the bid of £" . $auctionWinningBid . "<br>";
+              echo "</br>Auction $auctionTitle has been finalised. <br>".$winner ." won the bid with the bid of £" . $auctionWinningBid . "<br>";
             } else {
 
               // otherwise show the error
