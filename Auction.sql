@@ -50,9 +50,9 @@ CREATE TABLE `auctions` (
 -- Dumping data for table `auctions`
 --
 
-INSERT INTO `auctions` (`auctionID`, `NumBid`, `BidID`, `auctionCurrentPrice`, `UserName`, `auctionTitle`, `auctionDetails`, `Image`, `auctionCategory`, `auctionStartPrice`, `auctionReservePrice`, `auctionEndDate`, `auctionStartDate`, `isFinished`) VALUES
-(8, 5, 51, 130, 'seller', 'LEGO DISNEY 3 Minifigures 100th Anniversary 71038 - Complete Set of 18 (SEALED)', '', '', 'Toys and Collectibles', 90, 98, '2023-12-02 15:21:00', '2023-11-30 15:21:40', 0),
-(9, 1, 52, 1200, 'seller', 'Diamond Rolex Oyster Perpetual Date Watch Case Men Genuine Iced Bezel Parts', 'Original genuine Rolex Oyster Perpetual Date 15000 watch case with original dial and crown, along with a custom natural diamond bezel. \r\n\r\nPlease note a movement is not included as this set is sold for parts, but will add an aftermarket jubilee bracelet band, movement ring holder/spacer, date wheel, and watch hands separately. \r\n\r\nThis genuine Rolex date watch case comes with a custom diamond pyramid bezel and has all visible serial number engravings. It needs a movement and it’s ready to be worn and enjoyed again.', '', 'Jewelries and Watches', 1000, 1100, '2023-12-04 18:50:00', '2023-11-30 16:51:51', 0);
+-- INSERT INTO `auctions` (`auctionID`, `NumBid`, `BidID`, `auctionCurrentPrice`, `UserName`, `auctionTitle`, `auctionDetails`, `Image`, `auctionCategory`, `auctionStartPrice`, `auctionReservePrice`, `auctionEndDate`, `auctionStartDate`, `isFinished`) VALUES
+-- (8, 5, 51, 130, 'seller', 'LEGO DISNEY 3 Minifigures 100th Anniversary 71038 - Complete Set of 18 (SEALED)', '', '', 'Toys and Collectibles', 90, 98, '2023-12-02 15:21:00', '2023-11-30 15:21:40', 0),
+-- (9, 1, 52, 1200, 'seller', 'Diamond Rolex Oyster Perpetual Date Watch Case Men Genuine Iced Bezel Parts', 'Original genuine Rolex Oyster Perpetual Date 15000 watch case with original dial and crown, along with a custom natural diamond bezel. \r\n\r\nPlease note a movement is not included as this set is sold for parts, but will add an aftermarket jubilee bracelet band, movement ring holder/spacer, date wheel, and watch hands separately. \r\n\r\nThis genuine Rolex date watch case comes with a custom diamond pyramid bezel and has all visible serial number engravings. It needs a movement and it’s ready to be worn and enjoyed again.', '', 'Jewelries and Watches', 1000, 1100, '2023-12-04 18:50:00', '2023-11-30 16:51:51', 0);
 
 -- --------------------------------------------------------
 
@@ -72,13 +72,13 @@ CREATE TABLE `bidreport` (
 -- Dumping data for table `bidreport`
 --
 
-INSERT INTO `bidreport` (`bidid`, `auctionID`, `bidUsername`, `biddatetime`, `bidamount`) VALUES
-(47, 8, 'buyer', '2023-11-30 15:22:18', 100),
-(48, 8, 'buyer', '2023-11-30 15:49:11', 110),
-(49, 8, 'buyer', '2023-11-30 16:38:51', 120),
-(50, 8, 'buyer', '2023-11-30 16:39:18', 120),
-(51, 8, 'buyer', '2023-11-30 16:49:19', 130),
-(52, 9, 'buyer', '2023-11-30 16:52:22', 1200);
+-- INSERT INTO `bidreport` (`bidid`, `auctionID`, `bidUsername`, `biddatetime`, `bidamount`) VALUES
+-- (47, 8, 'buyer', '2023-11-30 15:22:18', 100),
+-- (48, 8, 'buyer', '2023-11-30 15:49:11', 110),
+-- (49, 8, 'buyer', '2023-11-30 16:38:51', 120),
+-- (50, 8, 'buyer', '2023-11-30 16:39:18', 120),
+-- (51, 8, 'buyer', '2023-11-30 16:49:19', 130),
+-- (52, 9, 'buyer', '2023-11-30 16:52:22', 1200);
 
 -- --------------------------------------------------------
 
@@ -96,12 +96,12 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
-(123, 'Art and Collectibles', 'Art and Collectibles'),
-(124, 'Antiques', 'Antiques'),
-(125, 'Jewelries and Watches', 'Jewelries and Watches'),
-(126, 'Toys and Collectibles', 'Toys and Collectibles'),
-(127, 'Charity Auctions', 'Charity Auctions');
+-- INSERT INTO `categories` (`categoryID`, `categoryName`, `categoryDescription`) VALUES
+-- (123, 'Art and Collectibles', 'Art and Collectibles'),
+-- (124, 'Antiques', 'Antiques'),
+-- (125, 'Jewelries and Watches', 'Jewelries and Watches'),
+-- (126, 'Toys and Collectibles', 'Toys and Collectibles'),
+-- (127, 'Charity Auctions', 'Charity Auctions');
 /*
 INSERT INTO `categories` (`categoryName`, `categoryDescription`) VALUES
 ('Art and Collectibles', 'Art and Collectibles'),
@@ -159,9 +159,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `UserName`, `UserEmail`, `UserRole`, `UserPassword`, `Address1`, `Address2`, `City`, `Postcode`, `UserImage`, `UserRating`, `UserRatingCount`) VALUES
-(3, 'buyer', 'buyer@gmail.com', 'buyer', 'af279d1c700abd9701eb18c477f7ef58c1fa3eca3dc50b42a1acd6ac51a5df6a', NULL, NULL, NULL, NULL, NULL, 0, 0),
-(4, 'seller', 'seller@gmail.com', 'seller', 'e122329e5ce53e90ceb703dd19b807ca237c5c9796c2e4c8aef0b0bc506a6760', NULL, NULL, NULL, NULL, NULL, 0, 0);
+-- INSERT INTO `users` (`UserID`, `UserName`, `UserEmail`, `UserRole`, `UserPassword`, `Address1`, `Address2`, `City`, `Postcode`, `UserImage`, `UserRating`, `UserRatingCount`) VALUES
+-- (3, 'buyer', 'buyer@gmail.com', 'buyer', 'af279d1c700abd9701eb18c477f7ef58c1fa3eca3dc50b42a1acd6ac51a5df6a', NULL, NULL, NULL, NULL, NULL, 0, 0),
+-- (4, 'seller', 'seller@gmail.com', 'seller', 'e122329e5ce53e90ceb703dd19b807ca237c5c9796c2e4c8aef0b0bc506a6760', NULL, NULL, NULL, NULL, NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -259,6 +259,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `watchlist`
   MODIFY `watchlistID` smallint(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `watchlist`
+--
+ALTER TABLE `ratings`
+  MODIFY `ratingID` smallint(11) NOT NULL AUTO_INCREMENT;
+
 
 --
 -- Constraints for dumped tables
