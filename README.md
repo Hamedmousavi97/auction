@@ -2,6 +2,8 @@
 UCL Database module project
 Group 2 Project.
 
+This a auction website based on PHP and SQL. 
+
 Please use the git clone function to download and use the website on your machine
 
 You should download XAMPP already.
